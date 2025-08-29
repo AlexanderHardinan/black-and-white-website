@@ -34,7 +34,7 @@ export default function Home(){
           </div>
         </div>
         <div className="rounded-3xl overflow-hidden shadow-xl">
-          <img src="/images/hero.jpg" alt="hero" className="w-full h-96 object-cover"/>
+          <img src="/images/BW.logo.png" alt="BW logo" className="w-full h-96 object-cover"/>
         </div>
       </main>
       <footer className="border-t py-8 text-sm text-muted">
