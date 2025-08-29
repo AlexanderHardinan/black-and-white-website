@@ -9,7 +9,7 @@ export default function Home(){
       <header className="border-b py-4">
         <div className="max-w-6xl mx-auto px-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/images/logo.png" alt="Black and White Logo" className="h-10 w-auto" />
+            <img src="/images/logo.png" alt="Black and White Logo" className="h-20 w-auto" />
             <div>
               <div className="font-semibold">Black and White</div>
               <div className="text-xs text-muted">by Chef Alex</div>
