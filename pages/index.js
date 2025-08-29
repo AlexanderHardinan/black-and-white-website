@@ -50,7 +50,7 @@ export default function Home() {
       <section className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
         <div>
           <img
-            src="/images/chef.jpg"
+            src="/images/chef.png"
             alt="Chef Alex"
             className="rounded-3xl shadow-lg"
           />
