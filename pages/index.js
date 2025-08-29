@@ -26,7 +26,7 @@ export default function Home(){
       <main className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-8 items-center">
         <div>
           <span className="inline-block px-3 py-1 rounded-full text-xs bg-black text-white">Black and White by Chef Alex</span>
-          <h1 className="mt-6 text-4xl md:text-6xl font-bold">Simple <span style={{color:'#CBA135'}}>and</span> Sexy</h1>
+          <h1 className="mt-6 text-4xl md:text-6xl font-bold">Black <span style={{color:'#CBA135'}}>and</span> White</h1>
           <p className="mt-4 text-muted max-w-xl">Modern café blending coffee, viennoiseries, and desserts.</p>
           <div className="mt-6 flex gap-3">
             <a href="/menu" className="btn-primary">Explore Menu</a>
