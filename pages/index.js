@@ -27,14 +27,14 @@ export default function Home(){
         <div>
           <span className="inline-block px-3 py-1 rounded-full text-xs bg-black text-white">Black and White by Chef Alex</span>
           <h1 className="mt-6 text-4xl md:text-6xl font-bold">Black <span style={{color:'#CBA135'}}>and</span> White</h1>
-          <p className="mt-4 text-muted max-w-xl">Modern café blending coffee, viennoiseries, and desserts.</p>
+          <p className="mt-4 text-muted max-w-xl">Pure, Bold, and Timeless.</p>
           <div className="mt-6 flex gap-3">
             <a href="/menu" className="btn-primary">Explore Menu</a>
             <a href="/reserve" className="btn-ghost">Reserve</a>
           </div>
         </div>
         <div className="rounded-3xl overflow-hidden shadow-xl">
-          <img src="/images/BW.logo.png" alt="BW logo" className="w-full h-96 object-cover"/>
+          <img src="/images/BW logo.png" alt="BW logo" className="w-full h-96 object-cover"/>
         </div>
       </main>
       <footer className="border-t py-8 text-sm text-muted">
