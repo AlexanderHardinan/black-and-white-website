@@ -1,11 +1,19 @@
 import Head from "next/head";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Menu, X, Instagram, Facebook, Phone } from "lucide-react";
 
 export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Navbar scroll effect
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <div>
@@ -14,14 +22,18 @@ export default function Home() {
       </Head>
 
       {/* HEADER */}
-      <header className="fixed top-0 left-0 w-full bg-white shadow z-50">
+      <header
+        className={`fixed top-0 left-0 w-full z-50 transition-all ${
+          scrolled ? "bg-white shadow" : "bg-transparent"
+        }`}
+      >
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <img
               src="/images/logo.png"
               alt="Black and White Logo"
-              className="h-10 w-auto"
+              className="h-16 w-auto"
             />
             <div>
               <div className="font-semibold">Black and White</div>
@@ -30,12 +42,22 @@ export default function Home() {
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex gap-6 text-sm text-gray-600">
-            <a href="#about">About</a>
-            <a href="#menu">Menu</a>
-            <a href="#gallery">Gallery</a>
-            <a href="#reserve">Reserve</a>
-            <a href="#contact">Contact</a>
+          <nav className="hidden md:flex gap-6 text-sm font-medium">
+            <a href="#about" className="hover:text-[var(--gold)] transition">
+              About
+            </a>
+            <a href="#menu" className="hover:text-[var(--gold)] transition">
+              Menu
+            </a>
+            <a href="#gallery" className="hover:text-[var(--gold)] transition">
+              Gallery
+            </a>
+            <a href="#reserve" className="hover:text-[var(--gold)] transition">
+              Reserve
+            </a>
+            <a href="#contact" className="hover:text-[var(--gold)] transition">
+              Contact
+            </a>
           </nav>
 
           {/* Mobile Button */}
@@ -43,7 +65,7 @@ export default function Home() {
             className="md:hidden p-2"
             onClick={() => setMobileOpen(!mobileOpen)}
           >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
 
@@ -68,38 +90,57 @@ export default function Home() {
       {/* HERO */}
       <main className="pt-24">
         <section className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-8 items-center">
-          
-          {/* Left Text - animated */}
+          {/* Left Text with staggered animations */}
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2 }}
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: {},
+              visible: {
+                transition: { staggerChildren: 0.2 },
+              },
+            }}
           >
-            <span className="inline-block px-3 py-1 rounded-full text-xs bg-black text-white">
+            <motion.span
+              className="inline-block px-3 py-1 rounded-full text-xs bg-black text-white"
+              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+            >
               Black and White by Chef Alex
-            </span>
-            <h1 className="mt-6 text-4xl md:text-6xl font-bold">
+            </motion.span>
+
+            <motion.h1
+              className="mt-6 text-4xl md:text-6xl font-bold"
+              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+            >
               Black <span style={{ color: "#CBA135" }}>and</span> White
-            </h1>
-            <p className="mt-4 text-gray-600 max-w-xl">
+            </motion.h1>
+
+            <motion.p
+              className="mt-4 text-gray-600 max-w-xl"
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+            >
               Pure, Bold, and Timeless.
-            </p>
-            <div className="mt-6 flex gap-3">
+            </motion.p>
+
+            <motion.div
+              className="mt-6 flex gap-3"
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+            >
               <a href="#menu" className="btn-primary">
                 Explore Menu
               </a>
-              <a href="#reserve" className="btn-ghost">
+              <a href="#reserve" className="btn-ghost border px-4 py-2 rounded-lg">
                 Reserve
               </a>
-            </div>
+            </motion.div>
           </motion.div>
 
-          {/* Right Image - animated */}
+          {/* Right Image */}
           <motion.div
             className="rounded-3xl overflow-hidden shadow-xl"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.4 }}
+            transition={{ duration: 1, delay: 0.5 }}
           >
             <img
               src="/images/hero.jpg"
@@ -137,21 +178,22 @@ export default function Home() {
           <div className="col-span-3 text-center mb-10">
             <h2 className="text-3xl font-bold">Signature Menu</h2>
           </div>
-          <div className="p-6 shadow rounded-xl hover:shadow-lg transition">
-            <img src="/images/dish1.jpg" alt="Dish 1" className="rounded-xl mb-4"/>
-            <h3 className="font-semibold">Croissant au Beurre</h3>
-            <p className="text-gray-500 text-sm">Golden layers, pure butter</p>
-          </div>
-          <div className="p-6 shadow rounded-xl hover:shadow-lg transition">
-            <img src="/images/dish2.jpg" alt="Dish 2" className="rounded-xl mb-4"/>
-            <h3 className="font-semibold">Espresso Noir</h3>
-            <p className="text-gray-500 text-sm">Rich, bold, and smooth</p>
-          </div>
-          <div className="p-6 shadow rounded-xl hover:shadow-lg transition">
-            <img src="/images/dish3.jpg" alt="Dish 3" className="rounded-xl mb-4"/>
-            <h3 className="font-semibold">Tarte au Chocolat</h3>
-            <p className="text-gray-500 text-sm">Decadent dark chocolate tart</p>
-          </div>
+          {[
+            { img: "/images/dish1.jpg", title: "Croissant au Beurre", desc: "Golden layers, pure butter" },
+            { img: "/images/dish2.jpg", title: "Espresso Noir", desc: "Rich, bold, and smooth" },
+            { img: "/images/dish3.jpg", title: "Tarte au Chocolat", desc: "Decadent dark chocolate tart" },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              className="p-6 shadow rounded-xl cursor-pointer bg-white"
+              whileHover={{ scale: 1.05, boxShadow: "0px 10px 20px rgba(0,0,0,0.15)" }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <img src={item.img} alt={item.title} className="rounded-xl mb-4" />
+              <h3 className="font-semibold">{item.title}</h3>
+              <p className="text-gray-500 text-sm">{item.desc}</p>
+            </motion.div>
+          ))}
         </motion.section>
 
         {/* GALLERY Section */}
@@ -165,12 +207,14 @@ export default function Home() {
         >
           <h2 className="text-3xl font-bold text-center mb-10">Gallery</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <img src="/images/gallery1.jpg" className="rounded-xl" />
-            <img src="/images/gallery2.jpg" className="rounded-xl" />
-            <img src="/images/gallery3.jpg" className="rounded-xl" />
-            <img src="/images/gallery4.jpg" className="rounded-xl" />
-            <img src="/images/gallery5.jpg" className="rounded-xl" />
-            <img src="/images/gallery6.jpg" className="rounded-xl" />
+            {["gallery1.jpg","gallery2.jpg","gallery3.jpg","gallery4.jpg","gallery5.jpg","gallery6.jpg"].map((g,i)=>(
+              <motion.img
+                key={i}
+                src={`/images/${g}`}
+                className="rounded-xl cursor-pointer"
+                whileHover={{ scale: 1.03 }}
+              />
+            ))}
           </div>
         </motion.section>
 
@@ -184,13 +228,27 @@ export default function Home() {
           transition={{ duration: 1 }}
         >
           <h2 className="text-3xl font-bold mb-4">Reserve a Table</h2>
-          <p className="text-gray-600 mb-6">Secure your spot for an unforgettable dining experience.</p>
-          <a href="/reserve" className="btn-primary">Book Now</a>
+          <p className="text-gray-600 mb-6">
+            Secure your spot for an unforgettable dining experience.
+          </p>
+          <motion.a
+            href="/reserve"
+            className="btn-primary inline-block"
+            animate={{ scale: [1, 1.05, 1] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+          >
+            Book Now
+          </motion.a>
         </motion.section>
       </main>
 
       {/* FOOTER */}
       <footer className="border-t py-8 text-sm text-gray-500 text-center">
+        <div className="flex justify-center gap-6 mb-4">
+          <a href="https://instagram.com" target="_blank"><Instagram size={20} /></a>
+          <a href="https://facebook.com" target="_blank"><Facebook size={20} /></a>
+          <a href="tel:+123456789"><Phone size={20} /></a>
+        </div>
         © {new Date().getFullYear()} Black and White — Chef Alex
       </footer>
     </div>
