@@ -13,7 +13,7 @@ export default function Home() {
         <div className="absolute inset-0">
           <img
             src="/images/hero.jpg"
-            alt="Black and White Café"
+            alt="Black and White Cuisine"
             className="w-full h-full object-cover opacity-40"
           />
         </div>
@@ -21,12 +21,12 @@ export default function Home() {
           <img
             src="/images/logo.png"
             alt="Black and White Logo"
-            className="mx-auto h-24 mb-6"
+            className="mx-auto h-40 mb-6"
           />
           <h1 className="text-4xl md:text-6xl font-bold">
             Pure, Bold, and Timeless
           </h1>
-          <p className="mt-4 text-lg text-gray-300">
+          <p className="mt-4 text-lg text-white-300">
             An elegant dining experience by Chef Alex
           </p>
           <div className="mt-6 flex gap-4 justify-center">
@@ -57,7 +57,7 @@ export default function Home() {
         </div>
         <div>
           <h2 className="text-3xl font-bold">By Chef Alex</h2>
-          <p className="mt-4 text-gray-600">
+          <p className="mt-4 text-white-600">
             Black and White is a timeless dining concept blending bold flavors
             with modern elegance. Our menu is crafted with precision, passion,
             and artistry — delivering an unforgettable experience in every bite.
