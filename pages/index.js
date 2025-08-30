@@ -69,47 +69,49 @@ export default function Home() {
           </button>
         </div>
       </header>
-
       {/* --- HERO --- */}
-      <main className="pt-24 relative z-10">
-        <motion.section
-          className="max-w-6xl mx-auto px-6 py-28 grid md:grid-cols-2 gap-8 items-center"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          variants={slideUp}
-        >
-          {/* Text Side */}
-          <div>
-            <span className="inline-block px-3 py-1 rounded-full text-xs bg-black text-white">
-              Black & White by Chef Alex
-            </span>
-            <h1 className="mt-6 text-5xl md:text-6xl font-extrabold leading-tight">
-              Experience <span className="text-[var(--gold)]">Luxury</span> Dining
-            </h1>
-            <p className="mt-4 text-gray-600 max-w-lg">
-              Pure, Bold, and Timeless — crafted with passion by Chef Alex.
-            </p>
-            <div className="mt-6 flex gap-4">
-              <a href="#menu" className="btn-primary">Explore Menu</a>
-              <a href="#reserve" className="px-4 py-2 border rounded-lg">Reserve</a>
-            </div>
-          </div>
+<main className="pt-24 relative z-10">
+  <motion.section
+    className="max-w-6xl mx-auto px-6 py-28 grid md:grid-cols-2 gap-8 items-center perspective-[1200px]"
+    style={{
+      rotateX,
+      rotateY,
+    }}
+    transition={{ type: "spring", stiffness: 80, damping: 15 }}
+  >
+    <div className="col-span-2 grid md:grid-cols-2 gap-8 items-center rounded-3xl p-10 shadow-2xl bg-white/60 backdrop-blur-lg">
+      {/* Left: Text */}
+      <div>
+        <span className="inline-block px-3 py-1 rounded-full text-xs bg-black text-white">
+          Black & White by Chef Alex
+        </span>
+        <h1 className="mt-6 text-5xl md:text-6xl font-extrabold leading-tight">
+          Experience <span className="text-[var(--gold)]">Luxury</span> Dining
+        </h1>
+        <p className="mt-4 text-gray-600 max-w-lg">
+          Pure, Bold, and Timeless — crafted with passion by Chef Alex.
+        </p>
+        <div className="mt-6 flex gap-4">
+          <a href="#menu" className="btn-primary">Explore Menu</a>
+          <a href="#reserve" className="px-4 py-2 border rounded-lg">Reserve</a>
+        </div>
+      </div>
 
-          {/* 3D Tilt Image */}
-          <motion.div
-            style={{ rotateX, rotateY }}
-            transition={{ type: "spring", stiffness: 100, damping: 20 }}
-            className="rounded-3xl overflow-hidden shadow-2xl"
-          >
-            <img
-              src="/images/hero.jpg"
-              alt="Restaurant Interior"
-              className="w-full h-96 object-cover"
-            />
-          </motion.div>
-        </motion.section>
-      </main>
+      {/* Right: Image */}
+      <motion.div
+        className="rounded-3xl overflow-hidden shadow-2xl"
+        whileHover={{ scale: 1.05 }}
+        transition={{ type: "spring", stiffness: 150, damping: 15 }}
+      >
+        <img
+          src="/images/hero.jpg"
+          alt="Restaurant Interior"
+          className="w-full h-96 object-cover"
+        />
+      </motion.div>
+    </div>
+  </motion.section>
+</main>
     </div>
   );
 }
