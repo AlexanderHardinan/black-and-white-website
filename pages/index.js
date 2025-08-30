@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { motion, useMotionValue, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 
@@ -7,32 +7,29 @@ export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  // Mouse position for 3D tilt
-  const x = useMotionValue(0.5);
-  const y = useMotionValue(0.5);
-
-  const rotateX = useTransform(y, [0, 1], [15, -15]);
-  const rotateY = useTransform(x, [0, 1], [-15, 15]);
-
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-    const onMouseMove = (e) => {
-      x.set(e.clientX / window.innerWidth);
-      y.set(e.clientY / window.innerHeight);
-    };
-    window.addEventListener("mousemove", onMouseMove);
+  // Variants for animation
+  const container = {
+    hidden: { opacity: 0 },
+    show: { 
+      opacity: 1,
+      transition: { staggerChildren: 0.3 }
+    }
+  };
 
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("mousemove", onMouseMove);
-    };
-  }, [x, y]);
+  const fadeUp = {
+    hidden: { opacity: 0, y: 50 },
+    show: { opacity: 1, y: 0, transition: { duration: 1, ease: "easeOut" } }
+  };
 
-  const slideUp = {
-    hidden: { opacity: 0, y: 60 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+  const zoomIn = {
+    hidden: { opacity: 0, scale: 0.8 },
+    show: { opacity: 1, scale: 1, transition: { duration: 1, ease: "easeOut" } }
   };
 
   return (
@@ -69,49 +66,54 @@ export default function Home() {
           </button>
         </div>
       </header>
-      {/* --- HERO --- */}
-<main className="pt-24 relative z-10">
-  <motion.section
-    className="max-w-6xl mx-auto px-6 py-28 grid md:grid-cols-2 gap-8 items-center perspective-[1200px]"
-    style={{
-      rotateX,
-      rotateY,
-    }}
-    transition={{ type: "spring", stiffness: 80, damping: 15 }}
-  >
-    <div className="col-span-2 grid md:grid-cols-2 gap-8 items-center rounded-3xl p-10 shadow-2xl bg-white/60 backdrop-blur-lg">
-      {/* Left: Text */}
-      <div>
-        <span className="inline-block px-3 py-1 rounded-full text-xs bg-black text-white">
-          Black & White by Chef Alex
-        </span>
-        <h1 className="mt-6 text-5xl md:text-6xl font-extrabold leading-tight">
-          Experience <span className="text-[var(--gold)]">Luxury</span> Dining
-        </h1>
-        <p className="mt-4 text-gray-600 max-w-lg">
-          Pure, Bold, and Timeless — crafted with passion by Chef Alex.
-        </p>
-        <div className="mt-6 flex gap-4">
-          <a href="#menu" className="btn-primary">Explore Menu</a>
-          <a href="#reserve" className="px-4 py-2 border rounded-lg">Reserve</a>
-        </div>
-      </div>
 
-      {/* Right: Image */}
-      <motion.div
-        className="rounded-3xl overflow-hidden shadow-2xl"
-        whileHover={{ scale: 1.05 }}
-        transition={{ type: "spring", stiffness: 150, damping: 15 }}
-      >
-        <img
-          src="/images/hero.jpg"
-          alt="Restaurant Interior"
-          className="w-full h-96 object-cover"
-        />
-      </motion.div>
-    </div>
-  </motion.section>
-</main>
+      {/* --- HERO --- */}
+      <main className="pt-24 relative z-10">
+        <motion.section
+          className="max-w-6xl mx-auto px-6 py-28 grid md:grid-cols-2 gap-8 items-center"
+          variants={container}
+          initial="hidden"
+          animate="show"
+        >
+          {/* Left Text */}
+          <motion.div variants={fadeUp}>
+            <span className="inline-block px-3 py-1 rounded-full text-xs bg-black text-white">
+              Black & White by Chef Alex
+            </span>
+            <motion.h1
+              className="mt-6 text-5xl md:text-6xl font-extrabold leading-tight"
+              variants={zoomIn}
+            >
+              Experience <span className="text-[var(--gold)]">Luxury</span> Dining
+            </motion.h1>
+            <motion.p className="mt-4 text-gray-600 max-w-lg" variants={fadeUp}>
+              Pure, Bold, and Timeless — crafted with passion by Chef Alex.
+            </motion.p>
+            <motion.div className="mt-6 flex gap-4" variants={fadeUp}>
+              <a href="#menu" className="btn-primary">Explore Menu</a>
+              <a href="#reserve" className="px-4 py-2 border rounded-lg">Reserve</a>
+            </motion.div>
+          </motion.div>
+
+          {/* Right Image auto slide up */}
+          <motion.div
+            className="rounded-3xl overflow-hidden shadow-2xl"
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+          >
+            <motion.img
+              key="hero"
+              src="/images/hero.jpg"
+              alt="Restaurant Interior"
+              className="w-full h-96 object-cover"
+              initial={{ scale: 1.1 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 4, repeat: Infinity, repeatType: "mirror" }} // auto zoom in-out
+            />
+          </motion.div>
+        </motion.section>
+      </main>
     </div>
   );
 }
