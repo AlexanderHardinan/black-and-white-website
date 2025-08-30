@@ -14,7 +14,7 @@ export default function Home() {
           <img
             src="/images/hero.jpg"
             alt="Black and White Cuisine"
-            className="w-full h-full object-cover opacity-40"
+            className="w-full h-full object-cover opacity-10"
           />
         </div>
         <div className="relative z-10">
@@ -26,7 +26,7 @@ export default function Home() {
           <h1 className="text-4xl md:text-6xl font-bold">
             Pure, Bold, and Timeless
           </h1>
-          <p className="mt-4 text-lg text-white-300">
+          <p className="mt-4 text-lg text-gold-300">
             An elegant dining experience by Chef Alex
           </p>
           <div className="mt-6 flex gap-4 justify-center">
