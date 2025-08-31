@@ -13,7 +13,9 @@
     "next": "14.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "sonner": "^2.0.0"
+    "react-tsparticles": "^2.12.2",
+    "sonner": "^2.0.0",
+    "tsparticles": "^3.9.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.0",
