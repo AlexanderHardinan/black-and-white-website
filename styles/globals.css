@@ -132,3 +132,17 @@ h1, h2, h3 { letter-spacing: 0.02em; }
 .btn{ display:inline-flex; align-items:center; gap:.5rem; padding:.75rem 1.25rem; border-radius:12px; font-weight:600; }
 .btn-primary{ background:#111; color:#fff; transition:transform .15s ease, box-shadow .25s ease; }
 .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 8px 24px rgba(17,17,17,.25); }
+
+/* Site container: max-width + responsive side padding */
+.container {
+  max-width: 1200px;        /* controls line-length */
+  margin-inline: auto;      /* center */
+  padding-inline: 1.25rem;  /* 20px on mobile */
+}
+@media (min-width: 768px) {    /* md */
+  .container { padding-inline: 2rem; }  /* 32px */
+}
+@media (min-width: 1280px) {   /* xl+ */
+  .container { padding-inline: 2.5rem; } /* 40px */
+}
+

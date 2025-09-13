@@ -92,7 +92,7 @@ export default function Home({ posts }) {
         </div>
       </header>
 
-      <main className="relative z-10">
+      <main className="relative z-10 pt-10 md:pt-16">
         {/* HERO */}
         <section className="container py-20 grid md:grid-cols-2 gap-10 items-center">
           <motion.div variants={stagger} initial="hidden" animate="visible">
