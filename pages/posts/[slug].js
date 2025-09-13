@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import { getAllPostsMeta, getPostBySlug } from "@/lib/posts";
+import { getPostBySlug, getAllPostsMeta } from "../../lib/posts";
 
 export default function Post({ frontmatter, content }) {
   return (
