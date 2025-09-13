@@ -104,3 +104,12 @@ html {
   color: var(--gold);
   font-weight: 700;
 }
+/* gentle global letter spacing */
+:root { --track: 0.0125em; }   /* ~0.2px at 16px */
+body { letter-spacing: var(--track); }
+
+/* keep paragraphs comfortable, but give headings a touch more */
+h1, h2, h3 { letter-spacing: 0.02em; }
+
+/* blog content with typography plugin */
+.prose h1, .prose h2, .prose h3 { letter-spacing: 0.015em; }

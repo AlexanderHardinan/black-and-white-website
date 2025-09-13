@@ -100,7 +100,7 @@ export default function Home({ posts }) {
         <section className="container py-20 grid md:grid-cols-2 gap-10 items-center">
           <motion.div variants={stagger} initial="hidden" animate="visible">
             <motion.span className="inline-block text-xs tracking-widest uppercase bg-white/10 border border-white/10 px-3 py-1 rounded-full" variants={fadeUp}>
-              Global Restaurant Blog
+              Global Restaurant Review
             </motion.span>
             <motion.h2 className="mt-5 text-5xl md:text-6xl font-extrabold leading-tight" variants={fadeUp}>
               Discover the <span style={{ color: "var(--gold)" }}>Best Restaurants</span> Worldwide
