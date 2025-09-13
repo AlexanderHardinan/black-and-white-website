@@ -173,3 +173,110 @@ h1, h2, h3 { letter-spacing: 0.02em; }
   margin: .35rem 0 0;
 }
 
+/* --- Blog post spacing (works with "1) ..." bold lines) --- */
+.post-content {
+  line-height: 1.75;
+}
+
+/* spacing between normal paragraphs */
+.post-content p {
+  margin: 0.7rem 0;
+}
+
+/* EXTRA spacing before a paragraph that STARTS with bold (e.g., "1) ...") */
+.post-content p:has(> strong:first-child) {
+  margin-top: 1.4rem;      /* bigger gap before each numbered section */
+}
+
+/* if you use real ordered lists, make them elegant too */
+.post-content ol {
+  margin: 1rem 0 1rem 1.5rem;
+}
+.post-content ol > li {
+  margin-bottom: 0.75rem;
+}
+
+/* ----- Better spacing for numbered bold lines like "1. Title" ----- */
+.post-content { line-height: 1.75; }
+
+/* normal paragraph rhythm */
+.post-content p { margin: 0.8rem 0; }
+
+/* when a paragraph STARTS with a bold label (your "1. …" lines), treat it like a header */
+.post-content p > strong:first-child {
+  display: block;          /* put the bold line on its own row */
+  margin-top: 1.4rem;      /* extra gap above each numbered section */
+  color: var(--gold);      /* highlight the number/title */
+  letter-spacing: 0.01em;
+}
+
+/* don’t add extra gap before the very first section */
+.post-content p:first-child > strong:first-child {
+  margin-top: 0;
+}
+
+/* ---------- Blog post typography ---------- */
+.post-content {
+  line-height: 1.75;
+}
+
+/* Spacing + style for "### 1. **Title**" headings */
+.post-content h3 {
+  margin-top: 1.6rem;           /* space above each numbered section */
+  margin-bottom: 0.5rem;
+  padding-top: 0.25rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  font-size: clamp(1.05rem, 0.85rem + 0.6vw, 1.35rem);
+  border-top: 1px solid rgba(255,255,255,0.08); /* subtle divider */
+}
+.post-content h3:first-of-type {
+  margin-top: 1rem;             /* smaller gap before the first item */
+  border-top: 0;
+}
+.post-content h3 strong {
+  color: var(--gold);           /* gold emphasis on the restaurant name */
+}
+
+/* Comfortable paragraph rhythm under each heading */
+.post-content p {
+  margin: 0.7rem 0 1rem;
+}
+
+/* ====== POST CONTENT (single source of truth, overrides .prose) ====== */
+.post-content { line-height: 1.75; }
+
+/* Headings used for your numbered sections: ### 1. **Title** */
+.post-content :where(h2, h3, h4){
+  margin-top: 2rem !important;        /* big gap above each section */
+  margin-bottom: .65rem !important;
+  padding-top: .25rem;
+  border-top: 1px solid rgba(255,255,255,.08);
+  font-weight: 800;
+  letter-spacing: .01em;
+  font-size: clamp(1.05rem, 0.85rem + 0.6vw, 1.35rem);
+}
+.post-content :where(h2:first-of-type, h3:first-of-type, h4:first-of-type){
+  margin-top: 1rem !important;         /* smaller gap before the first item */
+  border-top: 0;
+}
+.post-content :where(h3 > strong){ color: var(--gold); }
+
+/* Comfortable paragraph rhythm between sections */
+.post-content :where(p){
+  margin: 1rem 0 !important;           /* force over .prose defaults */
+}
+
+/* If you ever use real ordered lists */
+.post-content :where(ol){ margin: 1rem 0 1rem 1.5rem; }
+.post-content :where(ol > li){ margin: .9rem 0; }
+
+/* If a numbered line is a bold paragraph instead of a heading, space it too */
+.post-content p > strong:first-child{
+  display:block;
+  margin-top: 1.5rem !important;
+  color: var(--gold);
+}
+.post-content p:first-child > strong:first-child{
+  margin-top: 0 !important;
+}
