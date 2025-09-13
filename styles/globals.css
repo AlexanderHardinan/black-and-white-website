@@ -145,4 +145,31 @@ h1, h2, h3 { letter-spacing: 0.02em; }
 @media (min-width: 1280px) {   /* xl+ */
   .container { padding-inline: 2.5rem; } /* 40px */
 }
+/* Ordered list with 1. markers + spacing */
+.post-content ol {
+  list-style: none;
+  counter-reset: num;
+  padding-left: 2rem;      /* space for the numbers */
+  margin: 1rem 0;
+}
+
+.post-content ol > li {
+  counter-increment: num;
+  position: relative;
+  margin-bottom: 2rem;     /* spacing between items */
+  line-height: 1.65;
+}
+
+.post-content ol > li::before {
+  content: counter(num) ") ";
+  position: absolute;
+  left: -2rem;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* nice spacing for paragraphs under each item */
+.post-content ol > li > p {
+  margin: .35rem 0 0;
+}
 
