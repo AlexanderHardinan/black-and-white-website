@@ -79,9 +79,9 @@ export default function Home({ posts }) {
       <Image
         src="/images/logo.png"
         alt="The Culinary World Gazette logo"
-        width={40}
-        height={40}
-        className="h-10 w-auto"
+        width={100}
+        height={100}
+        className="h-20 w-auto"
         priority
       />
       <span className="font-bold">The Culinary World Gazette</span>
