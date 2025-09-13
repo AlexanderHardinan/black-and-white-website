@@ -13,7 +13,7 @@ export default function Post({ frontmatter, content }) {
         <Link href="/" className="text-[var(--gold)]">← Back to Home</Link>
 
         <article className="mt-6">
-          <h1 className="text-4xl font-bold">{frontmatter.title}</h1>
+          <h1 className="text-4xl font-bold tracking-[0.02em]">{frontmatter.title}</h1>
           <div className="text-white/70 mt-2">{frontmatter.date}</div>
 
           {frontmatter.cover && (
@@ -26,7 +26,7 @@ export default function Post({ frontmatter, content }) {
 
           {/* Blog content */}
           <div
-            className="prose prose-lg prose-invert max-w-none mt-8"
+            className="post-content prose prose-lg prose-invert max-w-none mt-8"
             dangerouslySetInnerHTML={{ __html: content }}
           />
         </article>
