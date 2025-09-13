@@ -280,3 +280,19 @@ h1, h2, h3 { letter-spacing: 0.02em; }
 .post-content p:first-child > strong:first-child{
   margin-top: 0 !important;
 }
+
+/* === Tighter line-height for post content === */
+.post-content { line-height: 1.6; } /* was 1.75 */
+
+.post-content :where(p, li){
+  line-height: 1.55 !important; /* tighten body text */
+}
+
+.post-content :where(h1,h2,h3,h4){
+  line-height: 1.25 !important; /* tidy headings */
+}
+
+/* optional: slightly tighter on large screens */
+@media (min-width: 1024px){
+  .post-content :where(p, li){ line-height: 1.5 !important; }
+}
