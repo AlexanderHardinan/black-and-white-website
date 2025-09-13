@@ -1,181 +1,204 @@
 import Head from "next/head";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
+import { getAllPostsMeta } from "../lib/posts";
 
-export default function Home() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [current, setCurrent] = useState(0);
-
-  // Carousel data
-  const slides = [
-    {
-      title: "Experience Luxury Dining",
-      text: "Pure, Bold, and Timeless — crafted with passion by Chef Alex.",
-      img: "/images/hero.jpg",
-    },
-    {
-      title: "Handcrafted Viennoiseries",
-      text: "Freshly baked every morning with the finest ingredients.",
-      img: "/images/bakery.jpg",
-    },
-    {
-      title: "Gourmet Coffee & Delights",
-      text: "A journey of aroma and flavor in every cup.",
-      img: "/images/coffee.jpg",
-    },
-  ];
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", onScroll);
-
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
-    }, 5000); // Auto-slide every 5s
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      clearInterval(interval);
-    };
-  }, [slides.length]);
-
+export default function Home({ posts }) {
   const particlesInit = async (engine) => {
     await loadFull(engine);
   };
 
+  // Animation presets
+  const fadeUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+  };
+  const stagger = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.12 } },
+  };
+
   return (
-    <div className="relative overflow-hidden">
+    <>
       <Head>
-        <title>Black and White — Chef Alex</title>
+        <title>The Culinary World Gazette</title>
       </Head>
 
-      {/* --- LUXURY GRADIENT BG --- */}
+      {/* Gradient background */}
       <motion.div
         className="absolute inset-0 -z-20"
         initial={{ backgroundPosition: "0% 50%" }}
         animate={{ backgroundPosition: "100% 50%" }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
         style={{
-          background: "linear-gradient(270deg, #000000, #1a1a1a, #CBA135, #111)",
+          background:
+            "linear-gradient(270deg, #000, #111, #CBA135, #0b0b0b)",
           backgroundSize: "400% 400%",
         }}
       />
 
-      {/* --- GOLD PARTICLES --- */}
+      {/* Gold particles */}
       <Particles
         id="tsparticles"
+        className="absolute inset-0 -z-10"
         init={particlesInit}
         options={{
           background: { color: "transparent" },
           fpsLimit: 60,
           particles: {
             color: { value: "#CBA135" },
-            links: { enable: false },
-            move: { enable: true, speed: 1, direction: "top" },
+            move: { enable: true, speed: 0.6, direction: "top" },
+            number: { value: 35, density: { enable: true, area: 800 } },
+            opacity: { value: 0.45 },
             size: { value: { min: 1, max: 3 } },
-            opacity: { value: 0.5 },
           },
         }}
-        className="absolute inset-0 -z-10"
       />
 
-      {/* --- NAVBAR --- */}
-      <header
-        className={`fixed top-0 left-0 w-full z-50 transition-all ${
-          scrolled ? "bg-white/90 shadow-lg backdrop-blur" : "bg-transparent"
-        }`}
-      >
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <img src="/images/logo.png" alt="Logo" className="h-12 w-auto" />
-            <span className="font-bold">Black & White</span>
-          </div>
-
-          <nav className="hidden md:flex gap-6 font-medium">
+      {/* NAVBAR */}
+      <header className="sticky top-0 z-50 backdrop-blur border-b border-white/10">
+        <div className="container py-4 flex items-center justify-between">
+          <h1 className="text-xl font-bold">The World Culinary Gazette</h1>
+          <nav className="hidden md:flex gap-6 text-sm text-white/80">
+            <a href="#latest" className="hover:text-[var(--gold)]">Latest</a>
+            <a href="#cities" className="hover:text-[var(--gold)]">Cities</a>
             <a href="#about" className="hover:text-[var(--gold)]">About</a>
-            <a href="#menu" className="hover:text-[var(--gold)]">Menu</a>
-            <a href="#gallery" className="hover:text-[var(--gold)]">Gallery</a>
-            <a href="#reserve" className="hover:text-[var(--gold)]">Reserve</a>
-            <a href="#contact" className="hover:text-[var(--gold)]">Contact</a>
           </nav>
-
-          <button
-            className="md:hidden p-2"
-            onClick={() => setMobileOpen(!mobileOpen)}
-          >
-            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
         </div>
       </header>
 
-      {/* --- HERO CAROUSEL --- */}
-      <main className="pt-24 relative z-10">
-        <div className="max-w-6xl mx-auto px-6 py-28">
-          <motion.div
-            key={current} // re-trigger animation on slide change
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -40 }}
-            transition={{ duration: 1 }}
-            className="grid md:grid-cols-2 gap-8 items-center"
-          >
-            {/* Left: Text */}
-            <div>
-              <span className="inline-block px-3 py-1 rounded-full text-xs bg-black text-white">
-                Black & White by Chef Alex
-              </span>
-              <h1 className="mt-6 text-5xl md:text-6xl font-extrabold leading-tight">
-                <span className="text-[var(--gold)]">{slides[current].title.split(" ")[0]}</span>{" "}
-                {slides[current].title.split(" ").slice(1).join(" ")}
-              </h1>
-              <motion.p
-                className="mt-4 text-gray-200 max-w-lg"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 1, delay: 0.3 }}
-              >
-                {slides[current].text}
-              </motion.p>
-              <div className="mt-6 flex gap-4">
-                <a href="#menu" className="btn-primary">Explore Menu</a>
-                <a href="#reserve" className="px-4 py-2 border rounded-lg">Reserve</a>
-              </div>
-            </div>
-
-            {/* Right: Image */}
-            <motion.div
-              key={slides[current].img}
-              className="rounded-3xl overflow-hidden shadow-2xl"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 1, delay: 0.5 }}
+      {/* MAIN CONTENT */}
+      <main className="relative z-10">
+        {/* HERO */}
+        <section className="container py-20 grid md:grid-cols-2 gap-10 items-center">
+          <motion.div variants={stagger} initial="hidden" animate="visible">
+            <motion.span
+              className="inline-block text-xs tracking-widest uppercase bg-white/10 border border-white/10 px-3 py-1 rounded-full"
+              variants={fadeUp}
             >
-              <img
-                src={slides[current].img}
-                alt="Slide"
-                className="w-full h-96 object-cover"
-              />
+              Global Restaurant Blog
+            </motion.span>
+            <motion.h2
+              className="mt-5 text-5xl md:text-6xl font-extrabold leading-tight"
+              variants={fadeUp}
+            >
+              Discover the <span style={{ color: "var(--gold)" }}>Best Restaurants</span> Worldwide
+            </motion.h2>
+            <motion.p
+              className="mt-4 text-lg text-white/80 max-w-xl"
+              variants={fadeUp}
+            >
+              From Michelin-starred dining rooms to hidden street cafés —
+              our editors curate the world’s most exciting places to eat.
+            </motion.p>
+            <motion.div className="mt-6 flex gap-3" variants={fadeUp}>
+              <a href="#latest" className="btn btn-primary">
+                Explore Articles
+              </a>
+              <a href="#about" className="btn border border-white/20">
+                About
+              </a>
             </motion.div>
           </motion.div>
 
-          {/* Carousel indicators */}
-          <div className="flex justify-center mt-6 gap-3">
-            {slides.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrent(idx)}
-                className={`w-3 h-3 rounded-full ${
-                  idx === current ? "bg-[var(--gold)]" : "bg-gray-400"
-                }`}
-              />
+          {/* Hero image */}
+          <motion.div
+            className="rounded-2xl overflow-hidden card"
+            initial={{ opacity: 0, scale: 0.92, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1 }}
+          >
+            <img
+              src="/images/hero.jpg"
+              className="w-full h-[420px] object-cover"
+              alt="Hero"
+            />
+          </motion.div>
+        </section>
+
+        {/* LATEST POSTS */}
+        <section id="latest" className="container py-12">
+          <h2 className="text-2xl font-semibold mb-6">Latest Features</h2>
+
+          {/* Featured post (first one) */}
+          {posts[0] && (
+            <Link href={`/posts/${posts[0].slug}`} className="group">
+              <article className="grid md:grid-cols-2 gap-6 items-center card p-4 md:p-6 mb-10">
+                <img
+                  src={posts[0].frontmatter.cover}
+                  alt={posts[0].frontmatter.title}
+                  className="rounded-xl h-[280px] w-full object-cover"
+                />
+                <div>
+                  <div className="text-xs text-white/70">
+                    {posts[0].frontmatter.date}
+                  </div>
+                  <h3 className="mt-2 text-2xl font-bold group-hover:text-[var(--gold)] transition">
+                    {posts[0].frontmatter.title}
+                  </h3>
+                  <p className="mt-2 text-white/80">
+                    {posts[0].frontmatter.excerpt}
+                  </p>
+                  <div className="mt-4">
+                    <span className="text-[var(--gold)] font-semibold">
+                      Read more →
+                    </span>
+                  </div>
+                </div>
+              </article>
+            </Link>
+          )}
+
+          {/* Grid for rest */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {posts.slice(1).map(({ slug, frontmatter }) => (
+              <Link href={`/posts/${slug}`} key={slug} className="group">
+                <article className="card overflow-hidden hover:translate-y-[-4px] transition p-4">
+                  <img
+                    src={frontmatter.cover}
+                    alt={frontmatter.title}
+                    className="rounded-lg h-48 w-full object-cover mb-3"
+                  />
+                  <div className="text-xs text-white/60">
+                    {frontmatter.date}
+                  </div>
+                  <h4 className="mt-1 font-semibold group-hover:text-[var(--gold)] transition">
+                    {frontmatter.title}
+                  </h4>
+                  <p className="text-white/80 text-sm mt-1">
+                    {frontmatter.excerpt}
+                  </p>
+                </article>
+              </Link>
             ))}
           </div>
-        </div>
+        </section>
+
+        {/* ABOUT */}
+        <section id="about" className="container py-16">
+          <div className="card p-6">
+            <h3 className="text-xl font-semibold">About The Gazette</h3>
+            <p className="text-white/80 mt-2">
+              <b>The Culinary World Gazette</b> is your guide to fine dining,
+              street food gems, and global food culture. We spotlight
+              restaurants that define creativity, passion, and taste.
+            </p>
+          </div>
+        </section>
       </main>
-    </div>
+
+      {/* FOOTER */}
+      <footer className="border-t border-white/10 mt-10">
+        <div className="container py-8 text-sm text-white/70">
+          © {new Date().getFullYear()} The Culinary World Gazette
+        </div>
+      </footer>
+    </>
   );
+}
+
+export async function getStaticProps() {
+  return { props: { posts: getAllPostsMeta() } };
 }

@@ -88,3 +88,19 @@ html {
   opacity: 1;
   transform: translateX(0);
 }
+.prose a {
+  color: var(--gold);
+  text-decoration: none;
+}
+.prose a:hover {
+  text-decoration: underline;
+}
+
+.prose strong {
+  color: var(--gold);
+}
+
+.prose h2, .prose h3 {
+  color: var(--gold);
+  font-weight: 700;
+}

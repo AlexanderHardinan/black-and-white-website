@@ -8,12 +8,16 @@
     "start": "next start -p 3000"
   },
   "dependencies": {
-    "framer-motion": "^8.0.0",
+    "@tailwindcss/typography": "^0.5.16",
+    "framer-motion": "^8.5.5",
+    "gray-matter": "^4.0.3",
     "lucide-react": "^0.270.0",
     "next": "14.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-tsparticles": "^2.12.2",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
     "sonner": "^2.0.0",
     "tsparticles": "^3.9.1"
   },
