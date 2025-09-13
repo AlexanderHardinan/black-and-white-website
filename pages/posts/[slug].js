@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { getPostBySlug, getAllPostsMeta } from "../../lib/posts";
+import Footer from "../../components/Footer";
 
 export default function Post({ frontmatter, content }) {
   return (
@@ -31,6 +32,7 @@ export default function Post({ frontmatter, content }) {
           />
         </article>
       </main>
+     <Footer />
     </>
   );
 }
