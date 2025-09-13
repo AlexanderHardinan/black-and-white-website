@@ -105,6 +105,8 @@ export default function Home({ posts }) {
 
           <nav className="hidden md:flex items-center gap-6 text-sm text-white/80 tracking-wide">
             <a href="#latest" className="hover:text-[var(--gold)]">Latest</a>
+            <Link href="/top-restaurants" className="hover:text-[var(--gold)]">Top Restaurants</Link>
+            <Link href="/top-chefs" className="hover:text-[var(--gold)]">Top Chefs</Link>
             <a href="#cities" className="hover:text-[var(--gold)]">Cities</a>
             <a href="#about" className="hover:text-[var(--gold)]">About</a>
             <button
