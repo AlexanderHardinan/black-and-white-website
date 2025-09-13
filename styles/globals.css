@@ -113,3 +113,22 @@ h1, h2, h3 { letter-spacing: 0.02em; }
 
 /* blog content with typography plugin */
 .prose h1, .prose h2, .prose h3 { letter-spacing: 0.015em; }
+
+/* ===== Animated button shine ===== */
+.btn-anim .btn-shine{
+  position:absolute;
+  inset:0;
+  border-radius: inherit;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.18) 20%, transparent 40%);
+  transform: translateX(-120%);
+  transition: transform .7s ease;
+  pointer-events: none;
+}
+.btn-anim:hover .btn-shine{
+  transform: translateX(120%);
+}
+
+/* Optional: nicer base buttons if still used elsewhere */
+.btn{ display:inline-flex; align-items:center; gap:.5rem; padding:.75rem 1.25rem; border-radius:12px; font-weight:600; }
+.btn-primary{ background:#111; color:#fff; transition:transform .15s ease, box-shadow .25s ease; }
+.btn-primary:hover{ transform:translateY(-2px); box-shadow:0 8px 24px rgba(17,17,17,.25); }
