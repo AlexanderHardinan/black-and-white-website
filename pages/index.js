@@ -116,12 +116,12 @@ export default function Home({ posts }) {
           </motion.div>
 
           <motion.div
-            className="rounded-2xl overflow-hidden card"
+            className="relative rounded-2xl overflow-hidden card aspect-[16/10] md:aspect-[4/3]"
             initial={{ opacity: 0, scale: .92, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            <img src="/images/hero.jpg" className="w-full h-[420px] object-cover" alt="Hero" />
+            <img src="/images/hero.png" className="w-full h-[420px] object-cover" alt="Hero" />
           </motion.div>
         </section>
 
