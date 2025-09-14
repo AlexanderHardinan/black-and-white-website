@@ -262,7 +262,7 @@ export default function Home({ posts }) {
             {["Paris", "Tokyo", "Bangkok", "New York", "Dubai", "Copenhagen", "Pattaya"].map((tag) => (
               <span
                 key={tag}
-                className="px-3 py-1 rounded-full border border-white/15 text-sm text-white/80"
+                className="px-3 py-1 rounded-full border border-white/15 text-sm text-[var(--gold)]"
               >
                 {tag}
               </span>
@@ -274,7 +274,7 @@ export default function Home({ posts }) {
         <section id="about" className="container py-16">
           <div className="card p-6">
             <h3 className="text-xl font-semibold tracking-wide">About The Gazette</h3>
-            <p className="text-white/80 mt-2">
+            <p className="mt-2 text-[var(--gold)]">
               <b>The Culinary World Gazette</b> is a design-forward restaurant blog celebrating craftsmanship
               and flavor. We spotlight dining rooms, pastry labs, and coffee bars that care about details.
             </p>
@@ -319,8 +319,8 @@ export default function Home({ posts }) {
                     onClick={() => setActiveTag(tag)}
                     className={`px-3 py-1.5 rounded-full border text-sm transition ${
                       activeTag === tag
-                        ? "border-[var(--gold)] text-[var(--gold)]"
-                        : "border-white/15 text-white/80 hover:border-white/30"
+                        ? "border-[var(--gold)] bg-[color:rgba(203,161,53,0.10)] text-[var(--gold)]"
+                        : "border-white/15 text-[var(--gold)] hover:border-[var(--gold)]"
                     }`}
                     aria-pressed={activeTag === tag}
                   >

@@ -29,7 +29,7 @@ export default function Footer() {
 
           {/* Instagram */}
           <a
-            href="https://instagram.com/"
+            href="https://instagram.com/tcwgazette"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
