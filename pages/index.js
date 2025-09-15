@@ -185,7 +185,7 @@ export default function Home({ posts }) {
                     className={`px-3 py-2 rounded-full text-sm border transition ${
                       activeTag === tag
                         ? "border-[var(--gold)] text-[var(--gold)]"
-                        : "border-white/15 text-white/80 hover:border-white/30"
+                        : "border-black text-black hover:border-gray-700"
                     }`}
                     aria-pressed={activeTag === tag}
                   >
