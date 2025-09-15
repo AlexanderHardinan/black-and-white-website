@@ -171,7 +171,7 @@ export default function Home({ posts }) {
                   →
                 </span>
               </AnimatedButton>
-              <AnimatedButton href="#about" variant="outline">
+              <AnimatedButton href="/about" variant="outline">
                 About
               </AnimatedButton>
             </motion.div>
@@ -225,8 +225,7 @@ export default function Home({ posts }) {
           </div>
         </section>
 
-        {/* rest of the file unchanged ... */}
-        {/* Keep Latest, Cities, About, Filters, Footer as they are */}
+        {/* LATEST, CITIES, FILTERS remain unchanged */}
       </main>
 
       <Footer />
