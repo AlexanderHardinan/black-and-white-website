@@ -1,9 +1,20 @@
 import Head from "next/head";
 import Link from "next/link";
+import { useEffect } from "react";
 import { getPostBySlug, getAllPostsMeta } from "../../lib/posts";
-import Footer from "../../components/Footer";
 
 export default function Post({ frontmatter, content }) {
+  // Ensure external links open in a new tab
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    document
+      .querySelectorAll('.post-content a[href^="http"]')
+      .forEach((a) => {
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener noreferrer");
+      });
+  }, [content]);
+
   return (
     <>
       <Head>
@@ -14,7 +25,7 @@ export default function Post({ frontmatter, content }) {
         <Link href="/" className="text-[var(--gold)]">← Back to Home</Link>
 
         <article className="mt-6">
-          <h1 className="text-4xl font-bold tracking-[0.02em]">{frontmatter.title}</h1>
+          <h1 className="text-4xl font-bold">{frontmatter.title}</h1>
           <div className="text-white/70 mt-2">{frontmatter.date}</div>
 
           {frontmatter.cover && (
@@ -32,21 +43,20 @@ export default function Post({ frontmatter, content }) {
           />
         </article>
       </main>
-     <Footer />
     </>
   );
 }
 
-// Tell Next.js what pages to create
+// Build static paths
 export async function getStaticPaths() {
   const posts = getAllPostsMeta();
   return {
-    paths: posts.map((p) => ({ params: { slug: p.slug } })), // ex: /posts/pattaya-thailand
+    paths: posts.map((p) => ({ params: { slug: p.slug } })),
     fallback: false,
   };
 }
 
-// Load content for each page
+// Load per-post content
 export async function getStaticProps({ params }) {
   const { frontmatter, content } = await getPostBySlug(params.slug);
   return { props: { frontmatter, content } };
