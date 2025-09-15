@@ -1,30 +1,33 @@
 // pages/index.js
 import Head from "next/head";
 import Link from "next/link";
-import Image from "next/image";
 import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 
 import AnimatedButton from "../components/AnimatedButton";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/Sidebar";        // mobile NAV drawer
 import Footer from "../components/Footer";
 
-import { getAllPostsMeta } from "../lib/posts"; // returns [{ slug, frontmatter }]
+import { getAllPostsMeta } from "../lib/posts";
+import { NAV_LINKS } from "../lib/nav";
 
 export default function Home({ posts }) {
+  // ---- UI state ----
+  const [menuOpen, setMenuOpen] = useState(false);   // nav sidebar
+  const [filterOpen, setFilterOpen] = useState(false); // filter drawer (inline)
+
   // ---- Search / Filters ----
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState("All");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const particlesInit = async (engine) => { await loadFull(engine); };
 
   // Build unique tag list from frontmatter
   const allTags = useMemo(() => {
     const t = new Set();
-    (posts || []).forEach((p) => (p.frontmatter?.tags || []).forEach((tag) => t.add(tag)));
+    (posts || []).forEach(p => (p.frontmatter?.tags || []).forEach(tag => t.add(tag)));
     return ["All", ...Array.from(t)];
   }, [posts]);
 
@@ -89,45 +92,35 @@ export default function Home({ posts }) {
       />
 
       {/* NAV */}
-      <header className="sticky top-0 z-50 backdrop-blur border-b border-white/10 bg-[var(--bg)]/70">
+      <header className="sticky top-0 z-50 backdrop-blur border-b border-white/10">
         <div className="container py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <Image
-              src="/images/logo.png"
-              alt="The Culinary World Gazette logo"
-              width={36}
-              height={36}
-              className="rounded-md object-contain"
-              priority
-            />
+            <img src="/images/logo.png" alt="Logo" className="h-10 w-auto" />
             <span className="font-bold tracking-wide">The Culinary World Gazette</span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-6 text-sm text-white/80 tracking-wide">
-            <a href="#latest" className="hover:text-[var(--gold)]">Latest</a>
-            <Link href="/top-restaurants" className="hover:text-[var(--gold)]">Top Restaurants</Link>
-            <Link href="/top-chefs" className="hover:text-[var(--gold)]">Top Chefs</Link>
-            <a href="#cities" className="hover:text-[var(--gold)]">Cities</a>
-            <a href="#about" className="hover:text-[var(--gold)]">About</a>
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="rounded-lg border border-white/15 px-3 py-1.5 hover:border-[var(--gold)] hover:text-[var(--gold)] transition"
-              aria-label="Open filters"
-            >
-              ☰ Filters
-            </button>
+          {/* Desktop nav */}
+          <nav className="hidden md:flex gap-6 text-sm text-white/80 tracking-wide">
+            {NAV_LINKS.map((l) => (
+              <Link key={l.href} href={l.href} className="hover:text-[var(--gold)]">
+                {l.label}
+              </Link>
+            ))}
           </nav>
 
-          {/* Mobile Filters */}
+          {/* Mobile button */}
           <button
-            onClick={() => setSidebarOpen(true)}
-            className="md:hidden rounded-lg border border-white/15 px-3 py-1.5 hover:border-[var(--gold)] hover:text-[var(--gold)] transition"
-            aria-label="Open filters"
+            className="md:hidden rounded-md px-3 py-2 border border-white/15 hover:border-[var(--gold)]"
+            onClick={() => setMenuOpen(true)}
+            aria-label="Open menu"
           >
-            ☰
+            Menu
           </button>
         </div>
       </header>
+
+      {/* Mobile NAV Sidebar */}
+      <Sidebar open={menuOpen} setOpen={setMenuOpen} />
 
       <main className="relative z-10 pt-10 md:pt-16">
         {/* HERO */}
@@ -255,7 +248,7 @@ export default function Home({ posts }) {
           {filtered.length === 0 && <p className="text-white/70">No posts match your search/filter.</p>}
         </section>
 
-        {/* CITIES (static pill list for now) */}
+        {/* CITIES */}
         <section id="cities" className="container py-16">
           <h2 className="text-2xl font-semibold mb-6 tracking-[0.015em]">Browse by City</h2>
           <div className="flex flex-wrap gap-3">
@@ -275,78 +268,103 @@ export default function Home({ posts }) {
           <div className="card p-6">
             <h3 className="text-xl font-semibold tracking-wide">About The Gazette</h3>
             <p className="mt-2 text-[var(--gold)]">
-              <b>The Culinary World Gazette</b> is a design-led guide to exceptional taste—featuring top restaurants, masterful chefs, cutting-edge pastry labs,
-              and meticulous coffee bars. We champion hidden gems, celebrate the underrated, and elevate the details that define excellence.
+              <b>The Culinary World Gazette</b> is a design-led guide to exceptional taste—featuring top restaurants,
+              masterful chefs, cutting-edge pastry labs, and meticulous coffee bars. We champion hidden gems, celebrate
+              the underrated, and elevate the details that define excellence.
             </p>
           </div>
         </section>
 
         {/* Floating Filters (mobile) */}
         <button
-          onClick={() => setSidebarOpen(true)}
+          onClick={() => setFilterOpen(true)}
           className="fixed bottom-5 right-5 z-[55] rounded-full border border-white/15 bg-black text-white/90 px-4 py-3 shadow-xl hover:text-[var(--gold)] md:hidden"
           aria-label="Open filters"
         >
           ☰ Filters
         </button>
 
-        {/* Sidebar mount */}
-        <Sidebar
-          open={sidebarOpen}
-          onClose={() => setSidebarOpen(false)}
-          title="Browse & Filter"
-          side="left"
-        >
-          <div className="space-y-6">
-            {/* Search */}
-            <div>
-              <div className="text-xs uppercase tracking-wider text-white/60">Search</div>
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search restaurants, cities, cuisines…"
-                className="mt-2 w-full rounded-lg border border-white/15 bg-black/5 px-3 py-2 outline-none focus:ring-2 focus:ring-[var(--gold)]"
+        {/* Inline Filter Drawer (left) */}
+        <AnimatePresence>
+          {filterOpen && (
+            <>
+              <motion.div
+                className="fixed inset-0 z-[98] bg-black/50"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setFilterOpen(false)}
               />
-            </div>
-
-            {/* Tags */}
-            <div>
-              <div className="text-xs uppercase tracking-wider text-white/60">Tags</div>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {allTags.map((tag) => (
+              <motion.aside
+                className="fixed left-0 top-0 z-[99] h-full w-[86%] max-w-sm bg-background text-foreground border-r border-white/10 shadow-2xl p-5"
+                initial={{ x: "-100%" }}
+                animate={{ x: 0 }}
+                exit={{ x: "-100%" }}
+                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="font-semibold tracking-wide">Browse &amp; Filter</div>
                   <button
-                    key={tag}
-                    onClick={() => setActiveTag(tag)}
-                    className={`px-3 py-1.5 rounded-full border text-sm transition ${
-                      activeTag === tag
-                        ? "border-[var(--gold)] bg-[color:rgba(203,161,53,0.10)] text-[var(--gold)]"
-                        : "border-white/15 text-[var(--gold)] hover:border-[var(--gold)]"
-                    }`}
-                    aria-pressed={activeTag === tag}
+                    className="rounded-md px-3 py-2 border border-white/15 hover:border-[var(--gold)]"
+                    onClick={() => setFilterOpen(false)}
                   >
-                    {tag}
+                    Close
                   </button>
-                ))}
-              </div>
-            </div>
+                </div>
 
-            {/* Quick nav */}
-            <div>
-              <div className="text-xs uppercase tracking-wider text-white/60">Navigate</div>
-              <nav className="mt-2 grid gap-2">
-                <a href="#latest" onClick={() => setSidebarOpen(false)} className="hover:text-[var(--gold)]">
-                  Latest
-                </a>
-                <a href="#cities" onClick={() => setSidebarOpen(false)} className="hover:text-[var(--gold)]">
-                  Cities
-                </a>
-                <a href="#about" onClick={() => setSidebarOpen(false)} className="hover:text-[var(--gold)]">
-                  About
-                </a>
-              </nav>
-            </div>
-          </div>
-        </Sidebar>
+                <div className="space-y-6">
+                  {/* Search */}
+                  <div>
+                    <div className="text-xs uppercase tracking-wider text-white/60">Search</div>
+                    <input
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      placeholder="Search restaurants, cities, cuisines…"
+                      className="mt-2 w-full rounded-lg border border-white/15 bg-black/5 px-3 py-2 outline-none focus:ring-2 focus:ring-[var(--gold)]"
+                    />
+                  </div>
+
+                  {/* Tags */}
+                  <div>
+                    <div className="text-xs uppercase tracking-wider text-white/60">Tags</div>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {allTags.map((tag) => (
+                        <button
+                          key={tag}
+                          onClick={() => setActiveTag(tag)}
+                          className={`px-3 py-1.5 rounded-full border text-sm transition ${
+                            activeTag === tag
+                              ? "border-[var(--gold)] bg-[color:rgba(203,161,53,0.10)] text-[var(--gold)]"
+                              : "border-white/15 text-[var(--gold)] hover:border-[var(--gold)]"
+                          }`}
+                          aria-pressed={activeTag === tag}
+                        >
+                          {tag}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Quick nav */}
+                  <div>
+                    <div className="text-xs uppercase tracking-wider text-white/60">Navigate</div>
+                    <nav className="mt-2 grid gap-2">
+                      <a href="#latest" onClick={() => setFilterOpen(false)} className="hover:text-[var(--gold)]">
+                        Latest
+                      </a>
+                      <a href="#cities" onClick={() => setFilterOpen(false)} className="hover:text-[var(--gold)]">
+                        Cities
+                      </a>
+                      <a href="#about" onClick={() => setFilterOpen(false)} className="hover:text-[var(--gold)]">
+                        About
+                      </a>
+                    </nav>
+                  </div>
+                </div>
+              </motion.aside>
+            </>
+          )}
+        </AnimatePresence>
       </main>
 
       <Footer />
@@ -355,6 +373,5 @@ export default function Home({ posts }) {
 }
 
 export async function getStaticProps() {
-  // Keep your shape: [{ slug, frontmatter }]
   return { props: { posts: getAllPostsMeta() } };
 }
