@@ -275,8 +275,8 @@ export default function Home({ posts }) {
           <div className="card p-6">
             <h3 className="text-xl font-semibold tracking-wide">About The Gazette</h3>
             <p className="mt-2 text-[var(--gold)]">
-              <b>The Culinary World Gazette</b> is a design-forward restaurant blog celebrating craftsmanship
-              and flavor. We spotlight dining rooms, pastry labs, and coffee bars that care about details.
+              <b>The Culinary World Gazette</b> is a design-led guide to exceptional taste—featuring top restaurants, masterful chefs, cutting-edge pastry labs,
+              and meticulous coffee bars. We champion hidden gems, celebrate the underrated, and elevate the details that define excellence.
             </p>
           </div>
         </section>
