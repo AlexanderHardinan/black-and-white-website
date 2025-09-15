@@ -130,7 +130,7 @@ export default function Home({ posts }) {
               className="inline-block text-xs tracking-widest uppercase bg-white/10 border border-white/10 px-3 py-1 rounded-full"
               variants={fadeUp}
             >
-              Global Restaurant Review
+              Article on the Global Restaurant Industry
             </motion.span>
 
             <motion.h2
