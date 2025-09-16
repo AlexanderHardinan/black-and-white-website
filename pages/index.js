@@ -1,10 +1,8 @@
 // pages/index.js
 import Head from "next/head";
-import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
+import Particles from "@tsparticles/react";
 
 import AnimatedButton from "../components/AnimatedButton";
 import Sidebar from "../components/Sidebar";
@@ -16,14 +14,28 @@ import { NAV_LINKS } from "../lib/nav";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+
 export default function Home({ posts }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState("All");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-  const particlesInit = async (engine) => {
-    await loadFull(engine);
-  };
+  const { t } = useTranslation("common");
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const allTags = useMemo(() => {
     const t = new Set();
@@ -62,7 +74,7 @@ export default function Home({ posts }) {
   return (
     <>
       <Head>
-        <title>The Culinary World Gazette</title>
+        <title>{t("title")}</title>
         <meta
           name="description"
           content="Discover the best restaurants around the world — guides, reviews, and chef stories."
@@ -86,7 +98,6 @@ export default function Home({ posts }) {
       <Particles
         id="tsparticles"
         className="absolute inset-0 -z-10"
-        init={particlesInit}
         options={{
           background: { color: "transparent" },
           fpsLimit: 60,
@@ -103,22 +114,16 @@ export default function Home({ posts }) {
       {/* NAV */}
       <header className="sticky top-0 z-50 backdrop-blur border-b border-white/10">
         <div className="container py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
+          <a href="/" className="flex items-center gap-3">
             <img src="/images/logo.png" alt="Logo" className="h-10 w-auto" />
-            <span className="font-bold tracking-wide">
-              The Culinary World Gazette
-            </span>
-          </Link>
+            <span className="font-bold tracking-wide">{t("title")}</span>
+          </a>
 
           <nav className="hidden md:flex gap-6 text-sm text-white/80 tracking-wide">
             {NAV_LINKS.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="hover:text-[var(--gold)]"
-              >
+              <a key={l.href} href={l.href} className="hover:text-[var(--gold)]">
                 {l.label}
-              </Link>
+              </a>
             ))}
           </nav>
 
@@ -142,36 +147,69 @@ export default function Home({ posts }) {
               className="inline-block text-xs tracking-widest uppercase bg-white/10 border border-white/10 px-3 py-1 rounded-full"
               variants={fadeUp}
             >
-              Article on the Global Restaurant Industry
+              {t("heroBadge")}
             </motion.span>
 
             <motion.h2
               className="mt-5 text-5xl md:text-6xl font-extrabold leading-tight tracking-[0.02em]"
               variants={fadeUp}
             >
-              Discover the{" "}
-              <span style={{ color: "var(--gold)" }}>Best Restaurants</span>{" "}
-              Worldwide
+              {t("heroText")}{" "}
+              <span style={{ color: "var(--gold)" }}>Worldwide</span>
             </motion.h2>
 
             <motion.p
               className="mt-4 text-lg text-white/80 max-w-xl"
               variants={fadeUp}
             >
-              From Michelin-starred dining rooms to hidden street cafés — our
-              editors curate the world’s most exciting places to eat.
+              {t("heroDescription")}
             </motion.p>
 
+            {/* Primary buttons */}
             <motion.div className="mt-6 flex gap-3" variants={fadeUp}>
               <AnimatedButton href="#latest" variant="primary">
-                Explore Articles{" "}
-                <span className="transition-transform group-hover:translate-x-1">
-                  →
-                </span>
+                {t("exploreArticles")} →
               </AnimatedButton>
               <AnimatedButton href="/about" variant="outline">
-                About
+                {t("about")}
               </AnimatedButton>
+            </motion.div>
+
+            {/* Translation dropdown */}
+            <motion.div
+              className="relative mt-6"
+              variants={fadeUp}
+              ref={dropdownRef}
+            >
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="inline-flex items-center justify-center rounded-lg border border-white/20 text-white text-sm px-4 py-2 font-semibold hover:border-[var(--gold)] hover:text-[var(--gold)]"
+              >
+                🌐 {t("selectLanguage") || "Language"}
+              </button>
+
+              {dropdownOpen && (
+                <div className="absolute mt-2 w-44 rounded-lg border border-white/10 bg-black/90 shadow-xl overflow-hidden z-50 flex flex-col text-sm">
+                  {[
+                    { code: "en", label: "English" },
+                    { code: "ar", label: "العربية" },
+                    { code: "th", label: "ไทย" },
+                    { code: "zh", label: "中文" },
+                    { code: "ja", label: "日本語" },
+                    { code: "ko", label: "한국어" },
+                    { code: "ru", label: "Русский" },
+                  ].map(({ code, label }) => (
+                    <div
+                      key={code}
+                      onClick={() => setDropdownOpen(false)} // auto-close
+                    >
+                      <AnimatedButton href="/" locale={code} variant="outline">
+                        {label}
+                      </AnimatedButton>
+                    </div>
+                  ))}
+                </div>
+              )}
             </motion.div>
 
             {/* Search + Tags + Results */}
@@ -179,7 +217,7 @@ export default function Home({ posts }) {
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search restaurants, cities, cuisines…"
+                placeholder={t("searchPlaceholder")}
                 className="w-full rounded-lg border border-white/15 bg-black/20 px-4 py-3 outline-none focus:ring-2 focus:ring-[var(--gold)]"
                 aria-label="Search posts"
               />
@@ -204,12 +242,12 @@ export default function Home({ posts }) {
                 </div>
               </div>
 
-              {/* Results with thumbnails */}
+              {/* Results */}
               {(query || activeTag !== "All") && (
                 <div className="bg-black/80 border border-white/15 rounded-lg p-3 max-h-72 overflow-y-auto space-y-2">
                   {filtered.length > 0 ? (
                     filtered.map(({ slug, frontmatter }) => (
-                      <Link
+                      <a
                         href={`/posts/${slug}`}
                         key={slug}
                         className="flex gap-3 items-center px-2 py-2 rounded hover:bg-white/10"
@@ -229,10 +267,10 @@ export default function Home({ posts }) {
                             {frontmatter.excerpt}
                           </div>
                         </div>
-                      </Link>
+                      </a>
                     ))
                   ) : (
-                    <p className="text-sm text-white/60">No results found.</p>
+                    <p className="text-sm text-white/60">{t("noResults")}</p>
                   )}
                 </div>
               )}
@@ -253,7 +291,7 @@ export default function Home({ posts }) {
           </motion.div>
         </section>
 
-        {/* Other sections (Latest, Cities, etc.) remain unchanged */}
+        {/* Other sections remain unchanged */}
       </main>
 
       <Footer />
@@ -261,6 +299,11 @@ export default function Home({ posts }) {
   );
 }
 
-export async function getStaticProps() {
-  return { props: { posts: getAllPostsMeta() } };
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      posts: getAllPostsMeta(),
+      ...(await serverSideTranslations(locale, ["common"])),
+    },
+  };
 }
