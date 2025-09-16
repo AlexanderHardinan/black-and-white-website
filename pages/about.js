@@ -1,76 +1,61 @@
 // pages/about.js
-import Head from "next/head";
-import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import AnimatedButton from "../components/AnimatedButton";
-import Footer from "../components/Footer";
-
 export default function About() {
-  const { t } = useTranslation("common");
-
   return (
-    <>
-      <Head>
-        <title>{t("aboutTitle")}</title>
-        <meta name="description" content={t("aboutTitle")} />
-      </Head>
+    <div className="container py-16">
+      <h1 className="text-3xl font-bold mb-6 text-[var(--gold)]">
+        About The Culinary World Gazette
+      </h1>
+      <div className="prose max-w-none text-black">
+        <h2>Mission</h2>
+        <p>
+          To discover, recognize, and share the world’s best restaurants and
+          chefs—guiding travelers and diners to unforgettable culinary
+          experiences.
+        </p>
 
-      <main className="container py-16">
-        <h1 className="text-3xl md:text-4xl font-bold tracking-wide">{t("aboutTitle")}</h1>
+        <h2>Vision</h2>
+        <p>
+          To become the most trusted global voice in gastronomy, where every
+          reader finds inspiration to explore new flavors, cultures, and
+          destinations through food.
+        </p>
 
-        <section className="mt-8 card p-6 space-y-6">
-          <div>
-            <h2 className="text-xl font-semibold">{t("mission")}</h2>
-            <p className="text-white/80 mt-1">{t("missionText")}</p>
-          </div>
+        <h2>Values</h2>
+        <ul>
+          <li>
+            <b>Excellence:</b> We highlight chefs and restaurants that set the
+            highest standards in taste, craft, and service.
+          </li>
+          <li>
+            <b>Discovery:</b> We uncover hidden gems and celebrated icons,
+            giving readers authentic insight into where the world eats best.
+          </li>
+          <li>
+            <b>Inspiration:</b> We aim to inspire journeys—whether across the
+            globe or within one’s own city—through food and culture.
+          </li>
+          <li>
+            <b>Integrity:</b> Every recommendation is based on genuine quality
+            and culinary merit, not trends or hype.
+          </li>
+        </ul>
 
-          <div>
-            <h2 className="text-xl font-semibold">{t("vision")}</h2>
-            <p className="text-white/80 mt-1">{t("visionText")}</p>
-          </div>
+        <h2>Our Promise</h2>
+        <p>
+          The Culinary World Gazette is more than a guide—it is a curated
+          experience. Each article connects readers to the people, places, and
+          stories that define the future of dining.
+        </p>
+      </div>
 
-          <div>
-            <h2 className="text-xl font-semibold">{t("values")}</h2>
-            <ul className="mt-2 space-y-3">
-              <li>
-                <p className="text-[var(--gold)] font-semibold">{t("excellence")}</p>
-                <p className="text-white/80">{t("excellenceText")}</p>
-              </li>
-              <li>
-                <p className="text-[var(--gold)] font-semibold">{t("discovery")}</p>
-                <p className="text-white/80">{t("discoveryText")}</p>
-              </li>
-              <li>
-                <p className="text-[var(--gold)] font-semibold">{t("inspiration")}</p>
-                <p className="text-white/80">{t("inspirationText")}</p>
-              </li>
-              <li>
-                <p className="text-[var(--gold)] font-semibold">{t("integrity")}</p>
-                <p className="text-white/80">{t("integrityText")}</p>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h2 className="text-xl font-semibold">{t("promise")}</h2>
-            <p className="text-white/80 mt-1">{t("promiseText")}</p>
-          </div>
-
-          <div className="pt-4">
-            <AnimatedButton href="/" variant="outline">{t("backHome")}</AnimatedButton>
-          </div>
-        </section>
-      </main>
-
-      <Footer />
-    </>
+      <div className="mt-10">
+        <a
+          href="/"
+          className="inline-block rounded-lg border border-[var(--gold)] text-[var(--gold)] px-5 py-2 hover:bg-[var(--gold)] hover:text-black transition"
+        >
+          ← Back to Homepage
+        </a>
+      </div>
+    </div>
   );
-}
-
-export async function getStaticProps({ locale }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["common"])),
-    },
-  };
 }

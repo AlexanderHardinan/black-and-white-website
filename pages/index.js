@@ -6,15 +6,11 @@ import { motion } from "framer-motion";
 import Particles from "@tsparticles/react";
 import { loadSlim } from "tsparticles";
 import AnimatedButton from "../components/AnimatedButton";
-import Sidebar from "../components/Sidebar";
-import Footer from "../components/Footer";
 import { getAllPostsMeta } from "../lib/posts";
-import { NAV_LINKS } from "../lib/nav";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 
 export default function Home({ posts }) {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState("All");
 
@@ -22,6 +18,7 @@ export default function Home({ posts }) {
     await loadSlim(engine);
   };
 
+  // Collect all unique tags
   const allTags = useMemo(() => {
     const t = new Set();
     (posts || []).forEach((p) =>
@@ -30,6 +27,7 @@ export default function Home({ posts }) {
     return ["All", ...Array.from(t)];
   }, [posts]);
 
+  // Filter posts by search + tag
   const filtered = useMemo(() => {
     const q = (query || "").trim().toLowerCase();
     return (posts || []).filter(({ frontmatter }) => {
@@ -42,12 +40,14 @@ export default function Home({ posts }) {
     });
   }, [posts, query, activeTag]);
 
+  // Animations
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
   };
   const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.12 } } };
 
+  // Embla carousel
   const [emblaRef] = useEmblaCarousel(
     { loop: true, align: "start" },
     [Autoplay({ delay: 3000, stopOnInteraction: false })]
@@ -91,32 +91,6 @@ export default function Home({ posts }) {
         }}
       />
 
-      {/* NAV */}
-      <header className="sticky top-0 z-50 backdrop-blur border-b border-white/10">
-        <div className="container py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-            <img src="/images/logo.png" alt="Logo" className="h-10 w-auto" />
-            <span className="font-bold tracking-wide">The Culinary World Gazette</span>
-          </Link>
-          <nav className="hidden md:flex gap-6 text-sm text-white/80 tracking-wide">
-            {NAV_LINKS.map((l) => (
-              <Link key={l.href} href={l.href} className="hover:text-[var(--gold)]">
-                {l.label}
-              </Link>
-            ))}
-          </nav>
-          <button
-            className="md:hidden rounded-md px-3 py-2 border border-white/15 hover:border-[var(--gold)]"
-            onClick={() => setMenuOpen(true)}
-            aria-label="Open menu"
-          >
-            Menu
-          </button>
-        </div>
-      </header>
-
-      <Sidebar open={menuOpen} setOpen={setMenuOpen} />
-
       {/* MAIN */}
       <main className="relative z-10 pt-10 md:pt-16">
         {/* HERO */}
@@ -135,7 +109,8 @@ export default function Home({ posts }) {
               Discover the <span style={{ color: "var(--gold)" }}>Best Restaurants</span> Worldwide
             </motion.h2>
             <motion.p className="mt-4 text-lg text-white/80 max-w-xl" variants={fadeUp}>
-              From Michelin-starred dining rooms to hidden street cafés — our editors curate the world’s most exciting places to eat.
+              From Michelin-starred dining rooms to hidden street cafés — our editors curate the
+              world’s most exciting places to eat.
             </motion.p>
             <motion.div className="mt-6 flex gap-3" variants={fadeUp}>
               <AnimatedButton href="#latest" variant="primary">Explore Articles →</AnimatedButton>
@@ -160,6 +135,7 @@ export default function Home({ posts }) {
         <section className="container">
           <div className="card p-5 mb-6">
             <div className="grid gap-4">
+              {/* Search input */}
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -167,6 +143,7 @@ export default function Home({ posts }) {
                 className="w-full rounded-lg border border-white/15 bg-black/20 text-white px-4 py-3 outline-none focus:ring-2 focus:ring-[var(--gold)]"
                 aria-label="Search posts"
               />
+              {/* Tag carousel */}
               <div className="overflow-hidden" ref={emblaRef}>
                 <div className="flex gap-2">
                   {allTags.map((tag) => (
@@ -185,6 +162,7 @@ export default function Home({ posts }) {
                   ))}
                 </div>
               </div>
+              {/* Search results dropdown */}
               {(query || activeTag !== "All") && (
                 <div className="bg-black/80 border border-white/15 rounded-lg p-3 max-h-72 overflow-y-auto space-y-2">
                   {filtered.length > 0 ? (
@@ -194,13 +172,13 @@ export default function Home({ posts }) {
                         key={slug}
                         className="flex gap-3 items-center px-2 py-2 rounded hover:bg-white/10"
                       >
-                        {frontmatter?.cover ? (
+                        {frontmatter?.cover && (
                           <img
                             src={frontmatter.cover}
                             alt={frontmatter.title}
                             className="w-16 h-16 rounded object-cover flex-shrink-0"
                           />
-                        ) : null}
+                        )}
                         <div>
                           <span className="font-medium text-[var(--gold)]">{frontmatter.title}</span>
                           <div className="text-sm text-white/70 line-clamp-2">{frontmatter.excerpt}</div>
@@ -262,7 +240,6 @@ export default function Home({ posts }) {
           </div>
         </section>
       </main>
-      <Footer />
     </>
   );
 }

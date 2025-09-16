@@ -1,13 +1,15 @@
 // pages/_app.js
 import { useEffect } from "react";
-import { appWithTranslation } from "next-i18next";
 import "../styles/globals.css";
 import ContactWidget from "../components/ContactWidget";
+import Layout from "../components/Layout";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {
-    // Reveal-on-scroll helper for .fade-up/.fade-left/.fade-right
-    const animatedEls = document.querySelectorAll(".fade-up, .fade-left, .fade-right");
+    // Reveal-on-scroll helper
+    const animatedEls = document.querySelectorAll(
+      ".fade-up, .fade-left, .fade-right"
+    );
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -22,11 +24,11 @@ function MyApp({ Component, pageProps }) {
   }, []);
 
   return (
-    <>
+    <Layout>
       <Component {...pageProps} />
-      <ContactWidget />
-    </>
+      <ContactWidget /> {/* Floating contact button */}
+    </Layout>
   );
 }
 
-export default appWithTranslation(MyApp);
+export default MyApp;
