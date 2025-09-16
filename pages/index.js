@@ -55,7 +55,7 @@ export default function Home({ posts }) {
     visible: { transition: { staggerChildren: 0.12 } },
   };
 
-  // Embla carousel with autoplay
+  // Embla carousel (still used for tag filters in case needed elsewhere)
   const [emblaRef] = useEmblaCarousel(
     { loop: true, align: "start" },
     [Autoplay({ delay: 3000, stopOnInteraction: false })]
@@ -137,7 +137,7 @@ export default function Home({ posts }) {
       <Sidebar open={menuOpen} setOpen={setMenuOpen} />
 
       <main className="relative z-10 pt-10 md:pt-16">
-        {/* HERO */}
+        {/* HERO with live search */}
         <section className="container py-20 grid md:grid-cols-2 gap-10 items-center">
           <motion.div variants={stagger} initial="hidden" animate="visible">
             <motion.span
@@ -175,6 +175,40 @@ export default function Home({ posts }) {
                 About
               </AnimatedButton>
             </motion.div>
+
+            {/* Hero search */}
+            <motion.div className="mt-8 max-w-lg" variants={fadeUp}>
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search restaurants, cities, cuisines…"
+                className="w-full rounded-lg border border-white/15 bg-black/20 px-4 py-3 outline-none focus:ring-2 focus:ring-[var(--gold)]"
+                aria-label="Search posts"
+              />
+
+              {query && (
+                <div className="mt-2 bg-black/80 border border-white/15 rounded-lg p-3 max-h-60 overflow-y-auto">
+                  {filtered.length > 0 ? (
+                    filtered.map(({ slug, frontmatter }) => (
+                      <Link
+                        href={`/posts/${slug}`}
+                        key={slug}
+                        className="block px-2 py-1 rounded hover:bg-white/10"
+                      >
+                        <span className="font-medium text-[var(--gold)]">
+                          {frontmatter.title}
+                        </span>
+                        <div className="text-sm text-white/70">
+                          {frontmatter.excerpt}
+                        </div>
+                      </Link>
+                    ))
+                  ) : (
+                    <p className="text-sm text-white/60">No results found.</p>
+                  )}
+                </div>
+              )}
+            </motion.div>
           </motion.div>
 
           <motion.div
@@ -191,41 +225,7 @@ export default function Home({ posts }) {
           </motion.div>
         </section>
 
-        {/* SEARCH + TAGS */}
-        <section className="container">
-          <div className="card p-5 mb-6">
-            <div className="grid md:grid-cols-3 gap-4 items-center">
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search restaurants, cities, cuisines…"
-                className="md:col-span-2 w-full rounded-lg border border-white/15 bg-black/20 px-4 py-3 outline-none focus:ring-2 focus:ring-[var(--gold)]"
-                aria-label="Search posts"
-              />
-
-              <div className="overflow-hidden" ref={emblaRef}>
-                <div className="flex gap-2">
-                  {allTags.map((tag) => (
-                    <button
-                      key={tag}
-                      onClick={() => setActiveTag(tag)}
-                      className={`px-3 py-2 rounded-full text-sm border transition ${
-                        activeTag === tag
-                          ? "border-[var(--gold)] text-[var(--gold)]"
-                          : "border-black text-black hover:border-gray-700"
-                      }`}
-                      aria-pressed={activeTag === tag}
-                    >
-                      {tag}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* LATEST, CITIES, FILTERS remain unchanged */}
+        {/* Other sections (Latest, Cities, Filters, etc.) remain unchanged */}
       </main>
 
       <Footer />
