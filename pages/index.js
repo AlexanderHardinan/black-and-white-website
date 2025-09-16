@@ -18,12 +18,10 @@ export default function Home({ posts }) {
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState("All");
 
-  // tsParticles init
   const particlesInit = async (engine) => {
     await loadSlim(engine);
   };
 
-  // Build unique tags
   const allTags = useMemo(() => {
     const t = new Set();
     (posts || []).forEach((p) =>
@@ -32,7 +30,6 @@ export default function Home({ posts }) {
     return ["All", ...Array.from(t)];
   }, [posts]);
 
-  // Filter posts
   const filtered = useMemo(() => {
     const q = (query || "").trim().toLowerCase();
     return (posts || []).filter(({ frontmatter }) => {
@@ -45,14 +42,12 @@ export default function Home({ posts }) {
     });
   }, [posts, query, activeTag]);
 
-  // Animations
   const fadeUp = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
   };
   const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.12 } } };
 
-  // Tag carousel
   const [emblaRef] = useEmblaCarousel(
     { loop: true, align: "start" },
     [Autoplay({ delay: 3000, stopOnInteraction: false })]
@@ -68,7 +63,7 @@ export default function Home({ posts }) {
         />
       </Head>
 
-      {/* Animated background */}
+      {/* Background */}
       <motion.div
         className="absolute inset-0 -z-20"
         initial={{ backgroundPosition: "0% 50%" }}
@@ -79,8 +74,6 @@ export default function Home({ posts }) {
           backgroundSize: "400% 400%",
         }}
       />
-
-      {/* Particles behind content */}
       <Particles
         id="tsparticles"
         className="absolute inset-0 -z-10"
@@ -105,7 +98,6 @@ export default function Home({ posts }) {
             <img src="/images/logo.png" alt="Logo" className="h-10 w-auto" />
             <span className="font-bold tracking-wide">The Culinary World Gazette</span>
           </Link>
-
           <nav className="hidden md:flex gap-6 text-sm text-white/80 tracking-wide">
             {NAV_LINKS.map((l) => (
               <Link key={l.href} href={l.href} className="hover:text-[var(--gold)]">
@@ -113,7 +105,6 @@ export default function Home({ posts }) {
               </Link>
             ))}
           </nav>
-
           <button
             className="md:hidden rounded-md px-3 py-2 border border-white/15 hover:border-[var(--gold)]"
             onClick={() => setMenuOpen(true)}
@@ -137,24 +128,20 @@ export default function Home({ posts }) {
             >
               Article on the Global Restaurant Industry
             </motion.span>
-
             <motion.h2
               className="mt-5 text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-[0.02em] break-words"
               variants={fadeUp}
             >
               Discover the <span style={{ color: "var(--gold)" }}>Best Restaurants</span> Worldwide
             </motion.h2>
-
             <motion.p className="mt-4 text-lg text-white/80 max-w-xl" variants={fadeUp}>
               From Michelin-starred dining rooms to hidden street cafés — our editors curate the world’s most exciting places to eat.
             </motion.p>
-
             <motion.div className="mt-6 flex gap-3" variants={fadeUp}>
               <AnimatedButton href="#latest" variant="primary">Explore Articles →</AnimatedButton>
+              <AnimatedButton href="/about" variant="outline">About</AnimatedButton>
             </motion.div>
           </motion.div>
-
-          {/* HERO IMAGE — robust rendering on small screens */}
           <motion.div
             className="relative rounded-2xl overflow-hidden card aspect-[16/10] md:aspect-[4/3] bg-black/20"
             initial={{ opacity: 0, scale: 0.92, y: 30 }}
@@ -164,22 +151,7 @@ export default function Home({ posts }) {
             <img
               src="/images/hero.png"
               alt="Hero"
-              loading="eager"
-              decoding="async"
               className="block w-full h-[220px] sm:h-[280px] md:h-[420px] object-cover object-center"
-              onError={(e) => {
-                // graceful fallback if the file path is wrong or missing
-                e.currentTarget.style.display = "none";
-                const ph = e.currentTarget.parentElement.querySelector(".hero-fallback");
-                if (ph) ph.style.display = "block";
-              }}
-            />
-            <div
-              className="hero-fallback hidden absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(60% 60% at 50% 40%, rgba(203,161,53,0.18) 0%, rgba(0,0,0,0.6) 55%, rgba(0,0,0,0.9) 100%)",
-              }}
             />
           </motion.div>
         </section>
@@ -188,7 +160,6 @@ export default function Home({ posts }) {
         <section className="container">
           <div className="card p-5 mb-6">
             <div className="grid gap-4">
-              {/* Search input */}
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -196,8 +167,6 @@ export default function Home({ posts }) {
                 className="w-full rounded-lg border border-white/15 bg-black/20 text-white px-4 py-3 outline-none focus:ring-2 focus:ring-[var(--gold)]"
                 aria-label="Search posts"
               />
-
-              {/* Tag carousel */}
               <div className="overflow-hidden" ref={emblaRef}>
                 <div className="flex gap-2">
                   {allTags.map((tag) => (
@@ -207,7 +176,7 @@ export default function Home({ posts }) {
                       className={`px-3 py-2 rounded-full text-sm border transition ${
                         activeTag === tag
                           ? "border-[var(--gold)] text-[var(--gold)]"
-                          : "border-white/30 text-white/70 hover:border-white/50"
+                          : "border-black text-black hover:border-gray-700"
                       }`}
                       aria-pressed={activeTag === tag}
                     >
@@ -216,8 +185,6 @@ export default function Home({ posts }) {
                   ))}
                 </div>
               </div>
-
-              {/* Results dropdown */}
               {(query || activeTag !== "All") && (
                 <div className="bg-black/80 border border-white/15 rounded-lg p-3 max-h-72 overflow-y-auto space-y-2">
                   {filtered.length > 0 ? (
@@ -252,7 +219,6 @@ export default function Home({ posts }) {
         {/* LATEST */}
         <section id="latest" className="container py-12">
           <h2 className="text-2xl font-semibold mb-6 tracking-[0.015em]">Latest Features</h2>
-
           {filtered[0] && (
             <Link href={`/posts/${filtered[0].slug}`} className="group">
               <article className="grid md:grid-cols-2 gap-6 items-center card p-4 md:p-6 mb-10">
@@ -276,7 +242,6 @@ export default function Home({ posts }) {
               </article>
             </Link>
           )}
-
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.slice(1).map(({ slug, frontmatter }) => (
               <Link href={`/posts/${slug}`} key={slug} className="group">
@@ -297,7 +262,6 @@ export default function Home({ posts }) {
           </div>
         </section>
       </main>
-
       <Footer />
     </>
   );
