@@ -2,7 +2,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 
@@ -18,7 +18,6 @@ import Autoplay from "embla-carousel-autoplay";
 
 export default function Home({ posts }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [filterOpen, setFilterOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState("All");
 
@@ -55,7 +54,6 @@ export default function Home({ posts }) {
     visible: { transition: { staggerChildren: 0.12 } },
   };
 
-  // Embla carousel (still used for tag filters in case needed elsewhere)
   const [emblaRef] = useEmblaCarousel(
     { loop: true, align: "start" },
     [Autoplay({ delay: 3000, stopOnInteraction: false })]
@@ -71,7 +69,7 @@ export default function Home({ posts }) {
         />
       </Head>
 
-      {/* Animated background */}
+      {/* Background */}
       <motion.div
         className="absolute inset-0 -z-20"
         initial={{ backgroundPosition: "0% 50%" }}
@@ -84,7 +82,7 @@ export default function Home({ posts }) {
         }}
       />
 
-      {/* Champagne particles */}
+      {/* Particles */}
       <Particles
         id="tsparticles"
         className="absolute inset-0 -z-10"
@@ -137,7 +135,7 @@ export default function Home({ posts }) {
       <Sidebar open={menuOpen} setOpen={setMenuOpen} />
 
       <main className="relative z-10 pt-10 md:pt-16">
-        {/* HERO with live search */}
+        {/* HERO */}
         <section className="container py-20 grid md:grid-cols-2 gap-10 items-center">
           <motion.div variants={stagger} initial="hidden" animate="visible">
             <motion.span
@@ -176,8 +174,8 @@ export default function Home({ posts }) {
               </AnimatedButton>
             </motion.div>
 
-            {/* Hero search */}
-            <motion.div className="mt-8 max-w-lg" variants={fadeUp}>
+            {/* Search + Tags + Results */}
+            <motion.div className="mt-8 max-w-lg space-y-4" variants={fadeUp}>
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -186,20 +184,50 @@ export default function Home({ posts }) {
                 aria-label="Search posts"
               />
 
-              {query && (
-                <div className="mt-2 bg-black/80 border border-white/15 rounded-lg p-3 max-h-60 overflow-y-auto">
+              {/* Tag carousel */}
+              <div className="overflow-hidden" ref={emblaRef}>
+                <div className="flex gap-2">
+                  {allTags.map((tag) => (
+                    <button
+                      key={tag}
+                      onClick={() => setActiveTag(tag)}
+                      className={`px-3 py-2 rounded-full text-sm border transition ${
+                        activeTag === tag
+                          ? "border-[var(--gold)] text-[var(--gold)]"
+                          : "border-black text-black hover:border-gray-700"
+                      }`}
+                      aria-pressed={activeTag === tag}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Results with thumbnails */}
+              {(query || activeTag !== "All") && (
+                <div className="bg-black/80 border border-white/15 rounded-lg p-3 max-h-72 overflow-y-auto space-y-2">
                   {filtered.length > 0 ? (
                     filtered.map(({ slug, frontmatter }) => (
                       <Link
                         href={`/posts/${slug}`}
                         key={slug}
-                        className="block px-2 py-1 rounded hover:bg-white/10"
+                        className="flex gap-3 items-center px-2 py-2 rounded hover:bg-white/10"
                       >
-                        <span className="font-medium text-[var(--gold)]">
-                          {frontmatter.title}
-                        </span>
-                        <div className="text-sm text-white/70">
-                          {frontmatter.excerpt}
+                        {frontmatter.cover && (
+                          <img
+                            src={frontmatter.cover}
+                            alt={frontmatter.title}
+                            className="w-16 h-16 rounded object-cover flex-shrink-0"
+                          />
+                        )}
+                        <div>
+                          <span className="font-medium text-[var(--gold)]">
+                            {frontmatter.title}
+                          </span>
+                          <div className="text-sm text-white/70 line-clamp-2">
+                            {frontmatter.excerpt}
+                          </div>
                         </div>
                       </Link>
                     ))
@@ -225,7 +253,7 @@ export default function Home({ posts }) {
           </motion.div>
         </section>
 
-        {/* Other sections (Latest, Cities, Filters, etc.) remain unchanged */}
+        {/* Other sections (Latest, Cities, etc.) remain unchanged */}
       </main>
 
       <Footer />
