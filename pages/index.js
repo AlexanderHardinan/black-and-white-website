@@ -1,8 +1,10 @@
 // pages/index.js
 import Head from "next/head";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import Particles from "@tsparticles/react";
+import { loadSlim } from "tsparticles";
 import AnimatedButton from "../components/AnimatedButton";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
@@ -10,14 +12,18 @@ import { getAllPostsMeta } from "../lib/posts";
 import { NAV_LINKS } from "../lib/nav";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import Link from "next/link";
 
 export default function Home({ posts }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState("All");
 
-  // Tags
+  // tsParticles init
+  const particlesInit = async (engine) => {
+    await loadSlim(engine);
+  };
+
+  // Build unique tags
   const allTags = useMemo(() => {
     const t = new Set();
     (posts || []).forEach((p) =>
@@ -26,7 +32,7 @@ export default function Home({ posts }) {
     return ["All", ...Array.from(t)];
   }, [posts]);
 
-  // Filtered posts
+  // Filter posts
   const filtered = useMemo(() => {
     const q = (query || "").trim().toLowerCase();
     return (posts || []).filter(({ frontmatter }) => {
@@ -46,10 +52,10 @@ export default function Home({ posts }) {
   };
   const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.12 } } };
 
-  // Carousel for tags
+  // Tag carousel
   const [emblaRef] = useEmblaCarousel(
     { loop: true, align: "start" },
-    [Autoplay({ delay: 3500, stopOnInteraction: false })]
+    [Autoplay({ delay: 3000, stopOnInteraction: false })]
   );
 
   return (
@@ -62,7 +68,7 @@ export default function Home({ posts }) {
         />
       </Head>
 
-      {/* Gradient background */}
+      {/* Animated background */}
       <motion.div
         className="absolute inset-0 -z-20"
         initial={{ backgroundPosition: "0% 50%" }}
@@ -74,10 +80,11 @@ export default function Home({ posts }) {
         }}
       />
 
-      {/* Particles */}
+      {/* Particles behind content */}
       <Particles
         id="tsparticles"
         className="absolute inset-0 -z-10"
+        init={particlesInit}
         options={{
           background: { color: "transparent" },
           fpsLimit: 60,
@@ -91,14 +98,12 @@ export default function Home({ posts }) {
         }}
       />
 
-      {/* NAVBAR */}
+      {/* NAV */}
       <header className="sticky top-0 z-50 backdrop-blur border-b border-white/10">
-        <div className="container px-4 py-4 flex items-center justify-between">
+        <div className="container py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <img src="/images/logo.png" alt="Logo" className="h-10 w-auto" />
-            <span className="font-bold tracking-wide text-white">
-              The Culinary World Gazette
-            </span>
+            <span className="font-bold tracking-wide">The Culinary World Gazette</span>
           </Link>
 
           <nav className="hidden md:flex gap-6 text-sm text-white/80 tracking-wide">
@@ -110,7 +115,7 @@ export default function Home({ posts }) {
           </nav>
 
           <button
-            className="md:hidden rounded-md px-3 py-2 border border-white/15 text-white hover:border-[var(--gold)]"
+            className="md:hidden rounded-md px-3 py-2 border border-white/15 hover:border-[var(--gold)]"
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
           >
@@ -124,49 +129,71 @@ export default function Home({ posts }) {
       {/* MAIN */}
       <main className="relative z-10 pt-10 md:pt-16">
         {/* HERO */}
-        <section className="container px-4 py-16 md:py-20 grid md:grid-cols-2 gap-10 items-center">
+        <section className="container py-14 sm:py-16 md:py-20 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
           <motion.div variants={stagger} initial="hidden" animate="visible">
             <motion.span
-              className="inline-block text-xs tracking-widest uppercase bg-white/10 border border-white/10 px-3 py-1 rounded-full text-white"
+              className="inline-block text-xs tracking-widest uppercase bg-white/10 border border-white/10 px-3 py-1 rounded-full"
               variants={fadeUp}
             >
               Article on the Global Restaurant Industry
             </motion.span>
 
             <motion.h2
-              className="mt-5 text-4xl md:text-6xl font-extrabold leading-tight tracking-wide text-white"
+              className="mt-5 text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-[0.02em] break-words"
               variants={fadeUp}
             >
-              Discover the <span style={{ color: "var(--gold)" }}>Best Restaurants</span>{" "}
-              Worldwide
+              Discover the <span style={{ color: "var(--gold)" }}>Best Restaurants</span> Worldwide
             </motion.h2>
 
-            <motion.p
-              className="mt-4 text-base md:text-lg text-white/80 max-w-xl"
-              variants={fadeUp}
-            >
-              From Michelin-starred dining rooms to hidden street cafés — our editors curate the world’s most
-              exciting places to eat.
+            <motion.p className="mt-4 text-lg text-white/80 max-w-xl" variants={fadeUp}>
+              From Michelin-starred dining rooms to hidden street cafés — our editors curate the world’s most exciting places to eat.
             </motion.p>
 
-            {/* Buttons */}
-            <motion.div className="mt-6 flex flex-col sm:flex-row gap-3" variants={fadeUp}>
-              <AnimatedButton href="#latest" variant="primary">
-                Explore Articles →
-              </AnimatedButton>
-              <AnimatedButton href="/about" variant="outline">
-                About
-              </AnimatedButton>
+            <motion.div className="mt-6 flex gap-3" variants={fadeUp}>
+              <AnimatedButton href="#latest" variant="primary">Explore Articles →</AnimatedButton>
             </motion.div>
+          </motion.div>
 
-            {/* Search + Tags + Results */}
-            <motion.div className="mt-8 space-y-4" variants={fadeUp}>
+          {/* HERO IMAGE — robust rendering on small screens */}
+          <motion.div
+            className="relative rounded-2xl overflow-hidden card aspect-[16/10] md:aspect-[4/3] bg-black/20"
+            initial={{ opacity: 0, scale: 0.92, y: 30 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1 }}
+          >
+            <img
+              src="/images/hero.png"
+              alt="Hero"
+              loading="eager"
+              decoding="async"
+              className="block w-full h-[220px] sm:h-[280px] md:h-[420px] object-cover object-center"
+              onError={(e) => {
+                // graceful fallback if the file path is wrong or missing
+                e.currentTarget.style.display = "none";
+                const ph = e.currentTarget.parentElement.querySelector(".hero-fallback");
+                if (ph) ph.style.display = "block";
+              }}
+            />
+            <div
+              className="hero-fallback hidden absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(60% 60% at 50% 40%, rgba(203,161,53,0.18) 0%, rgba(0,0,0,0.6) 55%, rgba(0,0,0,0.9) 100%)",
+              }}
+            />
+          </motion.div>
+        </section>
+
+        {/* SEARCH + TAGS + RESULTS */}
+        <section className="container">
+          <div className="card p-5 mb-6">
+            <div className="grid gap-4">
               {/* Search input */}
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search restaurants, cities, cuisines…"
-                className="w-full rounded-lg border border-white/15 bg-black/30 text-white px-4 py-3 outline-none focus:ring-2 focus:ring-[var(--gold)]"
+                className="w-full rounded-lg border border-white/15 bg-black/20 text-white px-4 py-3 outline-none focus:ring-2 focus:ring-[var(--gold)]"
                 aria-label="Search posts"
               />
 
@@ -208,47 +235,27 @@ export default function Home({ posts }) {
                           />
                         ) : null}
                         <div>
-                          <span className="font-medium text-[var(--gold)]">
-                            {frontmatter.title}
-                          </span>
-                          <div className="text-sm text-white/70 line-clamp-2">
-                            {frontmatter.excerpt}
-                          </div>
+                          <span className="font-medium text-[var(--gold)]">{frontmatter.title}</span>
+                          <div className="text-sm text-white/70 line-clamp-2">{frontmatter.excerpt}</div>
                         </div>
                       </Link>
                     ))
                   ) : (
-                    <p className="text-sm text-white/60">No results found.</p>
+                    <p className="text-sm text-white/60">No results found</p>
                   )}
                 </div>
               )}
-            </motion.div>
-          </motion.div>
-
-          {/* Hero image */}
-          <motion.div
-            className="relative rounded-2xl overflow-hidden card aspect-[16/10] md:aspect-[4/3]"
-            initial={{ opacity: 0, scale: 0.92, y: 30 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1 }}
-          >
-            <img
-              src="/images/hero.png"
-              className="w-full h-[320px] md:h-[420px] object-cover"
-              alt="Hero"
-            />
-          </motion.div>
+            </div>
+          </div>
         </section>
 
         {/* LATEST */}
-        <section id="latest" className="container px-4 py-12">
-          <h2 className="text-2xl font-semibold mb-6 tracking-wide text-white">
-            Latest Features
-          </h2>
+        <section id="latest" className="container py-12">
+          <h2 className="text-2xl font-semibold mb-6 tracking-[0.015em]">Latest Features</h2>
 
           {filtered[0] && (
             <Link href={`/posts/${filtered[0].slug}`} className="group">
-              <article className="grid md:grid-cols-2 gap-6 items-center card p-4 md:p-6 mb-10 hover:shadow-xl transition">
+              <article className="grid md:grid-cols-2 gap-6 items-center card p-4 md:p-6 mb-10">
                 <img
                   src={filtered[0].frontmatter.cover}
                   alt={filtered[0].frontmatter.title}
@@ -263,9 +270,7 @@ export default function Home({ posts }) {
                   </h3>
                   <p className="mt-2 text-white/80">{filtered[0].frontmatter.excerpt}</p>
                   <div className="mt-4">
-                    <span className="text-[var(--gold)] font-semibold">
-                      Read more →
-                    </span>
+                    <span className="text-[var(--gold)] font-semibold">Read more →</span>
                   </div>
                 </div>
               </article>
@@ -285,45 +290,10 @@ export default function Home({ posts }) {
                   <h4 className="mt-1 font-semibold group-hover:text-[var(--gold)] transition tracking-wide">
                     {frontmatter.title}
                   </h4>
-                  <p className="text-white/80 text-sm mt-1">{frontmatter.excerpt}</p>
+                  <p className="text-white/80 text-sm mt-1 tracking-[0.01em]">{frontmatter.excerpt}</p>
                 </article>
               </Link>
             ))}
-          </div>
-
-          {filtered.length === 0 && (
-            <p className="text-white/70 mt-6">No posts match your search/filter.</p>
-          )}
-        </section>
-
-        {/* CITIES */}
-        <section id="cities" className="container px-4 py-16">
-          <h2 className="text-2xl font-semibold mb-6 tracking-wide text-white">
-            Browse by City
-          </h2>
-          <div className="flex flex-wrap gap-3">
-            {["Paris", "Tokyo", "Bangkok", "New York", "Dubai", "Copenhagen", "Pattaya"].map(
-              (city) => (
-                <span
-                  key={city}
-                  className="px-3 py-1 rounded-full border border-white/20 text-sm text-[var(--gold)] hover:border-[var(--gold)] cursor-pointer"
-                >
-                  {city}
-                </span>
-              )
-            )}
-          </div>
-        </section>
-
-        {/* ABOUT SNIPPET */}
-        <section id="about" className="container px-4 py-16">
-          <div className="card p-6 bg-black/80 text-white rounded-2xl">
-            <h3 className="text-xl font-semibold tracking-wide">About The Gazette</h3>
-            <p className="mt-2 text-[var(--gold)]">
-              <b>The Culinary World Gazette</b> is a design-led guide to exceptional taste—
-              featuring top restaurants, masterful chefs, cutting-edge pastry labs, and meticulous coffee bars.
-              We champion hidden gems, celebrate the underrated, and elevate the details that define excellence.
-            </p>
           </div>
         </section>
       </main>
