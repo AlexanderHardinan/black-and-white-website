@@ -197,9 +197,11 @@ export default function Home({ posts }) {
         {/* LATEST */}
         <section id="latest" className="container py-12">
           <h2 className="text-2xl font-semibold mb-6 tracking-[0.015em]">Latest Features</h2>
-          {filtered[0] && (
-            <Link href={`/posts/${filtered[0].slug}`} className="group">
-              <article className="grid md:grid-cols-2 gap-6 items-center card p-4 md:p-6 mb-10">
+
+          {/* Featured First Post */}
+          {filtered.length > 0 && (
+            <Link href={`/posts/${filtered[0].slug}`} className="group block mb-10">
+              <article className="grid md:grid-cols-2 gap-6 items-center card p-4 md:p-6">
                 <img
                   src={filtered[0].frontmatter.cover}
                   alt={filtered[0].frontmatter.title}
@@ -220,9 +222,11 @@ export default function Home({ posts }) {
               </article>
             </Link>
           )}
+
+          {/* Rest of posts */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.slice(1).map(({ slug, frontmatter }) => (
-              <Link href={`/posts/${slug}`} key={slug} className="group">
+              <Link href={`/posts/${slug}`} key={slug} className="group block">
                 <article className="card overflow-hidden hover:translate-y-[-4px] transition p-4">
                   <img
                     src={frontmatter.cover}
@@ -233,7 +237,9 @@ export default function Home({ posts }) {
                   <h4 className="mt-1 font-semibold group-hover:text-[var(--gold)] transition tracking-wide">
                     {frontmatter.title}
                   </h4>
-                  <p className="text-white/80 text-sm mt-1 tracking-[0.01em]">{frontmatter.excerpt}</p>
+                  <p className="text-white/80 text-sm mt-1 tracking-[0.01em]">
+                    {frontmatter.excerpt}
+                  </p>
                 </article>
               </Link>
             ))}
