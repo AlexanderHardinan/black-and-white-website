@@ -15,20 +15,20 @@ At the helm is Executive Chef Alexander Hardinan, whose culinary philosophy is r
 
 Complementing the restaurant is a boutique luxury hotel for discerning travelers and an elegant rooftop cocktail bar, where masterful mixology meets breathtaking views. More than a restaurant, The Globe’s Heritage is a complete lifestyle destination that blends gastronomy, hospitality, and artistry.
 
-### 2. [**Mantra Restaurant & Bar**](https://example.com/mantra)  
+### 2. [**Mantra Restaurant & Bar**](https://www.mantra-pattaya.com)  
 A fusion of Asian and Mediterranean flavors.
 
-### 3. [**Horizon Rooftop**](https://example.com/horizon-rooftop)  
+### 3. [**Horizon Rooftop**](https://www.hilton.com/en/hotels/bkkhphi-hilton-pattaya/dining)  
 Fine dining with sweeping ocean views atop Hilton Pattaya.
 
-### 4. [**Surf & Turf Pattaya**](https://example.com/surf-and-turf)  
+### 4. [**Surf & Turf Pattaya**](http://surfandturfpattaya.com)  
 Casual yet refined — grilled seafood and meats by the water.
 
-### 5. [**Cafe des Amis**](https://example.com/cafe-des-amis)  
+### 5. [**Cafe des Amis**](https://cafe-des-amis.com)  
 One of Pattaya’s top-rated fine dining experiences, with impeccable service.
 
-### 6. [**Rim Talay**](https://example.com/rim-talay)  
+### 6. [**Rim Talay**](https://www.rimtalay-resort.com)  
 Classic Thai seafood, right on the sand.
 
-### 7. [**Radius Restaurant**](https://example.com/radius-restaurant)  
+### 7. [**Radius Restaurant**](https://capedarapattaya.com/dining/radius)  
 International buffet with live cooking stations.
