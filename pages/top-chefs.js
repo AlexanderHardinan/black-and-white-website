@@ -14,67 +14,67 @@ const chefs = [
     name: "Chef Pam (Pichaya Soontornyanakij)",
     role: "Chef-Owner — Potong, Bangkok",
     blurb: "Known as Thailand’s rising culinary star, Chef Pam blends Thai-Chinese heritage with bold innovation, leading Restaurant Potong into Asia’s dining spotlight.",
-    img: "/images/chefs/pam.jpg",
+    img: "/images/chefpam.png?v=2", // ✅ cache-busting query string
   },
   {
-    name: "Chef Rio T.",
-    role: "R&D — Tokyo",
-    blurb: "Fermentation-forward cuisine and clean presentations.",
-    img: "/images/hero.png",
+    name: "Chef Hélène Darroze",
+    role: "Chef Patron — Paris & London",
+    blurb: "A fourth-generation chef, known for her heartfelt French cuisine at restaurants including Hélène Darroze at The Connaught (three Michelin stars). Celebrated for balancing tradition with modern flair.",
+    img: "/images/chefhelene.png?v=2", // ✅ cache-busting query string
   },
   {
     name: "Chef Massimo Bottura",
     role: "Osteria Francescana — Italy",
     blurb: "A pioneer of modern Italian cuisine, mixing art, memory, and flavor.",
-    img: "/images/chefs/bottura.jpg",
+    img: "/images/chefbottura.png?v=2", // ✅ cache-busting query string
   },
   {
     name: "Chef Dominique Crenn",
     role: "Atelier Crenn — San Francisco",
     blurb: "The first female chef in the US with three Michelin stars.",
-    img: "/images/chefs/crenn.jpg",
+    img: "/images/chefcrenn.png?v=2", // ✅ cache-busting query string
   },
   {
     name: "Chef René Redzepi",
     role: "Noma — Copenhagen",
     blurb: "Leader of New Nordic cuisine, showcasing local and foraged ingredients.",
-    img: "/images/chefs/renezep.jpg",
+    img: "/images/chefrenezep.png?v=2", // ✅ cache-busting query string
   },
   {
     name: "Chef José Andrés",
     role: "World Central Kitchen — USA",
     blurb: "Spanish-American chef, restaurateur, and humanitarian.",
-    img: "/images/chefs/andres.jpg",
+    img: "/images/chefandres.png?v=2", // ✅ cache-busting query string
   },
   {
     name: "Chef Anne-Sophie Pic",
     role: "Maison Pic — France",
     blurb: "France’s most decorated female chef, renowned for elegance and finesse.",
-    img: "/images/chefs/pic.jpg",
+    img: "/images/chefpic.png?v=2", // ✅ cache-busting query string
   },
   {
     name: "Chef Gaggan Anand",
     role: "Gaggan Anand — Bangkok",
     blurb: "Revolutionary Indian cuisine with playful storytelling.",
-    img: "/images/chefs/gaggan.jpg",
+    img: "/images/chefgaggan.png?v=2", // ✅ cache-busting query string
   },
   {
     name: "Chef Clare Smyth",
     role: "Core — London",
     blurb: "The first female British chef with three Michelin stars.",
-    img: "/images/chefs/clare.jpg",
+    img: "/images/chefclare.png?v=2", // ✅ cache-busting query string
   },
   {
     name: "Chef Daniel Humm",
     role: "Eleven Madison Park — New York",
     blurb: "Visionary behind plant-based fine dining.",
-    img: "/images/chefs/humm.jpg",
+    img: "/images/chefhumm.png?v=2", // ✅ cache-busting query string
   },
   {
     name: "Chef Yoshihiro Murata",
     role: "Kikunoi — Kyoto",
     blurb: "Master of Kaiseki, blending tradition with subtle innovation.",
-    img: "/images/chefs/murata.jpg",
+    img: "/images/chefmurata.png?v=2", // ✅ cache-busting query string
   },
 ];
 
