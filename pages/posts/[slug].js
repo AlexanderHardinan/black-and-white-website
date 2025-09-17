@@ -32,7 +32,7 @@ export default function Post({ frontmatter, content }) {
 
       {/* Article Content */}
       <article
-        className="prose prose-lg max-w-none prose-black"
+        className="post-content max-w-none text-black"
         dangerouslySetInnerHTML={{ __html: content }}
       />
 
