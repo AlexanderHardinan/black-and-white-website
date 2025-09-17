@@ -8,7 +8,7 @@ const chefs = [
     name: "Chef Alexander Hardinan",
     role: "Executive Chef — The Globe’s Heritage by Chef Alex - Pattaya",
     blurb: "Transforms simple and forgotten ingredients into refined, modern craftsmanship.",
-    img: "/images/Chef Alex.png",
+    img: "/images/chefalex.png?v=2", // ✅ cache-busting query string
   },
   {
     name: "Chef Pam (Pichaya Soontornyanakij)",
