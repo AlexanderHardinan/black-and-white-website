@@ -4,17 +4,8 @@ import Link from "next/link";
 import { getPostBySlug, getAllPostsMeta } from "../../lib/posts";
 
 export default function Post({ frontmatter, content }) {
-  // Check if this is the Pattaya post
-  const isPattaya = frontmatter.title
-    ?.toLowerCase()
-    .includes("pattaya");
-
   return (
-    <div
-      className={`container py-10 ${
-        isPattaya ? "bg-white text-black" : ""
-      }`}
-    >
+    <div className="container py-10 bg-white text-black">
       <Head>
         <title>{frontmatter.title} — The Culinary World Gazette</title>
         <meta name="description" content={frontmatter.excerpt} />
@@ -22,20 +13,10 @@ export default function Post({ frontmatter, content }) {
 
       {/* Post Header */}
       <div className="mb-8">
-        <h1
-          className={`text-3xl md:text-4xl font-extrabold tracking-tight ${
-            isPattaya ? "text-black" : "text-white"
-          }`}
-        >
+        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-black">
           {frontmatter.title}
         </h1>
-        <p
-          className={`mt-2 text-sm ${
-            isPattaya ? "text-gray-600" : "text-white/60"
-          }`}
-        >
-          {frontmatter.date}
-        </p>
+        <p className="mt-2 text-sm text-gray-600">{frontmatter.date}</p>
       </div>
 
       {/* Cover Image */}
@@ -51,9 +32,7 @@ export default function Post({ frontmatter, content }) {
 
       {/* Article Content */}
       <article
-        className={`prose prose-lg max-w-none ${
-          isPattaya ? "prose-black" : "prose-invert text-white/90"
-        }`}
+        className="prose prose-lg max-w-none prose-black"
         dangerouslySetInnerHTML={{ __html: content }}
       />
 
@@ -61,11 +40,7 @@ export default function Post({ frontmatter, content }) {
       <div className="mt-12">
         <Link
           href="/"
-          className={`inline-block rounded-md border px-5 py-2 font-medium transition ${
-            isPattaya
-              ? "border-black text-black hover:bg-black hover:text-white"
-              : "border-[var(--gold)] text-[var(--gold)] hover:bg-[var(--gold)] hover:text-black"
-          }`}
+          className="inline-block rounded-md border px-5 py-2 font-medium transition border-black text-black hover:bg-black hover:text-white"
         >
           ← Back to Homepage
         </Link>
