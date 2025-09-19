@@ -74,11 +74,11 @@ export default function Post({ frontmatter, content }) {
           className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-transform hover:-translate-y-1"
         >
           {/* Taller, full-image like Top Chefs */}
-          <div className="w-full h-64 overflow-hidden">
+          <div className="w-full h-80 sm:h-96 md:h-[28rem] bg-white overflow-hidden flex items-center justify-center">
             <img
               src={c.img}
               alt={c.name}
-              className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+              className="w-full h-full object-contain"
               loading="lazy"
             />
           </div>
