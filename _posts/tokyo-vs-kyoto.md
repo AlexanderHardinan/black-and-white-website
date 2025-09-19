@@ -4,6 +4,23 @@ date: "2025-09-18"
 excerpt: "Tokyo thrives on innovation, while Kyoto treasures tradition. Two cities, two philosophies — both at the heart of Japan’s culinary identity."
 cover: "/images/tokyo-vs-kyoto.png"
 tags: ["Japan", "Tokyo", "Kyoto", "Special Edition", "Chefs"]
+chefs:
+  - name: "Chef Yoshihiro Narisawa"
+    role: "NARISAWA — Tokyo"
+    blurb: "Pioneer of Satoyama cuisine, merging ecology and high gastronomy."
+    img: "/images/chefnarisawa.png?v=2"
+  - name: "Chef Seiji Yamamoto"
+    role: "Nihonryori RyuGin — Tokyo"
+    blurb: "Science-forward kaiseki that reframes tradition through precision."
+    img: "/images/chefyamamoto.png?v=2"
+  - name: "Chef Yoshihiro Murata"
+    role: "Kikunoi — Kyoto"
+    blurb: "Kaiseki master who safeguards seasonality and heritage."
+    img: "/images/chefyoshihiro.png?v=2"
+  - name: "Chef Hiroshi Sasaki"
+    role: "Gion Sasaki — Kyoto"
+    blurb: "Playful, inventive kaiseki with Kyoto’s soul at the center."
+    img: "/images/chefsasaki.png?v=2"
 ---
 
 Japan’s dining scene is a tale of **two cities**.  
@@ -15,19 +32,6 @@ Tokyo boasts more Michelin-starred restaurants than any city in the world. Its c
 
 ## Kyoto: Guardians of Tradition
 Kyoto remains the spiritual home of **Kaiseki** — refined multi-course dining defined by seasonality and restraint.
-
-## 🌟 Featured Master Chefs 2025
-### 1. **Chef Yoshihiro Narisawa — Tokyo**  
-Innovator of *Satoyama Cuisine*, blending sustainability with artistry.
-
-### 2. **Chef Seiji Yamamoto — Tokyo**  
-The mind behind **Nihonryori RyuGin**, merging science with tradition.
-
-### 3. **Chef Yoshihiro Murata — Kyoto**  
-Master of **Kikunoi**, the global reference for Kaiseki.
-
-### 4. **Chef Hiroshi Sasaki — Kyoto**  
-At **Gion Sasaki**, playful creativity within Kyoto’s classic framework.
 
 ## Conclusion
 Two philosophies, one identity. In 2025, both cities stand unmatched as global culinary capitals.

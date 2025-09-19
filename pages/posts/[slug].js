@@ -61,6 +61,36 @@ export default function Post({ frontmatter, content }) {
         className="post-content max-w-none"
         dangerouslySetInnerHTML={{ __html: content }}
       />
+{/* Featured Chefs */}
+{Array.isArray(frontmatter.chefs) && frontmatter.chefs.length > 0 && (
+  <section className="mt-12">
+    <h2 className="text-2xl font-bold tracking-[0.015em] mb-2">Featured Master Chefs 2025</h2>
+    <p className="text-black/70 mb-6">Profiles highlighted in this special edition.</p>
+
+    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {frontmatter.chefs.map((c) => (
+        <article
+          key={c.name}
+          className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-transform hover:-translate-y-1"
+        >
+          <div className="w-full h-64 overflow-hidden">
+            <img
+              src={c.img}
+              alt={c.name}
+              className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+              loading="lazy"
+            />
+          </div>
+          <div className="p-4">
+            <h3 className="font-semibold text-lg text-black tracking-[0.015em]">{c.name}</h3>
+            <div className="text-xs text-gray-500 mt-1">{c.role}</div>
+            <p className="text-sm text-gray-700 mt-3">{c.blurb}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+)}
 
       {/* Back to Homepage */}
       <div className="mt-12">
