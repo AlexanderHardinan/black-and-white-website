@@ -1,34 +1,56 @@
-// pages/_app.js
 import { useEffect } from "react";
+import { useRouter } from "next/router";
+import Head from "next/head";
 import "../styles/globals.css";
 import ContactWidget from "../components/ContactWidget";
-import Layout from "../components/Layout";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import Script from "next/script";
 
-function MyApp({ Component, pageProps }) {
+const ORIGIN = "https://black-and-white-website.vercel.app";
+
+export default function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+  const canonical = ORIGIN + (router.asPath?.split("?")[0] || "/");
+
+  // GA4 pageview on route change
   useEffect(() => {
-    // Reveal-on-scroll helper
-    const animatedEls = document.querySelectorAll(
-      ".fade-up, .fade-left, .fade-right"
-    );
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add("show");
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    animatedEls.forEach((el) => observer.observe(el));
-    return () => animatedEls.forEach((el) => observer.unobserve(el));
-  }, []);
+    const handleRouteChange = (url) => {
+      window.gtag?.("config", process.env.NEXT_PUBLIC_GA_ID, { page_path: url });
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => router.events.off("routeChangeComplete", handleRouteChange);
+  }, [router.events]);
 
   return (
-    <Layout>
+    <>
+      {/* Canonical for every page */}
+      <Head>
+        <link rel="canonical" href={canonical} />
+      </Head>
+
+      {/* GA4 */}
+      {process.env.NEXT_PUBLIC_GA_ID && (
+        <>
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+            strategy="afterInteractive"
+          />
+          <Script id="ga4" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', { send_page_view: true });
+            `}
+          </Script>
+        </>
+      )}
+
+      <Header /> 
       <Component {...pageProps} />
-      <ContactWidget /> {/* Floating contact button */}
-    </Layout>
+      <Footer />
+      <ContactWidget />
+    </>
   );
 }
-
-export default MyApp;
