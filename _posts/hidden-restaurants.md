@@ -18,28 +18,28 @@ tags: ["Hidden", "Restaurants", "Fine Dining", "Special"]
 </style>
 
 ### 1. **Grotta Palazzese — Italy**
-<img src="/images/grotta-palazzese.png?v=2" alt="Grotta Palazzese Italy" class="hidden-restaurant-img"/>
+<img src="/images/grotta-palazzese.png" alt="Grotta Palazzese Italy" class="hidden-restaurant-img"/>
 
 Dining in a limestone cave overlooking the Adriatic Sea — magical, unforgettable.
 
 ---
 
 ### 2. **Ithaa Undersea Restaurant — Maldives**
-<img src="/images/ithaa-maldives.png?v=2" alt="Ithaa Undersea Maldives" class="hidden-restaurant-img"/>
+<img src="/images/ithaa-maldives.png" alt="Ithaa Undersea Maldives" class="hidden-restaurant-img"/>
 
 A glass tunnel under the ocean with panoramic coral reef views.
 
 ---
 
 ### 3. **Le Jules Verne — Paris**
-<img src="/images/le-jules-verne.png?v=2" alt="Eiffel Tower Dining Paris" class="hidden-restaurant-img"/>
+<img src="/images/le-jules-verne.png" alt="Eiffel Tower Dining Paris" class="hidden-restaurant-img"/>
 
 Fine dining **inside the Eiffel Tower** with breathtaking Parisian views.
 
 ---
 
 ### 4. **Ali Barbour’s Cave — Kenya**
-<img src="/images/ali-barbour.png?v=2" alt="Ali Barbour's Cave Kenya" class="hidden-restaurant-img"/>
+<img src="/images/ali-barbour.png" alt="Ali Barbour's Cave Kenya" class="hidden-restaurant-img"/>
 
 A restaurant in a natural cave lit entirely by lanterns.
 
