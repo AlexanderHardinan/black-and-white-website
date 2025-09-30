@@ -1,4 +1,3 @@
-// pages/posts/[slug].js
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -9,7 +8,7 @@ const ORIGIN = "https://black-and-white-website.vercel.app";
 export default function Post({ frontmatter, content }) {
   const router = useRouter();
 
-  // Build absolute URLs safely (works locally & on Vercel)
+  // Build absolute URLs safely
   const base =
     typeof window === "undefined" ? ORIGIN : window.location.origin || ORIGIN;
   const pageUrl = base + (router.asPath?.split("?")[0] || "/");
@@ -26,22 +25,16 @@ export default function Post({ frontmatter, content }) {
       <Head>
         <title>{frontmatter.title} — The Culinary World Gazette</title>
         <meta name="description" content={frontmatter.excerpt} />
-
-        {/* Open Graph */}
         <meta property="og:type" content="article" />
         <meta property="og:url" content={pageUrl} />
         <meta property="og:title" content={`${frontmatter.title} — The Culinary World Gazette`} />
         <meta property="og:description" content={frontmatter.excerpt} />
         {absCover && <meta property="og:image" content={absCover} />}
         <meta property="og:site_name" content="The Culinary World Gazette" />
-
-        {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${frontmatter.title} — The Culinary World Gazette`} />
         <meta name="twitter:description" content={frontmatter.excerpt} />
         {absCover && <meta name="twitter:image" content={absCover} />}
-
-        {/* Article tags */}
         {Array.isArray(frontmatter.tags) &&
           frontmatter.tags.map((t) => (
             <meta key={t} property="article:tag" content={t} />
@@ -125,19 +118,17 @@ export default function Post({ frontmatter, content }) {
         dangerouslySetInnerHTML={{ __html: content }}
       />
 
-      {/* Featured Chefs (optional per-post) */}
+      {/* Featured Chefs */}
       {Array.isArray(frontmatter.chefs) && frontmatter.chefs.length > 0 && (
         <section className="mt-12">
           <h2 className="text-2xl font-bold tracking-[0.015em] mb-2">Featured Master Chefs 2025</h2>
           <p className="text-black/70 mb-6">Profiles highlighted in this special edition.</p>
-
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {frontmatter.chefs.map((c) => (
               <article
                 key={c.name}
                 className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-transform hover:-translate-y-1"
               >
-                {/* Full, uncropped image (portrait-friendly) */}
                 <div className="w-full h-80 sm:h-96 md:h-[28rem] bg-white overflow-hidden flex items-center justify-center">
                   <img
                     src={c.img}
@@ -157,7 +148,36 @@ export default function Post({ frontmatter, content }) {
         </section>
       )}
 
-      {/* Per-restaurant covers (scoped to this post) */}
+      {/* Featured Cards (e.g., Saudi Arabia places) */}
+      {Array.isArray(frontmatter.cards) && frontmatter.cards.length > 0 && (
+        <section className="mt-12">
+          <h2 className="text-2xl font-bold tracking-[0.015em] mb-2">Highlights</h2>
+          <p className="text-black/70 mb-6">Explore featured destinations and dining spots.</p>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {frontmatter.cards.map((c, i) => (
+              <article
+                key={`${c.name}-${i}`}
+                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-transform hover:-translate-y-1"
+              >
+                <div className="w-full h-80 sm:h-96 md:h-[28rem] flex items-center justify-center bg-gray-100 overflow-hidden">
+                  <img
+                    src={c.img}
+                    alt={c.name}
+                    className="w-full h-full object-contain"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="font-semibold text-lg text-black tracking-[0.015em]">{c.name}</h3>
+                  <p className="text-sm text-gray-700 mt-3">{c.blurb}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Per-restaurant covers */}
       {Array.isArray(frontmatter.covers) && frontmatter.covers.length > 0 && (
         <section className="mt-12 space-y-8">
           {frontmatter.covers.map((it, i) => (
@@ -169,9 +189,7 @@ export default function Post({ frontmatter, content }) {
                 loading="lazy"
               />
               {it.title && (
-                <figcaption className="mt-2 text-sm text-black/60">
-                  {it.title}
-                </figcaption>
+                <figcaption className="mt-2 text-sm text-black/60">{it.title}</figcaption>
               )}
             </figure>
           ))}
