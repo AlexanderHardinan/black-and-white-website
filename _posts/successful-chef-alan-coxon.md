@@ -8,7 +8,7 @@ tags: ["Career", "Chefs", "Alan Coxon", "Food Archaeology", "Mentorship"]
 
 ### Alan Coxon: The Culinary Archaeologist with a Global Vision
 
-Chef Alan Coxon is more than a chef — he’s a storyteller, innovator, and global culinary ambassador. With 40+ years in the industry, his journey spans Michelin-starred kitchens, luxury hotels, television, and international stages.
+**Alan Coxon** is more than a chef — he’s a storyteller, innovator, and global culinary ambassador. With 40+ years in the industry, his journey spans Michelin-starred kitchens, luxury hotels, television, and international stages.
 
 Raised in Derbyshire and inspired by his grandmother’s traditional cooking, Coxon began early — by 18 he was sharpening his skills in Monte Carlo under Michelin-starred mentors at **“Le Foi Gras.”** He later opened and managed Europe’s largest four-star hotel, **Newport Bay Hotel** in Paris (1,098 rooms), leading an international brigade of **68 chefs**.
 
@@ -18,7 +18,7 @@ Coxon’s consultancy blends product development, recipe creation, and food phot
 
 Beyond the kitchen, Coxon reached millions through **1,250+ food and travel TV shows** across nearly **90 countries**. Named one of the **BBC’s Top 10** favorite TV chefs, he also writes columns and hosts radio programs — always with an engaging, approachable voice.
 
-As a leader and advocate, he serves as **President of the International Taste Institute (iTi) Chefs Jury** in Brussels and Dubai, founded **Chefs Sans Frontières International** to support artisan producers in crisis, acts as an ambassador for the **Disciples of Escoffier International**, and was asked by the **British Prime Minister** to be a **British Ambassador for Food**, cooking and developing concepts at embassies worldwide for VIP events.
+As a leader and advocate, he serves as **President of the [International Taste Institute (iTi) Chefs Jury](https://www.tasteinstitute.com)** in Brussels and Dubai, founded **[Chefs Sans Frontières International](https://www.csfint.com)** to support artisan producers in crisis, acts as an ambassador for the **Disciples of Escoffier International**, and was asked by the **British Prime Minister** to be a **British Ambassador for Food**, cooking and developing concepts at embassies worldwide for VIP events.
 
 Coxon’s philosophy — **“Food Archaeology”** — brings historic recipes and traditions into conversation with modern dining. For him, every dish is a story: heritage, sustainability, and innovation on one plate. His continuous aim: **pass knowledge to the next generation** and keep the past present — in capable hands.
 
@@ -75,13 +75,13 @@ Think like a creator: lighting, plateware, pacing, soundtrack — every detail m
 
 ### Resources & Links
 
-- Learn more about **Alan Coxon**: **www.alancoxon.com**  
-- Learn more about **Chefs Sans Frontières International**: **www.csfint.com**  
-- Instagram: **@alancoxon**  
-- Facebook (project feature): **https://www.facebook.com/jkel.thesalon/**
+- Learn more about **Alan Coxon**: [www.alancoxon.com](https://www.alancoxon.com)  
+- Learn more about **Chefs Sans Frontières International**: [www.csfint.com](https://www.csfint.com)  
+- Instagram: [@alancoxon](https://www.instagram.com/alancoxon)  
+- Facebook: [J & Kel "The Salon" — Kuala Lumpur](https://www.facebook.com/jkel.thesalon)
 
 ---
 
 ### Closing
 
-Success in the kitchen isn’t only about flavors — it’s about **heritage, leadership, clarity of story, and service to the wider food system**. Alan Coxon’s career shows that when you honor the past and communicate the present, you help shape the future of gastronomy.
+Success in the kitchen isn’t only about flavors — it’s about **heritage, leadership, clarity of story, and service to the wider food system** Alan Coxon’s career shows that when you honor the past and communicate the present, you help shape the future of gastronomy.
