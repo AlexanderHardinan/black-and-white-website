@@ -6,6 +6,12 @@ import { useState } from "react";
 
 const chefs = [
   {
+    name: "Chef Alan Coxon",
+    role: "Consultant, Innovator, Global Ambassador",
+    blurb: "Chef Alan Coxon is more than a chef — he’s a storyteller, innovator, and global culinary ambassador.",
+    img: "/images/coxon.png?v=2",
+  },
+  {
     name: "Chef Alexander Hardinan",
     role: "Executive Chef — The Globe’s Heritage by Chef Alex - Pattaya",
     blurb: "Transforms simple and forgotten ingredients into refined, modern craftsmanship.",
