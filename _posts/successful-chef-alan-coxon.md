@@ -2,7 +2,7 @@
 title: "A Guide to Becoming a Successful Chef"
 date: "2025-10-10"
 excerpt: "Lessons from Chef Alan Coxon — a culinary storyteller whose career spans Michelin kitchens, luxury hotels, television, and global advocacy."
-cover: "/images/alan.png"
+cover: "/images/alan-coxon.png"
 tags: ["Career", "Chefs", "Alan Coxon", "Food Archaeology", "Mentorship"]
 ---
 
