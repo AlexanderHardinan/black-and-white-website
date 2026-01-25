@@ -46,7 +46,7 @@ function MiniChartCard({ title, subtitle, values }) {
     <motion.div
       whileHover={{ y: -2 }}
       transition={{ duration: 0.18, ease: "easeOut" }}
-      className="rounded-2xl border border-white/10 bg-black/25 backdrop-blur p-4 hover:border-[var(--gold)]/35 transition"
+      className="rounded-2xl border border-white/10 bg-black/25 backdrop-blur p-4 hover:border-[var(--gold)]/40 transition"
     >
       <div className="flex items-start justify-between gap-3">
         <div>
@@ -64,7 +64,7 @@ function MiniChartCard({ title, subtitle, values }) {
           aria-label={`${title} chart`}
         >
           <defs>
-            <linearGradient id={`${title}-areaGold`} x1="0" x2="0" y1="0" y2="1">
+            <linearGradient id={`areaGold-${title}`} x1="0" x2="0" y1="0" y2="1">
               <stop offset="0%" stopColor="var(--gold)" stopOpacity="0.22" />
               <stop offset="100%" stopColor="var(--gold)" stopOpacity="0" />
             </linearGradient>
@@ -85,7 +85,7 @@ function MiniChartCard({ title, subtitle, values }) {
             );
           })}
 
-          <path d={dArea} fill={`url(#${title}-areaGold)`} />
+          <path d={dArea} fill={`url(#areaGold-${title})`} />
           <path
             d={dLine}
             fill="none"
@@ -97,13 +97,14 @@ function MiniChartCard({ title, subtitle, values }) {
         </svg>
       </div>
 
-      <div className="mt-2 text-[11px] text-white/50">Demo trend signal</div>
+      <div className="mt-2 text-[11px] text-white/50">
+        Demo signal — wire real analytics later.
+      </div>
     </motion.div>
   );
 }
 
 export default function TrendCharts() {
-  // demo data (keep compact)
   const storyVelocity = [18, 22, 19, 26, 29, 33, 30, 38, 42, 47, 45, 53];
   const cityMomentum = [9, 11, 12, 10, 14, 16, 18, 17, 20, 22, 24, 26];
 

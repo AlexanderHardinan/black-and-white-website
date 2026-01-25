@@ -23,6 +23,7 @@ function scoreOpacity(score) {
 
 export default function WorldMap() {
   const [active, setActive] = useState("as");
+
   const region = useMemo(
     () => MAP_REGIONS.find((r) => r.id === active) || MAP_REGIONS[0],
     [active]
@@ -113,6 +114,7 @@ export default function WorldMap() {
         className="xl:col-span-4 rounded-2xl border border-white/10 bg-black/25 backdrop-blur p-4"
       >
         <div className="text-xs text-white/60 tracking-widest uppercase">Spotlight</div>
+
         <div className="mt-2 flex items-start justify-between gap-3">
           <div className="text-base font-semibold text-white">{region.name}</div>
           <div className="text-xs font-medium text-[var(--gold)]">Score {region.score}</div>
@@ -125,6 +127,7 @@ export default function WorldMap() {
               {region.score >= 80 ? "High" : region.score >= 60 ? "Medium" : "Build"}
             </div>
           </div>
+
           <div className="rounded-xl border border-white/10 bg-black/20 p-3">
             <div className="text-white/55">Next</div>
             <div className="mt-1 font-semibold text-white">

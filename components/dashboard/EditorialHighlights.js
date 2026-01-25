@@ -2,34 +2,54 @@
 import { motion } from "framer-motion";
 
 const items = [
-  { label: "Top City", title: "Tokyo: late-night omakase wave", meta: "Rising interest" },
-  { label: "Cuisine", title: "Modern Thai: fire + fermentation", meta: "Strong momentum" },
-  { label: "Chef Watch", title: "New tasting menus gaining traction", meta: "Editors’ pick" },
-  { label: "Restaurant", title: "Hidden gems: 8-seat counters", meta: "High saves" },
+  {
+    title: "Hidden Gems Series",
+    meta: "Curated list • Weekly",
+    desc: "High-conversion editorial format with strong time-on-page.",
+    tag: "Featured",
+  },
+  {
+    title: "Chef Spotlight",
+    meta: "Profiles • Global",
+    desc: "Human stories with premium presentation and strong retention.",
+    tag: "Trending",
+  },
+  {
+    title: "Top Cities Radar",
+    meta: "Heat list • Monthly",
+    desc: "Discovery-first structure to guide readers through destinations.",
+    tag: "New",
+  },
 ];
 
 export default function EditorialHighlights() {
   return (
     <div className="space-y-3">
-      {items.map((it) => (
+      {items.map((it, idx) => (
         <motion.div
           key={it.title}
           whileHover={{ y: -2 }}
           transition={{ duration: 0.18, ease: "easeOut" }}
-          className="rounded-2xl border border-white/10 bg-black/25 backdrop-blur p-4 hover:border-[var(--gold)]/35 transition"
+          className="rounded-2xl border border-white/10 bg-black/25 backdrop-blur p-4 hover:border-[var(--gold)]/40 transition"
         >
           <div className="flex items-start justify-between gap-3">
             <div>
-              <div className="text-[10px] text-white/55 tracking-widest uppercase">
-                {it.label}
-              </div>
-              <div className="mt-1 text-sm font-semibold text-white leading-snug">
-                {it.title}
-              </div>
-              <div className="mt-1 text-xs text-white/60">{it.meta}</div>
+              <div className="text-sm font-semibold text-white">{it.title}</div>
+              <div className="text-xs text-white/60 mt-1">{it.meta}</div>
             </div>
 
-            <div className="text-xs font-medium text-[var(--gold)]">+</div>
+            <span className="text-[10px] px-2 py-1 rounded-full border border-white/15 bg-black/25 text-[var(--gold)] tracking-widest uppercase">
+              {it.tag}
+            </span>
+          </div>
+
+          <p className="mt-2 text-xs text-white/70 leading-relaxed">
+            {it.desc}
+          </p>
+
+          <div className="mt-3 flex items-center justify-between text-[11px] text-white/55">
+            <span>Module {idx + 1}</span>
+            <span className="text-[var(--gold)]">View details →</span>
           </div>
         </motion.div>
       ))}
