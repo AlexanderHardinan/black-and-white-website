@@ -64,7 +64,7 @@ function MiniChartCard({ title, subtitle, values }) {
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="text-sm font-semibold">{title}</div>
+          <div className="text-sm font-semibold text-white">{title}</div>
           <div className="text-xs text-white/60 mt-1">{subtitle}</div>
         </div>
         <div className="text-xs font-medium text-[var(--gold)]">{pctText}</div>
@@ -229,20 +229,20 @@ function WorldMapModule() {
           Spotlight
         </div>
         <div className="mt-2 flex items-start justify-between gap-3">
-          <div className="text-base font-semibold">{region.name}</div>
+          <div className="text-base font-semibold text-white">{region.name}</div>
           <div className="text-xs font-medium text-[var(--gold)]">Score {region.score}</div>
         </div>
 
         <div className="mt-3 grid grid-cols-2 gap-3 text-xs">
           <div className="rounded-xl border border-white/10 bg-black/20 p-3">
             <div className="text-white/55">Priority</div>
-            <div className="mt-1 font-semibold">
+            <div className="mt-1 font-semibold text-white">
               {region.score >= 80 ? "High" : region.score >= 60 ? "Medium" : "Build"}
             </div>
           </div>
           <div className="rounded-xl border border-white/10 bg-black/20 p-3">
             <div className="text-white/55">Next</div>
-            <div className="mt-1 font-semibold">
+            <div className="mt-1 font-semibold text-white">
               {region.score >= 80 ? "Feature push" : region.score >= 60 ? "Curate" : "Discover"}
             </div>
           </div>
@@ -294,7 +294,6 @@ export default function Home({ posts }) {
     await loadSlim(engine);
   };
 
-  // Collect all unique tags
   const allTags = useMemo(() => {
     const t = new Set();
     (posts || []).forEach((p) =>
@@ -303,7 +302,6 @@ export default function Home({ posts }) {
     return ["All", ...Array.from(t)];
   }, [posts]);
 
-  // Filter posts by search + tag
   const filtered = useMemo(() => {
     const q = (query || "").trim().toLowerCase();
     return (posts || []).filter(({ frontmatter }) => {
@@ -316,13 +314,11 @@ export default function Home({ posts }) {
     });
   }, [posts, query, activeTag]);
 
-  // Embla carousel
   const [emblaRef] = useEmblaCarousel(
     { loop: true, align: "start" },
     [Autoplay({ delay: 3000, stopOnInteraction: false })]
   );
 
-  // Motion helpers
   const fadeUp = {
     hidden: { opacity: 0, y: 18 },
     visible: { opacity: 1, y: 0 },
@@ -340,7 +336,6 @@ export default function Home({ posts }) {
 
   const topFeatured = filtered?.[0];
 
-  // demo trend series (safe static)
   const storyVelocity = [18, 22, 19, 26, 29, 33, 30, 38, 42, 47, 45, 53];
   const cityMomentum = [9, 11, 12, 10, 14, 16, 18, 17, 20, 22, 24, 26];
 
@@ -354,7 +349,6 @@ export default function Home({ posts }) {
         />
       </Head>
 
-      {/* Background */}
       <motion.div
         className="absolute inset-0 -z-20"
         initial={{ backgroundPosition: "0% 50%" }}
@@ -383,11 +377,10 @@ export default function Home({ posts }) {
       />
 
       {/* MAIN */}
-      <main className="relative z-10 pt-10 md:pt-14">
-        {/* EDITORIAL DASHBOARD HERO */}
+      <main className="relative z-10 pt-10 md:pt-14 text-white">
+        {/* HERO */}
         <section className="container py-12 sm:py-14 md:py-16">
           <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-            {/* Left editorial copy */}
             <motion.div
               className="lg:col-span-5"
               variants={fadeUp}
@@ -399,7 +392,7 @@ export default function Home({ posts }) {
                 Editorial Dashboard
               </div>
 
-              <h1 className="mt-5 text-4xl sm:text-5xl font-extrabold leading-tight tracking-[0.02em]">
+              <h1 className="mt-5 text-4xl sm:text-5xl font-extrabold leading-tight tracking-[0.02em] text-white">
                 Discover the <span style={{ color: "var(--gold)" }}>Best Restaurants</span>{" "}
                 Worldwide
               </h1>
@@ -434,17 +427,15 @@ export default function Home({ posts }) {
               </div>
             </motion.div>
 
-            {/* Right: layered dashboard frame (reference-style) */}
             <motion.div
               className="lg:col-span-7 relative"
               initial={{ opacity: 0, y: 18, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              {/* Floating widgets */}
               <motion.div
                 {...floaty(0.15)}
-                className="hidden md:block absolute -left-6 top-8 w-[220px] rounded-2xl border border-white/10 bg-black/35 backdrop-blur p-4 shadow-2xl"
+                className="hidden md:block absolute -left-6 top-8 w-[220px] rounded-2xl border border-white/10 bg-black/35 backdrop-blur p-4 shadow-2xl text-white"
               >
                 <div className="text-xs text-white/60 tracking-widest uppercase">
                   Editorial
@@ -461,7 +452,7 @@ export default function Home({ posts }) {
 
               <motion.div
                 {...floaty(0.25)}
-                className="hidden md:block absolute -right-4 top-10 w-[220px] rounded-2xl border border-white/10 bg-black/35 backdrop-blur p-4 shadow-2xl"
+                className="hidden md:block absolute -right-4 top-10 w-[220px] rounded-2xl border border-white/10 bg-black/35 backdrop-blur p-4 shadow-2xl text-white"
               >
                 <div className="text-xs text-white/60 tracking-widest uppercase">
                   Signals
@@ -482,9 +473,7 @@ export default function Home({ posts }) {
                 </div>
               </motion.div>
 
-              {/* Main dashboard frame */}
-              <div className="relative rounded-3xl border border-white/12 bg-white/5 backdrop-blur overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.55)]">
-                {/* Top bar */}
+              <div className="relative rounded-3xl border border-white/12 bg-white/5 backdrop-blur overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.55)] text-white">
                 <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <div className="flex gap-2">
@@ -505,7 +494,6 @@ export default function Home({ posts }) {
                   </div>
                 </div>
 
-                {/* Hero image section */}
                 <div className="relative">
                   <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/20 to-black/10" />
                   <img
@@ -518,7 +506,7 @@ export default function Home({ posts }) {
                     <div className="inline-flex items-center gap-2 text-[10px] tracking-widest uppercase border border-white/15 bg-black/25 px-3 py-1 rounded-full">
                       Editorial Overview
                     </div>
-                    <h2 className="mt-4 text-3xl sm:text-4xl font-semibold tracking-tight">
+                    <h2 className="mt-4 text-3xl sm:text-4xl font-semibold tracking-tight text-white">
                       Global Discovery.
                       <br />
                       <span className="text-white/85">Curated.</span>
@@ -550,12 +538,10 @@ export default function Home({ posts }) {
                   </div>
                 </div>
 
-                {/* KPI strip inside frame */}
                 <div className="px-5 sm:px-6 pt-5">
                   <KpiStrip postsCount={(posts || []).length} tagsCount={(allTags || []).length - 1} />
                 </div>
 
-                {/* Dashboard modules inside frame (Map + Graphs) */}
                 <div className="p-5 sm:p-6">
                   <div className="grid grid-cols-1 gap-4">
                     <WorldMapModule />
@@ -574,7 +560,6 @@ export default function Home({ posts }) {
                     </div>
                   </div>
 
-                  {/* Bottom module cards row (reference-style) */}
                   <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {[
                       {
@@ -615,7 +600,7 @@ export default function Home({ posts }) {
                           <div className="text-[11px] text-white/60 tracking-widest uppercase">
                             {c.title}
                           </div>
-                          <div className="mt-1 text-sm font-semibold leading-snug">
+                          <div className="mt-1 text-sm font-semibold leading-snug text-white">
                             {c.subtitle}
                           </div>
                           <div className="mt-2 text-xs text-white/60">
@@ -628,10 +613,9 @@ export default function Home({ posts }) {
                 </div>
               </div>
 
-              {/* Bottom-right floating strip */}
               <motion.div
                 {...floaty(0.35)}
-                className="hidden md:block absolute right-3 -bottom-5 w-[260px] rounded-2xl border border-white/10 bg-black/35 backdrop-blur p-4 shadow-2xl"
+                className="hidden md:block absolute right-3 -bottom-5 w-[260px] rounded-2xl border border-white/10 bg-black/35 backdrop-blur p-4 shadow-2xl text-white"
               >
                 <div className="text-xs text-white/60 tracking-widest uppercase">
                   Live Pulse
@@ -723,7 +707,7 @@ export default function Home({ posts }) {
 
         {/* LATEST */}
         <section id="latest" className="container py-12">
-          <h2 className="text-2xl font-semibold mb-6 tracking-[0.015em]">
+          <h2 className="text-2xl font-semibold mb-6 tracking-[0.015em] text-white">
             Latest Features
           </h2>
 
@@ -739,7 +723,7 @@ export default function Home({ posts }) {
                   <div className="text-xs text-white/70 tracking-wider">
                     {filtered[0].frontmatter.date}
                   </div>
-                  <h3 className="mt-2 text-2xl font-bold group-hover:text-[var(--gold)] transition tracking-wide">
+                  <h3 className="mt-2 text-2xl font-bold group-hover:text-[var(--gold)] transition tracking-wide text-white">
                     {filtered[0].frontmatter.title}
                   </h3>
                   <p className="mt-2 text-white/80">{filtered[0].frontmatter.excerpt}</p>
@@ -761,7 +745,7 @@ export default function Home({ posts }) {
                     className="rounded-lg h-48 w-full object-cover mb-3"
                   />
                   <div className="text-xs text-white/60 tracking-wider">{frontmatter.date}</div>
-                  <h4 className="mt-1 font-semibold group-hover:text-[var(--gold)] transition tracking-wide">
+                  <h4 className="mt-1 font-semibold group-hover:text-[var(--gold)] transition tracking-wide text-white">
                     {frontmatter.title}
                   </h4>
                   <p className="text-white/80 text-sm mt-1 tracking-[0.01em]">
