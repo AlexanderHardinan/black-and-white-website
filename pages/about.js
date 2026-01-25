@@ -16,7 +16,7 @@ export default function About() {
         <title>About | The Culinary World Gazette</title>
         <meta
           name="description"
-          content="Mission, vision, values, and promise of The Culinary World Gazette."
+          content="The mission, vision, values, and editorial promise of The Culinary World Gazette."
         />
       </Head>
 
@@ -39,8 +39,8 @@ export default function About() {
             </h1>
 
             <p className="mt-3 text-sm sm:text-base text-white/70 max-w-3xl leading-relaxed">
-              A curated guide to the world’s most remarkable dining—built on craft, integrity,
-              and discovery.
+              A curated journal dedicated to the places, people, and ideas shaping
+              contemporary dining around the world.
             </p>
 
             <div className="mt-5 flex flex-wrap gap-3">
@@ -60,36 +60,35 @@ export default function About() {
             transition={{ duration: 0.5, ease: "easeOut", delay: 0.05 }}
             className="rounded-3xl border border-white/12 bg-white/5 backdrop-blur overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.55)]"
           >
-            <div className="px-5 sm:px-7 py-5 border-b border-white/10 flex items-center justify-between gap-4">
+            <div className="px-5 sm:px-7 py-5 border-b border-white/10">
               <div className="text-xs text-white/60 tracking-widest uppercase">
-                Editorial Standard
-              </div>
-              <div className="text-xs text-white/60">
-                Built for a premium, modern experience
+                Our Editorial Approach
               </div>
             </div>
 
             <div className="p-5 sm:p-7">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
-                {/* Left: mission/vision */}
+                {/* Left */}
                 <div className="lg:col-span-7 rounded-2xl border border-white/10 bg-black/25 backdrop-blur p-5 sm:p-6">
                   <div className="prose prose-invert max-w-none">
                     <h2 className="text-[var(--gold)]">Mission</h2>
                     <p>
-                      To discover, recognize, and share the world’s best restaurants and
-                      chefs—guiding travelers and diners to unforgettable culinary experiences.
+                      The Culinary World Gazette exists to surface the world’s most
+                      compelling dining destinations. We focus on restaurants,
+                      chefs, and cultures where craft, intention, and identity
+                      come together at the table.
                     </p>
 
                     <h2 className="text-[var(--gold)]">Vision</h2>
                     <p>
-                      To become the most trusted global voice in gastronomy, where every reader
-                      finds inspiration to explore new flavors, cultures, and destinations
-                      through food.
+                      To become a trusted global reference in gastronomy—where
+                      readers turn for clarity, context, and confidence in what
+                      truly deserves attention.
                     </p>
                   </div>
                 </div>
 
-                {/* Right: values + promise */}
+                {/* Right */}
                 <div className="lg:col-span-5 space-y-4">
                   <div className="rounded-2xl border border-white/10 bg-black/25 backdrop-blur p-5 sm:p-6">
                     <div className="text-xs text-white/60 tracking-widest uppercase">
@@ -100,9 +99,9 @@ export default function About() {
                       <div className="flex gap-3">
                         <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-[var(--gold)] shrink-0" />
                         <div>
-                          <span className="font-semibold text-white">Excellence:</span>{" "}
-                          We highlight chefs and restaurants that set the highest standards in
-                          taste, craft, and service.
+                          <span className="font-semibold text-white">Craft:</span>{" "}
+                          We respect technique, discipline, and consistency—both
+                          in the kitchen and beyond it.
                         </div>
                       </div>
 
@@ -110,17 +109,17 @@ export default function About() {
                         <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-[var(--gold)] shrink-0" />
                         <div>
                           <span className="font-semibold text-white">Discovery:</span>{" "}
-                          We uncover hidden gems and celebrated icons, giving readers authentic
-                          insight into where the world eats best.
+                          We look past noise to find what is genuinely worth
+                          knowing.
                         </div>
                       </div>
 
                       <div className="flex gap-3">
                         <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-[var(--gold)] shrink-0" />
                         <div>
-                          <span className="font-semibold text-white">Inspiration:</span>{" "}
-                          We aim to inspire journeys—whether across the globe or within one’s own
-                          city—through food and culture.
+                          <span className="font-semibold text-white">Context:</span>{" "}
+                          Every place exists within a culture, a moment, and a
+                          story—we honor all three.
                         </div>
                       </div>
 
@@ -128,8 +127,8 @@ export default function About() {
                         <span className="mt-[7px] h-1.5 w-1.5 rounded-full bg-[var(--gold)] shrink-0" />
                         <div>
                           <span className="font-semibold text-white">Integrity:</span>{" "}
-                          Every recommendation is based on genuine quality and culinary merit, not
-                          trends or hype.
+                          Our coverage is guided by experience and quality, never
+                          trends or promotion.
                         </div>
                       </div>
                     </div>
@@ -140,9 +139,9 @@ export default function About() {
                       Our Promise
                     </div>
                     <p className="mt-3 text-sm text-white/75 leading-relaxed">
-                      The Culinary World Gazette is more than a guide—it is a curated experience.
-                      Each article connects readers to the people, places, and stories that define
-                      the future of dining.
+                      The Gazette is not a list—it is a point of view. Every
+                      feature is curated to help readers choose well, travel
+                      thoughtfully, and experience food as a gateway to culture.
                     </p>
 
                     <div className="mt-5 flex flex-wrap gap-3">
@@ -162,10 +161,6 @@ export default function About() {
                     </div>
                   </div>
                 </div>
-              </div>
-
-              <div className="mt-5 text-[11px] text-white/50">
-                This page follows the same dark/glass dashboard visual language as the landing.
               </div>
             </div>
           </motion.div>
