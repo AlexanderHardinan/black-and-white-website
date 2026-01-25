@@ -1,3 +1,4 @@
+// pages/_app.js
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -8,6 +9,10 @@ import Header from "../components/Header";
 import Script from "next/script";
 
 const ORIGIN = "https://black-and-white-website.vercel.app";
+const SITE_NAME = "The Culinary World Gazette";
+const DEFAULT_DESC =
+  "Discover the best restaurants around the world — guides, reviews, and chef stories.";
+const OG_IMAGE = `${ORIGIN}/images/logo.png`;
 
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -22,37 +27,79 @@ export default function MyApp({ Component, pageProps }) {
     return () => router.events.off("routeChangeComplete", handleRouteChange);
   }, [router.events]);
 
-  // Open ContactWidget when URL includes ?contact=1
+  // PWA: register service worker
   useEffect(() => {
-    const maybeOpenContact = () => {
-      const asPath = router.asPath || "";
-      if (!asPath.includes("contact=1")) return;
+    if (typeof window === "undefined") return;
+    if (process.env.NODE_ENV !== "production") return;
+    if (!("serviceWorker" in navigator)) return;
 
-      // click the widget button (ContactWidget is already rendered globally below)
-      const btn = document.querySelector('button[aria-label="Contact Us"]');
-      if (btn) btn.click();
-
-      // optional: clean the URL so it doesn't reopen on refresh/back
-      const clean = asPath.replace(/(\?|&)contact=1(&)?/g, (m, q, amp) => {
-        if (q === "?" && amp) return "?";
-        return "";
-      }).replace(/\?$/, "");
-      router.replace(clean || "/", undefined, { shallow: true });
+    const register = async () => {
+      try {
+        await navigator.serviceWorker.register("/sw.js", { scope: "/" });
+      } catch {
+        // silent fail (no console noise in production)
+      }
     };
 
-    // run on first load and on route changes
-    maybeOpenContact();
-
-    const onRouteDone = () => maybeOpenContact();
-    router.events.on("routeChangeComplete", onRouteDone);
-    return () => router.events.off("routeChangeComplete", onRouteDone);
-  }, [router.asPath, router.events, router]);
+    register();
+  }, []);
 
   return (
     <>
-      {/* Canonical for every page */}
+      {/* Global SEO + PWA + Icons */}
       <Head>
+        {/* Canonical */}
         <link rel="canonical" href={canonical} />
+
+        {/* Basic SEO */}
+        <meta name="description" content={DEFAULT_DESC} />
+        <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+
+        {/* Theme / PWA */}
+        <meta name="theme-color" content="#0b0e10" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <link rel="manifest" href="/manifest.webmanifest" />
+
+        {/* Icons everywhere (uses your logo) */}
+        <link rel="icon" href="/images/logo.png" />
+        <link rel="apple-touch-icon" href="/images/logo.png" />
+
+        {/* Open Graph */}
+        <meta property="og:site_name" content={SITE_NAME} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={SITE_NAME} />
+        <meta property="og:description" content={DEFAULT_DESC} />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:image" content={OG_IMAGE} />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={SITE_NAME} />
+        <meta name="twitter:description" content={DEFAULT_DESC} />
+        <meta name="twitter:image" content={OG_IMAGE} />
+
+        {/* Structured Data (Website) */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: SITE_NAME,
+              url: ORIGIN,
+              description: DEFAULT_DESC,
+              publisher: {
+                "@type": "Organization",
+                name: SITE_NAME,
+                logo: {
+                  "@type": "ImageObject",
+                  url: OG_IMAGE,
+                },
+              },
+            }),
+          }}
+        />
       </Head>
 
       {/* GA4 */}
