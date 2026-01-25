@@ -64,6 +64,7 @@ export default function TopRestaurants({ posts }) {
               Meet the Chefs <span aria-hidden>→</span>
             </Link>
 
+            {/* CHANGED: route to Contact page (main contact form entry) */}
             <Link
               href="/contact"
               className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs border border-white/15 bg-black/30 hover:border-[var(--gold)]/50 transition text-white"
