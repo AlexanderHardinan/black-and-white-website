@@ -39,7 +39,12 @@ export default function WorldMap() {
         </div>
 
         <div className="rounded-xl border border-white/10 bg-black/20 overflow-hidden">
-          <svg viewBox="0 0 820 330" className="w-full h-[210px] sm:h-[240px]" role="img">
+          <svg
+            viewBox="0 0 820 330"
+            className="w-full h-[210px] sm:h-[240px]"
+            role="img"
+            aria-label="World map chart"
+          >
             <defs>
               <pattern id="gridDash" width="28" height="28" patternUnits="userSpaceOnUse">
                 <path
@@ -79,6 +84,15 @@ export default function WorldMap() {
                   strokeWidth={selected ? 2.2 : 1.4}
                   style={{ transformOrigin: "center" }}
                   onClick={() => setActive(r.id)}
+                  tabIndex={0}
+                  role="button"
+                  aria-label={`Select ${r.name}`}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setActive(r.id);
+                    }
+                  }}
                   className="cursor-pointer"
                 />
               );

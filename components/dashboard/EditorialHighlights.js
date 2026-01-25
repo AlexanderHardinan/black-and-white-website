@@ -1,71 +1,38 @@
 // components/dashboard/EditorialHighlights.js
-import Link from "next/link";
+import { motion } from "framer-motion";
 
-export default function EditorialHighlights({ topFeatured }) {
+const items = [
+  { label: "Top City", title: "Tokyo: late-night omakase wave", meta: "Rising interest" },
+  { label: "Cuisine", title: "Modern Thai: fire + fermentation", meta: "Strong momentum" },
+  { label: "Chef Watch", title: "New tasting menus gaining traction", meta: "Editors’ pick" },
+  { label: "Restaurant", title: "Hidden gems: 8-seat counters", meta: "High saves" },
+];
+
+export default function EditorialHighlights() {
   return (
-    <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <Link
-        href="/"
-        className="group rounded-2xl border border-white/10 bg-black/25 backdrop-blur overflow-hidden hover:border-[var(--gold)]/40 transition"
-      >
-        <div className="h-28 w-full overflow-hidden">
-          <img
-            src={topFeatured?.frontmatter?.cover || "/images/hero.png"}
-            alt={topFeatured?.frontmatter?.title || "Featured"}
-            className="h-full w-full object-cover group-hover:scale-[1.03] transition duration-300"
-          />
-        </div>
-        <div className="p-4">
-          <div className="text-[11px] text-white/60 tracking-widest uppercase">Latest Featured</div>
-          <div className="mt-1 text-sm font-semibold leading-snug text-white">
-            {(topFeatured?.frontmatter?.title || "Curated highlight") + " "}
-            <span className="text-[var(--gold)]">• Open carousel</span>
-          </div>
-          <div className="mt-2 text-xs text-white/60">
-            {topFeatured?.frontmatter?.date || "Updated weekly"}
-          </div>
-        </div>
-      </Link>
+    <div className="space-y-3">
+      {items.map((it) => (
+        <motion.div
+          key={it.title}
+          whileHover={{ y: -2 }}
+          transition={{ duration: 0.18, ease: "easeOut" }}
+          className="rounded-2xl border border-white/10 bg-black/25 backdrop-blur p-4 hover:border-[var(--gold)]/35 transition"
+        >
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <div className="text-[10px] text-white/55 tracking-widest uppercase">
+                {it.label}
+              </div>
+              <div className="mt-1 text-sm font-semibold text-white leading-snug">
+                {it.title}
+              </div>
+              <div className="mt-1 text-xs text-white/60">{it.meta}</div>
+            </div>
 
-      <Link
-        href="/top-restaurants"
-        className="group rounded-2xl border border-white/10 bg-black/25 backdrop-blur overflow-hidden hover:border-[var(--gold)]/40 transition"
-      >
-        <div className="h-28 w-full overflow-hidden">
-          <img
-            src="/images/hero.png"
-            alt="Top Cities"
-            className="h-full w-full object-cover group-hover:scale-[1.03] transition duration-300"
-          />
-        </div>
-        <div className="p-4">
-          <div className="text-[11px] text-white/60 tracking-widest uppercase">Top Cities</div>
-          <div className="mt-1 text-sm font-semibold leading-snug text-white">
-            Discovery heat by region
+            <div className="text-xs font-medium text-[var(--gold)]">+</div>
           </div>
-          <div className="mt-2 text-xs text-white/60">Global coverage</div>
-        </div>
-      </Link>
-
-      <Link
-        href="/top-chefs"
-        className="group rounded-2xl border border-white/10 bg-black/25 backdrop-blur overflow-hidden hover:border-[var(--gold)]/40 transition"
-      >
-        <div className="h-28 w-full overflow-hidden">
-          <img
-            src="/images/hero.png"
-            alt="Chef Spotlights"
-            className="h-full w-full object-cover group-hover:scale-[1.03] transition duration-300"
-          />
-        </div>
-        <div className="p-4">
-          <div className="text-[11px] text-white/60 tracking-widest uppercase">Chef Spotlights</div>
-          <div className="mt-1 text-sm font-semibold leading-snug text-white">
-            Profiles gaining traction
-          </div>
-          <div className="mt-2 text-xs text-white/60">Editorial picks</div>
-        </div>
-      </Link>
+        </motion.div>
+      ))}
     </div>
   );
 }
