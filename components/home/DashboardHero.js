@@ -1,12 +1,20 @@
 // components/home/DashboardHero.js
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import AnimatedButton from "../AnimatedButton";
 
 /* ---------- helpers ---------- */
 function clamp(n, min, max) {
   return Math.max(min, Math.min(max, n));
+}
+
+function safeId(input) {
+  return String(input || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 function linePath(values, w, h, pad) {
@@ -47,6 +55,8 @@ function MiniChartCard({ title, subtitle, values }) {
   const pct = prev === 0 ? 0 : ((last - prev) / prev) * 100;
   const pctText = `${pct >= 0 ? "+" : ""}${clamp(pct, -99, 999).toFixed(0)}%`;
 
+  const gradId = `areaGold-${safeId(title)}`;
+
   return (
     <motion.div
       whileHover={{ y: -2 }}
@@ -69,7 +79,7 @@ function MiniChartCard({ title, subtitle, values }) {
           aria-label={`${title} chart`}
         >
           <defs>
-            <linearGradient id={`${title}-areaGold`} x1="0" x2="0" y1="0" y2="1">
+            <linearGradient id={gradId} x1="0" x2="0" y1="0" y2="1">
               <stop offset="0%" stopColor="var(--gold)" stopOpacity="0.22" />
               <stop offset="100%" stopColor="var(--gold)" stopOpacity="0" />
             </linearGradient>
@@ -90,7 +100,7 @@ function MiniChartCard({ title, subtitle, values }) {
             );
           })}
 
-          <path d={dArea} fill={`url(#${title}-areaGold)`} />
+          <path d={dArea} fill={`url(#${gradId})`} />
           <path
             d={dLine}
             fill="none"
@@ -157,6 +167,7 @@ function WorldMapModule() {
                 />
               </pattern>
             </defs>
+
             <rect x="0" y="0" width="820" height="330" fill="url(#gridDash)" />
             <ellipse
               cx="410"
@@ -268,26 +279,26 @@ function KpiStrip({ postsCount, tagsCount }) {
 }
 
 /* ---------- main section ---------- */
-export default function DashboardHero({
-  posts,
-  allTags,
-  topFeatured,
-  onOpenFeaturedAt,
-}) {
+export default function DashboardHero({ posts, allTags, topFeatured, onOpenFeaturedAt }) {
+  const reduceMotion = useReducedMotion();
+
   const fadeUp = {
     hidden: { opacity: 0, y: 18 },
     visible: { opacity: 1, y: 0 },
   };
 
-  const floaty = (delay = 0) => ({
-    initial: { opacity: 0, y: 10, scale: 0.98 },
-    animate: {
-      opacity: 1,
-      y: [0, -6, 0],
-      scale: 1,
-      transition: { delay, duration: 4.8, repeat: Infinity, ease: "easeInOut" },
-    },
-  });
+  const floaty = (delay = 0) =>
+    reduceMotion
+      ? undefined
+      : {
+          initial: { opacity: 0, y: 10, scale: 0.98 },
+          animate: {
+            opacity: 1,
+            y: [0, -6, 0],
+            scale: 1,
+            transition: { delay, duration: 4.8, repeat: Infinity, ease: "easeInOut" },
+          },
+        };
 
   const storyVelocity = [18, 22, 19, 26, 29, 33, 30, 38, 42, 47, 45, 53];
   const cityMomentum = [9, 11, 12, 10, 14, 16, 18, 17, 20, 22, 24, 26];
@@ -350,7 +361,7 @@ export default function DashboardHero({
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <motion.div
-            {...floaty(0.15)}
+            {...(floaty(0.15) || {})}
             className="hidden md:block absolute -left-6 top-8 w-[220px] rounded-2xl border border-white/10 bg-black/35 backdrop-blur p-4 shadow-2xl text-white"
           >
             <div className="text-xs text-white/60 tracking-widest uppercase">Editorial</div>
@@ -365,7 +376,7 @@ export default function DashboardHero({
           </motion.div>
 
           <motion.div
-            {...floaty(0.25)}
+            {...(floaty(0.25) || {})}
             className="hidden md:block absolute -right-4 top-10 w-[220px] rounded-2xl border border-white/10 bg-black/35 backdrop-blur p-4 shadow-2xl text-white"
           >
             <div className="text-xs text-white/60 tracking-widest uppercase">Signals</div>
@@ -449,7 +460,10 @@ export default function DashboardHero({
             </div>
 
             <div className="px-5 sm:px-6 pt-5">
-              <KpiStrip postsCount={(posts || []).length} tagsCount={(allTags || []).length - 1} />
+              <KpiStrip
+                postsCount={(posts || []).length}
+                tagsCount={(allTags || []).length - 1}
+              />
             </div>
 
             <div className="p-5 sm:p-6">
@@ -546,7 +560,7 @@ export default function DashboardHero({
           </div>
 
           <motion.div
-            {...floaty(0.35)}
+            {...(floaty(0.35) || {})}
             className="hidden md:block absolute right-3 -bottom-5 w-[260px] rounded-2xl border border-white/10 bg-black/35 backdrop-blur p-4 shadow-2xl text-white"
           >
             <div className="text-xs text-white/60 tracking-widest uppercase">Live Pulse</div>
