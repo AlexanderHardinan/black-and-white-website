@@ -1,4 +1,13 @@
+# *
 User-agent: *
 Allow: /
 
-Sitemap: https://YOUR-PROD-DOMAIN/sitemap.xml
+# *
+User-agent: *
+Disallow: /api/
+
+# Host
+Host: https://black-and-white-website.vercel.app
+
+# Sitemaps
+Sitemap: https://black-and-white-website.vercel.app/sitemap.xml

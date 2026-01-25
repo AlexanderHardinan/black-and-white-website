@@ -283,12 +283,11 @@ function FeaturedModalCarousel({ open, onClose, items, startIndex = 0 }) {
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, align: "start" },
-    [] // no autoplay inside modal (manual control)
+    []
   );
 
   useEffect(() => {
     if (!open) return;
-    setSelected(startIndex);
 
     const onKeyDown = (e) => {
       if (e.key === "Escape") onClose();
@@ -298,14 +297,13 @@ function FeaturedModalCarousel({ open, onClose, items, startIndex = 0 }) {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [open, onClose, startIndex, emblaApi]);
+  }, [open, onClose, emblaApi]);
 
   useEffect(() => {
     if (!open) return;
     if (!emblaApi) return;
 
     emblaApi.reInit();
-
     const safe = clamp(startIndex, 0, Math.max(0, (items?.length || 1) - 1));
     emblaApi.scrollTo(safe, true);
 
@@ -343,7 +341,6 @@ function FeaturedModalCarousel({ open, onClose, items, startIndex = 0 }) {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="w-full max-w-5xl rounded-3xl border border-white/12 bg-black/60 backdrop-blur shadow-[0_40px_120px_rgba(0,0,0,0.65)] overflow-hidden">
-              {/* Header */}
               <div className="px-4 sm:px-6 py-4 border-b border-white/10 flex items-center justify-between gap-3">
                 <div>
                   <div className="text-xs text-white/60 tracking-widest uppercase">
@@ -363,13 +360,11 @@ function FeaturedModalCarousel({ open, onClose, items, startIndex = 0 }) {
                 </button>
               </div>
 
-              {/* Body */}
               <div className="p-4 sm:p-6">
                 {!canRender ? (
                   <div className="text-white/70 text-sm">No featured items available.</div>
                 ) : (
                   <>
-                    {/* Carousel viewport */}
                     <div
                       ref={emblaRef}
                       className="overflow-hidden rounded-2xl border border-white/10 bg-black/25"
@@ -435,7 +430,6 @@ function FeaturedModalCarousel({ open, onClose, items, startIndex = 0 }) {
                       </div>
                     </div>
 
-                    {/* Controls */}
                     <div className="mt-4 flex items-center justify-between gap-3">
                       <div className="flex items-center gap-2">
                         <button
@@ -454,7 +448,6 @@ function FeaturedModalCarousel({ open, onClose, items, startIndex = 0 }) {
                         </button>
                       </div>
 
-                      {/* Dots */}
                       <div className="flex items-center gap-2">
                         {items.map((_, i) => (
                           <button
@@ -490,7 +483,6 @@ export default function Home({ posts }) {
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState("All");
 
-  // modal state (dashboard featured)
   const [featuredOpen, setFeaturedOpen] = useState(false);
   const [featuredStartIndex, setFeaturedStartIndex] = useState(0);
 
@@ -518,13 +510,12 @@ export default function Home({ posts }) {
     });
   }, [posts, query, activeTag]);
 
-  // dashboard modal items = latest posts (top N)
   const featuredItems = useMemo(() => (filtered || []).slice(0, 8), [filtered]);
 
-  const openFeaturedModal = useCallback(() => {
-    setFeaturedStartIndex(0);
+  const openFeaturedModalAt = useCallback((index) => {
+    setFeaturedStartIndex(clamp(index, 0, Math.max(0, (featuredItems?.length || 1) - 1)));
     setFeaturedOpen(true);
-  }, []);
+  }, [featuredItems?.length]);
 
   const closeFeaturedModal = useCallback(() => setFeaturedOpen(false), []);
 
@@ -573,6 +564,7 @@ export default function Home({ posts }) {
           backgroundSize: "400% 400%",
         }}
       />
+
       <Particles
         id="tsparticles"
         className="absolute inset-0 -z-10"
@@ -590,7 +582,6 @@ export default function Home({ posts }) {
         }}
       />
 
-      {/* Modal Carousel (dashboard featured) */}
       <FeaturedModalCarousel
         open={featuredOpen}
         onClose={closeFeaturedModal}
@@ -598,7 +589,6 @@ export default function Home({ posts }) {
         startIndex={featuredStartIndex}
       />
 
-      {/* MAIN */}
       <main className="relative z-10 pt-10 md:pt-14 text-white">
         {/* HERO */}
         <section className="container py-12 sm:py-14 md:py-16">
@@ -734,13 +724,13 @@ export default function Home({ posts }) {
                     </p>
 
                     <div className="mt-4 flex items-center gap-3">
-                      <a
-                        href="#latest"
+                      <button
+                        type="button"
+                        onClick={() => openFeaturedModalAt(0)}
                         className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs border border-white/15 bg-black/30 hover:border-[var(--gold)]/50 transition"
                       >
-                        Explore Latest
-                        <span aria-hidden>→</span>
-                      </a>
+                        Open Featured Carousel <span aria-hidden>→</span>
+                      </button>
                       <div className="hidden sm:flex items-center -space-x-2">
                         {Array.from({ length: 4 }).map((_, i) => (
                           <span
@@ -781,12 +771,11 @@ export default function Home({ posts }) {
 
                   {/* DASHBOARD MODULE CARDS ROW */}
                   <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    {/* Featured Restaurant -> MODAL CAROUSEL */}
                     <button
                       type="button"
-                      onClick={openFeaturedModal}
+                      onClick={() => openFeaturedModalAt(0)}
                       className="group text-left rounded-2xl border border-white/10 bg-black/25 backdrop-blur overflow-hidden hover:border-[var(--gold)]/40 transition focus:outline-none focus:ring-2 focus:ring-[var(--gold)]/60"
-                      aria-label="Open featured carousel"
+                      aria-label="Open latest featured carousel"
                     >
                       <div className="h-28 w-full overflow-hidden">
                         <img
@@ -797,11 +786,11 @@ export default function Home({ posts }) {
                       </div>
                       <div className="p-4">
                         <div className="text-[11px] text-white/60 tracking-widest uppercase">
-                          Featured Restaurant
+                          Latest Featured
                         </div>
                         <div className="mt-1 text-sm font-semibold leading-snug text-white">
                           {(topFeatured?.frontmatter?.title || "Curated highlight") + " "}
-                          <span className="text-[var(--gold)]">• View carousel</span>
+                          <span className="text-[var(--gold)]">• Open carousel</span>
                         </div>
                         <div className="mt-2 text-xs text-white/60">
                           {topFeatured?.frontmatter?.date || "Updated weekly"}
@@ -809,7 +798,6 @@ export default function Home({ posts }) {
                       </div>
                     </button>
 
-                    {/* Keep the other cards as normal Links */}
                     <Link
                       href="#cities"
                       className="group rounded-2xl border border-white/10 bg-black/25 backdrop-blur overflow-hidden hover:border-[var(--gold)]/40 transition"
@@ -881,7 +869,7 @@ export default function Home({ posts }) {
           </div>
         </section>
 
-        {/* SEARCH + TAGS + RESULTS (kept) */}
+        {/* SEARCH + TAGS */}
         <section className="container">
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-5 mb-6">
             <div className="grid gap-4">
@@ -947,54 +935,58 @@ export default function Home({ posts }) {
           </div>
         </section>
 
-        {/* LATEST (unchanged) */}
+        {/* LATEST (REPLACED: now dashboard-style + opens modal carousel) */}
         <section id="latest" className="container py-12">
-          <h2 className="text-2xl font-semibold mb-6 tracking-[0.015em] text-white">
-            Latest Features
-          </h2>
+          <div className="flex items-end justify-between gap-4 mb-6">
+            <div>
+              <h2 className="text-2xl font-semibold tracking-[0.015em] text-white">
+                Latest Features
+              </h2>
+              <div className="mt-1 text-sm text-white/60">
+                Open the editorial carousel to browse latest stories.
+              </div>
+            </div>
 
-          {filtered.length > 0 && (
-            <Link href={`/posts/${filtered[0].slug}`} className="group block mb-10">
-              <article className="grid md:grid-cols-2 gap-6 items-center rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-4 md:p-6">
-                <img
-                  src={filtered[0].frontmatter.cover}
-                  alt={filtered[0].frontmatter.title}
-                  className="rounded-xl h-[280px] w-full object-cover"
-                />
-                <div>
-                  <div className="text-xs text-white/70 tracking-wider">
-                    {filtered[0].frontmatter.date}
+            <button
+              type="button"
+              onClick={() => openFeaturedModalAt(0)}
+              className="rounded-full px-4 py-2 text-xs border border-white/15 bg-black/30 hover:border-[var(--gold)]/50 transition text-white"
+            >
+              Open Carousel →
+            </button>
+          </div>
+
+          {/* Editorial tiles (click any to open modal at that index) */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            {(featuredItems || []).slice(0, 6).map((it, idx) => (
+              <button
+                key={it.slug || idx}
+                type="button"
+                onClick={() => openFeaturedModalAt(idx)}
+                className="group text-left rounded-2xl border border-white/10 bg-black/25 backdrop-blur overflow-hidden hover:border-[var(--gold)]/40 transition focus:outline-none focus:ring-2 focus:ring-[var(--gold)]/60"
+              >
+                <div className="h-44 w-full overflow-hidden">
+                  <img
+                    src={it.frontmatter?.cover || "/images/hero.png"}
+                    alt={it.frontmatter?.title || "Latest"}
+                    className="h-full w-full object-cover group-hover:scale-[1.03] transition duration-300"
+                  />
+                </div>
+                <div className="p-4">
+                  <div className="text-xs text-white/60 tracking-wider">
+                    {it.frontmatter?.date || "—"}
                   </div>
-                  <h3 className="mt-2 text-2xl font-bold group-hover:text-[var(--gold)] transition tracking-wide text-white">
-                    {filtered[0].frontmatter.title}
-                  </h3>
-                  <p className="mt-2 text-white/80">{filtered[0].frontmatter.excerpt}</p>
-                  <div className="mt-4">
-                    <span className="text-[var(--gold)] font-semibold">Read more →</span>
+                  <div className="mt-1 text-base font-semibold text-white leading-snug">
+                    {it.frontmatter?.title || "Untitled"}
+                  </div>
+                  <div className="mt-2 text-sm text-white/70 line-clamp-2">
+                    {it.frontmatter?.excerpt || ""}
+                  </div>
+                  <div className="mt-3 text-xs text-[var(--gold)] font-medium">
+                    Open in carousel →
                   </div>
                 </div>
-              </article>
-            </Link>
-          )}
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filtered.slice(1).map(({ slug, frontmatter }) => (
-              <Link href={`/posts/${slug}`} key={slug} className="group block">
-                <article className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur overflow-hidden hover:translate-y-[-4px] transition p-4">
-                  <img
-                    src={frontmatter.cover}
-                    alt={frontmatter.title}
-                    className="rounded-lg h-48 w-full object-cover mb-3"
-                  />
-                  <div className="text-xs text-white/60 tracking-wider">{frontmatter.date}</div>
-                  <h4 className="mt-1 font-semibold group-hover:text-[var(--gold)] transition tracking-wide text-white">
-                    {frontmatter.title}
-                  </h4>
-                  <p className="text-white/80 text-sm mt-1 tracking-[0.01em]">
-                    {frontmatter.excerpt}
-                  </p>
-                </article>
-              </Link>
+              </button>
             ))}
           </div>
         </section>
