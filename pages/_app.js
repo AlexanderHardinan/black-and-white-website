@@ -22,6 +22,32 @@ export default function MyApp({ Component, pageProps }) {
     return () => router.events.off("routeChangeComplete", handleRouteChange);
   }, [router.events]);
 
+  // Open ContactWidget when URL includes ?contact=1
+  useEffect(() => {
+    const maybeOpenContact = () => {
+      const asPath = router.asPath || "";
+      if (!asPath.includes("contact=1")) return;
+
+      // click the widget button (ContactWidget is already rendered globally below)
+      const btn = document.querySelector('button[aria-label="Contact Us"]');
+      if (btn) btn.click();
+
+      // optional: clean the URL so it doesn't reopen on refresh/back
+      const clean = asPath.replace(/(\?|&)contact=1(&)?/g, (m, q, amp) => {
+        if (q === "?" && amp) return "?";
+        return "";
+      }).replace(/\?$/, "");
+      router.replace(clean || "/", undefined, { shallow: true });
+    };
+
+    // run on first load and on route changes
+    maybeOpenContact();
+
+    const onRouteDone = () => maybeOpenContact();
+    router.events.on("routeChangeComplete", onRouteDone);
+    return () => router.events.off("routeChangeComplete", onRouteDone);
+  }, [router.asPath, router.events, router]);
+
   return (
     <>
       {/* Canonical for every page */}
@@ -47,7 +73,7 @@ export default function MyApp({ Component, pageProps }) {
         </>
       )}
 
-      <Header /> 
+      <Header />
       <Component {...pageProps} />
       <Footer />
       <ContactWidget />
