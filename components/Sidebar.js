@@ -1,3 +1,4 @@
+// components/Sidebar.js
 import { useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -28,17 +29,15 @@ export default function Sidebar({ open, setOpen }) {
   // Scroll lock + autofocus + restore focus
   useEffect(() => {
     if (open) {
-      // remember last focused element to restore later
       lastFocusedRef.current = document.activeElement;
-      // lock scroll
+
       const originalOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
-      // next tick focus the close button (accessible)
+
       setTimeout(() => closeBtnRef.current?.focus(), 0);
 
       return () => {
         document.body.style.overflow = originalOverflow;
-        // restore focus where the user was
         lastFocusedRef.current?.focus?.();
       };
     }
@@ -59,13 +58,11 @@ export default function Sidebar({ open, setOpen }) {
     const last = focusables[focusables.length - 1];
 
     if (e.shiftKey) {
-      // Shift+Tab on first -> go to last
       if (document.activeElement === first) {
         e.preventDefault();
         last.focus();
       }
     } else {
-      // Tab on last -> go to first
       if (document.activeElement === last) {
         e.preventDefault();
         first.focus();
@@ -86,7 +83,7 @@ export default function Sidebar({ open, setOpen }) {
         <>
           {/* Overlay */}
           <motion.div
-            className="fixed inset-0 z-[98] bg-black/50"
+            className="fixed inset-0 z-[98] bg-black/70 backdrop-blur-sm"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -100,21 +97,42 @@ export default function Sidebar({ open, setOpen }) {
             role="dialog"
             aria-modal="true"
             aria-labelledby="sidebar-title"
-            className="fixed right-0 top-0 z-[99] h-full w-[86%] max-w-sm bg-background text-foreground border-l border-white/10 shadow-2xl outline-none"
+            className="
+              fixed right-0 top-0 z-[99] h-full w-[86%] max-w-sm
+              bg-[var(--bg)] text-[var(--fg)]
+              border-l border-white/10
+              shadow-[0_40px_120px_rgba(0,0,0,0.65)]
+              outline-none
+            "
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 260, damping: 28 }}
             onKeyDown={onKeyDownTrap}
           >
+            {/* Glass top strip */}
+            <div className="absolute inset-x-0 top-0 h-24 pointer-events-none bg-gradient-to-b from-white/10 to-transparent" />
+
             {/* Header */}
-            <div className="p-5 flex items-center justify-between border-b border-white/10">
-              <h2 id="sidebar-title" className="font-semibold tracking-wide">
-                Menu
-              </h2>
+            <div className="relative p-5 flex items-center justify-between border-b border-white/10 bg-white/5 backdrop-blur">
+              <div className="flex flex-col">
+                <h2 id="sidebar-title" className="font-semibold tracking-wide text-white">
+                  Menu
+                </h2>
+                <div className="text-[11px] text-white/55 tracking-widest uppercase mt-1">
+                  The Culinary World Gazette
+                </div>
+              </div>
+
               <button
                 ref={closeBtnRef}
-                className="rounded-md px-3 py-2 border border-white/15 hover:border-[var(--gold)] focus:outline-none focus:ring-2 focus:ring-[var(--gold)]"
+                className="
+                  rounded-full px-4 py-2 text-xs
+                  border border-white/15 bg-black/30
+                  hover:border-[var(--gold)]/50
+                  focus:outline-none focus:ring-2 focus:ring-[var(--gold)]/60
+                  transition
+                "
                 onClick={() => setOpen(false)}
                 aria-label="Close menu"
               >
@@ -123,30 +141,53 @@ export default function Sidebar({ open, setOpen }) {
             </div>
 
             {/* Nav */}
-            <nav className="px-4 py-4">
+            <nav className="px-4 py-5">
+              <div className="text-[10px] text-white/55 tracking-widest uppercase px-2 mb-3">
+                Navigation
+              </div>
+
               <ul className="space-y-2">
                 {NAV_LINKS.map((l) => (
                   <li key={l.href}>
                     <Link
                       href={l.href}
-                      className={`block rounded-lg px-3 py-3 text-base transition focus:outline-none focus:ring-2 focus:ring-[var(--gold)]
+                      className={`
+                        group flex items-center justify-between
+                        rounded-2xl px-4 py-3 text-sm
+                        border transition
+                        focus:outline-none focus:ring-2 focus:ring-[var(--gold)]/60
                         ${
                           isActive(l.href)
-                            ? "bg-white/5 text-[var(--gold)] border border-[var(--gold)]/30"
-                            : "text-white/85 hover:text-[var(--gold)] hover:bg-white/5 border border-transparent"
-                        }`}
+                            ? "bg-white/5 border-[var(--gold)]/35 text-[var(--gold)]"
+                            : "bg-black/25 border-white/10 text-white/85 hover:border-[var(--gold)]/30 hover:bg-white/5 hover:text-[var(--gold)]"
+                        }
+                      `}
                       onClick={() => setOpen(false)}
                     >
-                      {l.label}
+                      <span className="tracking-wide">{l.label}</span>
+                      <span
+                        className={`
+                          text-xs transition
+                          ${isActive(l.href) ? "text-[var(--gold)]" : "text-white/40 group-hover:text-[var(--gold)]"}
+                        `}
+                        aria-hidden
+                      >
+                        →
+                      </span>
                     </Link>
                   </li>
                 ))}
               </ul>
             </nav>
 
-            {/* Drawer footer (optional) */}
-            <div className="mt-auto p-4 text-xs text-white/60 border-t border-white/10">
-              © {new Date().getFullYear()} The Culinary World Gazette
+            {/* Drawer footer */}
+            <div className="mt-auto p-4 border-t border-white/10 bg-white/5 backdrop-blur">
+              <div className="text-xs text-white/60">
+                © {new Date().getFullYear()} The Culinary World Gazette
+              </div>
+              <div className="text-[11px] text-white/45 mt-1">
+                Editorial navigation panel
+              </div>
             </div>
           </motion.aside>
         </>
