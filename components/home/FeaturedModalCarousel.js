@@ -1,7 +1,7 @@
 // components/home/FeaturedModalCarousel.js
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 
 function clamp(n, min, max) {
@@ -9,27 +9,89 @@ function clamp(n, min, max) {
 }
 
 export default function FeaturedModalCarousel({ open, onClose, items, startIndex = 0 }) {
+  const reduceMotion = useReducedMotion();
+
   const [selected, setSelected] = useState(startIndex);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" }, []);
 
+  const dialogRef = useRef(null);
+  const prevBodyOverflowRef = useRef("");
+
+  const canRender = Array.isArray(items) && items.length > 0;
+
+  const close = useCallback(() => {
+    onClose?.();
+  }, [onClose]);
+
+  // Lock background scroll when open
+  useEffect(() => {
+    if (!open) return;
+
+    prevBodyOverflowRef.current = document.body.style.overflow || "";
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = prevBodyOverflowRef.current;
+    };
+  }, [open]);
+
+  // Focus dialog on open
+  useEffect(() => {
+    if (!open) return;
+    const t = setTimeout(() => {
+      dialogRef.current?.focus?.();
+    }, 0);
+    return () => clearTimeout(t);
+  }, [open]);
+
+  // Keyboard controls (Escape, arrows, Tab focus trap)
   useEffect(() => {
     if (!open) return;
 
     const onKeyDown = (e) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        e.preventDefault();
+        close();
+        return;
+      }
+
       if (e.key === "ArrowLeft") emblaApi?.scrollPrev();
       if (e.key === "ArrowRight") emblaApi?.scrollNext();
+
+      if (e.key === "Tab") {
+        // Simple focus trap within the dialog
+        const root = dialogRef.current;
+        if (!root) return;
+
+        const focusables = root.querySelectorAll(
+          'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+        );
+        if (!focusables.length) return;
+
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+
+        if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        } else if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      }
     };
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [open, onClose, emblaApi]);
+  }, [open, close, emblaApi]);
 
+  // Sync Embla selected + jump to startIndex on open
   useEffect(() => {
     if (!open) return;
     if (!emblaApi) return;
 
     emblaApi.reInit();
+
     const safe = clamp(startIndex, 0, Math.max(0, (items?.length || 1) - 1));
     emblaApi.scrollTo(safe, true);
 
@@ -40,7 +102,12 @@ export default function FeaturedModalCarousel({ open, onClose, items, startIndex
     return () => emblaApi.off("select", onSelect);
   }, [open, emblaApi, startIndex, items?.length]);
 
-  const canRender = Array.isArray(items) && items.length > 0;
+  // Keep selected in range if items change while open
+  useEffect(() => {
+    if (!open) return;
+    const max = Math.max(0, (items?.length || 1) - 1);
+    setSelected((s) => clamp(s, 0, max));
+  }, [open, items?.length]);
 
   return (
     <AnimatePresence>
@@ -51,19 +118,21 @@ export default function FeaturedModalCarousel({ open, onClose, items, startIndex
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={onClose}
+            onClick={close}
             aria-hidden="true"
           />
 
           <motion.div
+            ref={dialogRef}
+            tabIndex={-1}
             role="dialog"
             aria-modal="true"
             aria-label="Latest featured carousel"
-            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6"
-            initial={{ opacity: 0, scale: 0.98, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.98, y: 10 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 outline-none"
+            initial={reduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.98, y: 10 }}
+            animate={reduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
+            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.98, y: 10 }}
+            transition={reduceMotion ? { duration: 0.12 } : { duration: 0.18, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="w-full max-w-5xl rounded-3xl border border-white/12 bg-black/60 backdrop-blur shadow-[0_40px_120px_rgba(0,0,0,0.65)] overflow-hidden">
@@ -76,7 +145,7 @@ export default function FeaturedModalCarousel({ open, onClose, items, startIndex
                 </div>
 
                 <button
-                  onClick={onClose}
+                  onClick={close}
                   className="rounded-full px-4 py-2 text-xs border border-white/15 bg-black/30 hover:border-[var(--gold)]/50 transition text-white"
                   aria-label="Close modal"
                 >
@@ -122,7 +191,7 @@ export default function FeaturedModalCarousel({ open, onClose, items, startIndex
                                   <Link
                                     href={`/posts/${it.slug}`}
                                     className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs border border-white/15 bg-black/30 hover:border-[var(--gold)]/50 transition text-white"
-                                    onClick={onClose}
+                                    onClick={close}
                                   >
                                     Read article <span aria-hidden>→</span>
                                   </Link>
