@@ -1,3 +1,4 @@
+/* styles/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,7 +14,7 @@
   --track: 0.0125em; /* ~0.2px at 16px */
 }
 
-/* (Optional compatibility) If anything still toggles a .dark class, keep it consistent */
+/* Keep any existing .dark toggles consistent */
 .dark {
   --bg: #0b0e10;
   --fg: #f8fafc;
@@ -22,13 +23,35 @@
 
 html {
   scroll-behavior: smooth;
+  background: var(--bg);
+  color: var(--fg);
 }
 
+/* Force global dark background everywhere (prevents white gaps) */
 body {
+  min-height: 100vh;
   background: var(--bg);
   color: var(--fg);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
   letter-spacing: var(--track);
+}
+
+/* Next.js root wrappers (prevents white behind sections) */
+#__next {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+/* Make form controls dark by default (native inputs, etc.) */
+:root {
+  color-scheme: dark;
+}
+
+/* Selection */
+::selection {
+  background: rgba(203, 161, 53, 0.28);
+  color: var(--fg);
 }
 
 /* keep paragraphs comfortable, but give headings a touch more */
@@ -250,9 +273,8 @@ h1, h2, h3 { letter-spacing: 0.02em; }
 /* ====== POST CONTENT (single source of truth, overrides .prose) ====== */
 .post-content { line-height: 1.75; }
 
-/* Headings used for your numbered sections: ### 1. **Title** */
 .post-content :where(h2, h3, h4){
-  margin-top: 2rem !important;        /* big gap above each section */
+  margin-top: 2rem !important;
   margin-bottom: .65rem !important;
   padding-top: .25rem;
   border-top: 1px solid rgba(255,255,255,.08);
@@ -261,21 +283,18 @@ h1, h2, h3 { letter-spacing: 0.02em; }
   font-size: clamp(1.05rem, 0.85rem + 0.6vw, 1.35rem);
 }
 .post-content :where(h2:first-of-type, h3:first-of-type, h4:first-of-type){
-  margin-top: 1rem !important;         /* smaller gap before the first item */
+  margin-top: 1rem !important;
   border-top: 0;
 }
 .post-content :where(h3 > strong){ color: var(--gold); }
 
-/* Comfortable paragraph rhythm between sections */
 .post-content :where(p){
-  margin: 1rem 0 !important;           /* force over .prose defaults */
+  margin: 1rem 0 !important;
 }
 
-/* If you ever use real ordered lists */
 .post-content :where(ol){ margin: 1rem 0 1rem 1.5rem; }
 .post-content :where(ol > li){ margin: .9rem 0; }
 
-/* If a numbered line is a bold paragraph instead of a heading, space it too */
 .post-content p > strong:first-child{
   display:block;
   margin-top: 1.5rem !important;
@@ -286,17 +305,16 @@ h1, h2, h3 { letter-spacing: 0.02em; }
 }
 
 /* === Tighter line-height for post content === */
-.post-content { line-height: 1.6; } /* was 1.75 */
+.post-content { line-height: 1.6; }
 
 .post-content :where(p, li){
-  line-height: 1.55 !important; /* tighten body text */
+  line-height: 1.55 !important;
 }
 
 .post-content :where(h1,h2,h3,h4){
-  line-height: 1.25 !important; /* tidy headings */
+  line-height: 1.25 !important;
 }
 
-/* optional: slightly tighter on large screens */
 @media (min-width: 1024px){
   .post-content :where(p, li){ line-height: 1.5 !important; }
 }
