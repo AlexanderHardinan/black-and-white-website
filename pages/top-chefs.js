@@ -8,7 +8,8 @@ const chefs = [
   {
     name: "Chef Alan Coxon",
     role: "Consultant, Innovator, Global Ambassador",
-    blurb: "Chef Alan Coxon is more than a chef — he’s a storyteller, innovator, and global culinary ambassador.",
+    blurb:
+      "Chef Alan Coxon is more than a chef — he’s a storyteller, innovator, and global culinary ambassador.",
     img: "/images/coxon.png?v=2",
   },
   {
@@ -20,13 +21,15 @@ const chefs = [
   {
     name: "Chef Pam (Pichaya Soontornyanakij)",
     role: "Chef-Owner — Potong, Bangkok",
-    blurb: "Known as Thailand’s rising culinary star, Chef Pam blends Thai-Chinese heritage with bold innovation, leading Restaurant Potong into Asia’s dining spotlight.",
+    blurb:
+      "Known as Thailand’s rising culinary star, Chef Pam blends Thai-Chinese heritage with bold innovation, leading Restaurant Potong into Asia’s dining spotlight.",
     img: "/images/chefpam.png?v=2",
   },
   {
     name: "Chef Hélène Darroze",
     role: "Chef Patron — Paris & London",
-    blurb: "A fourth-generation chef, known for her heartfelt French cuisine at restaurants including Hélène Darroze at The Connaught (three Michelin stars).",
+    blurb:
+      "A fourth-generation chef, known for her heartfelt French cuisine at restaurants including Hélène Darroze at The Connaught (three Michelin stars).",
     img: "/images/chefhelene.png?v=2",
   },
   {
@@ -85,6 +88,11 @@ const chefs = [
   },
 ];
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 14 },
+  visible: { opacity: 1, y: 0 },
+};
+
 export default function TopChefs() {
   const [selectedChef, setSelectedChef] = useState(null);
 
@@ -92,6 +100,10 @@ export default function TopChefs() {
     <>
       <Head>
         <title>Top Chefs — The Culinary World Gazette</title>
+        <meta
+          name="description"
+          content="Chef profiles curated by The Culinary World Gazette — technique, philosophy, and signature work."
+        />
       </Head>
 
       {/* Sticky header */}
@@ -99,60 +111,69 @@ export default function TopChefs() {
         <div className="container py-4 flex items-center justify-between">
           <Link
             href="/"
-            className="font-semibold tracking-wide hover:text-[var(--gold)] transition"
+            className="text-sm font-semibold tracking-wide text-white/80 hover:text-[var(--gold)] transition"
           >
             ← Home
           </Link>
-          <div className="text-sm text-white/70">Top Chefs</div>
+          <div className="text-sm text-white/60 tracking-widest uppercase">Top Chefs</div>
         </div>
       </header>
 
-      <main className="container py-10">
-        <motion.h1
-          className="text-3xl md:text-4xl font-bold tracking-[0.015em] mb-6 text-black"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+      <main className="container py-10 sm:py-12">
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          transition={{ duration: 0.45, ease: "easeOut" }}
+          className="mb-8 sm:mb-10"
         >
-          Top Chefs
-        </motion.h1>
-        <motion.p
-          className="text-black/80 mb-8 max-w-2xl"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          Profiles from kitchens and labs — technique, philosophy, and signature
-          dishes.
-        </motion.p>
+          <div className="inline-flex items-center gap-2 text-xs tracking-widest uppercase bg-white/10 border border-white/10 px-3 py-1 rounded-full">
+            Gazette Selection
+          </div>
+
+          <h1 className="mt-5 text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+            Top <span className="text-[var(--gold)]">Chefs</span>
+          </h1>
+
+          <p className="mt-3 text-sm sm:text-base text-white/70 max-w-2xl leading-relaxed">
+            Profiles from kitchens and ateliers — technique, philosophy, and the signatures that
+            define a modern culinary voice.
+          </p>
+        </motion.div>
 
         {/* Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {chefs.map((c) => (
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+          {chefs.map((c, idx) => (
             <motion.article
               key={c.name}
-              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-transform hover:-translate-y-1 cursor-pointer"
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.45, ease: "easeOut", delay: Math.min(0.25, idx * 0.03) }}
               onClick={() => setSelectedChef(c)}
+              className="group cursor-pointer rounded-3xl border border-white/10 bg-black/25 backdrop-blur overflow-hidden hover:border-[var(--gold)]/40 transition"
             >
-              {/* Full portrait image */}
-              <div className="w-full h-80 sm:h-96 md:h-[500px] overflow-hidden flex items-center justify-center bg-gray-100">
+              {/* Portrait */}
+              <div className="w-full h-72 sm:h-80 md:h-[420px] overflow-hidden flex items-center justify-center bg-black/20 border-b border-white/10">
                 <img
                   src={c.img}
                   alt={c.name}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain group-hover:scale-[1.02] transition duration-300"
                 />
               </div>
 
               {/* Content */}
-              <div className="p-5">
-                <h3 className="font-semibold text-lg text-black tracking-[0.015em]">
+              <div className="p-5 sm:p-6">
+                <h3 className="font-semibold text-lg text-white tracking-[0.015em]">
                   {c.name}
                 </h3>
-                <div className="text-xs text-gray-500 mt-1">{c.role}</div>
-                <p className="text-sm text-gray-700 mt-3">{c.blurb}</p>
+                <div className="text-[11px] text-white/60 tracking-widest uppercase mt-2">
+                  {c.role}
+                </div>
+                <p className="text-sm text-white/70 mt-3 leading-relaxed">{c.blurb}</p>
+
+                <div className="mt-5 text-xs text-[var(--gold)] font-medium">
+                  Open profile →
+                </div>
               </div>
             </motion.article>
           ))}
@@ -163,40 +184,86 @@ export default function TopChefs() {
       <AnimatePresence>
         {selectedChef && (
           <>
-            {/* Backdrop */}
             <motion.div
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+              className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9998]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedChef(null)}
+              aria-hidden="true"
             />
-            {/* Modal Content */}
+
             <motion.div
-              className="fixed inset-0 z-50 flex items-center justify-center p-4"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6"
+              initial={{ scale: 0.98, opacity: 0, y: 10 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.98, opacity: 0, y: 10 }}
+              transition={{ duration: 0.18, ease: "easeOut" }}
+              onClick={(e) => e.stopPropagation()}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Chef profile"
             >
-              <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full overflow-hidden">
-                <div className="w-full h-96 flex items-center justify-center bg-gray-100">
-                  <img
-                    src={selectedChef.img}
-                    alt={selectedChef.name}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-                <div className="p-6 text-black">
-                  <h2 className="text-2xl font-bold">{selectedChef.name}</h2>
-                  <p className="text-sm text-gray-600 mt-1">{selectedChef.role}</p>
-                  <p className="mt-4 text-gray-700">{selectedChef.blurb}</p>
+              <div className="w-full max-w-4xl rounded-3xl border border-white/12 bg-black/60 backdrop-blur shadow-[0_40px_120px_rgba(0,0,0,0.65)] overflow-hidden">
+                <div className="px-4 sm:px-6 py-4 border-b border-white/10 flex items-center justify-between gap-3">
+                  <div>
+                    <div className="text-xs text-white/60 tracking-widest uppercase">
+                      Chef Profile
+                    </div>
+                    <div className="text-sm font-semibold text-white">{selectedChef.name}</div>
+                  </div>
+
                   <button
                     onClick={() => setSelectedChef(null)}
-                    className="mt-6 px-4 py-2 rounded bg-[var(--gold)] text-black font-semibold hover:brightness-110 transition"
+                    className="rounded-full px-4 py-2 text-xs border border-white/15 bg-black/30 hover:border-[var(--gold)]/50 transition text-white"
+                    aria-label="Close"
                   >
                     Close
                   </button>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-0">
+                  <div className="w-full h-[320px] sm:h-[420px] md:h-full flex items-center justify-center bg-black/25 border-b md:border-b-0 md:border-r border-white/10">
+                    <img
+                      src={selectedChef.img}
+                      alt={selectedChef.name}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+
+                  <div className="p-5 sm:p-6">
+                    <div className="text-[11px] text-white/60 tracking-widest uppercase">
+                      {selectedChef.role}
+                    </div>
+
+                    <h2 className="mt-2 text-2xl sm:text-3xl font-semibold text-white leading-tight">
+                      {selectedChef.name}
+                    </h2>
+
+                    <p className="mt-4 text-sm sm:text-base text-white/75 leading-relaxed">
+                      {selectedChef.blurb}
+                    </p>
+
+                    <div className="mt-6 flex flex-wrap gap-3">
+                      <button
+                        onClick={() => setSelectedChef(null)}
+                        className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs border border-white/15 bg-black/30 hover:border-[var(--gold)]/50 transition text-white"
+                      >
+                        Close <span aria-hidden>→</span>
+                      </button>
+
+                      <Link
+                        href="/top-restaurants"
+                        className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs border border-white/15 bg-black/30 hover:border-[var(--gold)]/50 transition text-white"
+                      >
+                        Explore Restaurants <span aria-hidden>→</span>
+                      </Link>
+                    </div>
+
+                    <div className="mt-4 text-[11px] text-white/50">
+                      Gazette profile — concise, curated, and updated over time.
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
