@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState, useEffect, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Particles from "@tsparticles/react";
-import { loadSlim } from "tsparticles";
+import { loadSlim } from "@tsparticles/slim";
 import AnimatedButton from "../components/AnimatedButton";
 import { getAllPostsMeta } from "../lib/posts";
 import useEmblaCarousel from "embla-carousel-react";
@@ -281,10 +281,7 @@ function KpiStrip({ postsCount, tagsCount }) {
 function FeaturedModalCarousel({ open, onClose, items, startIndex = 0 }) {
   const [selected, setSelected] = useState(startIndex);
 
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, align: "start" },
-    []
-  );
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -346,9 +343,7 @@ function FeaturedModalCarousel({ open, onClose, items, startIndex = 0 }) {
                   <div className="text-xs text-white/60 tracking-widest uppercase">
                     Latest Featured
                   </div>
-                  <div className="text-sm font-semibold text-white">
-                    Editorial carousel
-                  </div>
+                  <div className="text-sm font-semibold text-white">Editorial carousel</div>
                 </div>
 
                 <button
@@ -371,10 +366,7 @@ function FeaturedModalCarousel({ open, onClose, items, startIndex = 0 }) {
                     >
                       <div className="flex">
                         {items.map((it, idx) => (
-                          <div
-                            key={it.slug || idx}
-                            className="min-w-0 flex-[0_0_100%] px-0"
-                          >
+                          <div key={it.slug || idx} className="min-w-0 flex-[0_0_100%] px-0">
                             <div className="grid md:grid-cols-2 gap-4 md:gap-6 p-4 sm:p-5">
                               <div className="rounded-2xl overflow-hidden border border-white/10 bg-black/20">
                                 <img
@@ -512,10 +504,13 @@ export default function Home({ posts }) {
 
   const featuredItems = useMemo(() => (filtered || []).slice(0, 8), [filtered]);
 
-  const openFeaturedModalAt = useCallback((index) => {
-    setFeaturedStartIndex(clamp(index, 0, Math.max(0, (featuredItems?.length || 1) - 1)));
-    setFeaturedOpen(true);
-  }, [featuredItems?.length]);
+  const openFeaturedModalAt = useCallback(
+    (index) => {
+      setFeaturedStartIndex(clamp(index, 0, Math.max(0, (featuredItems?.length || 1) - 1)));
+      setFeaturedOpen(true);
+    },
+    [featuredItems?.length]
+  );
 
   const closeFeaturedModal = useCallback(() => setFeaturedOpen(false), []);
 
@@ -590,7 +585,6 @@ export default function Home({ posts }) {
       />
 
       <main className="relative z-10 pt-10 md:pt-14 text-white">
-        {/* HERO */}
         <section className="container py-12 sm:py-14 md:py-16">
           <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-start">
             <motion.div
@@ -769,7 +763,6 @@ export default function Home({ posts }) {
                     </div>
                   </div>
 
-                  {/* DASHBOARD MODULE CARDS ROW */}
                   <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <button
                       type="button"
@@ -869,7 +862,6 @@ export default function Home({ posts }) {
           </div>
         </section>
 
-        {/* SEARCH + TAGS */}
         <section className="container">
           <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-5 mb-6">
             <div className="grid gap-4">
@@ -917,12 +909,8 @@ export default function Home({ posts }) {
                           />
                         )}
                         <div>
-                          <span className="font-medium text-[var(--gold)]">
-                            {frontmatter.title}
-                          </span>
-                          <div className="text-sm text-white/70 line-clamp-2">
-                            {frontmatter.excerpt}
-                          </div>
+                          <span className="font-medium text-[var(--gold)]">{frontmatter.title}</span>
+                          <div className="text-sm text-white/70 line-clamp-2">{frontmatter.excerpt}</div>
                         </div>
                       </Link>
                     ))
@@ -935,7 +923,6 @@ export default function Home({ posts }) {
           </div>
         </section>
 
-        {/* LATEST (REPLACED: now dashboard-style + opens modal carousel) */}
         <section id="latest" className="container py-12">
           <div className="flex items-end justify-between gap-4 mb-6">
             <div>
@@ -956,7 +943,6 @@ export default function Home({ posts }) {
             </button>
           </div>
 
-          {/* Editorial tiles (click any to open modal at that index) */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             {(featuredItems || []).slice(0, 6).map((it, idx) => (
               <button
@@ -973,18 +959,12 @@ export default function Home({ posts }) {
                   />
                 </div>
                 <div className="p-4">
-                  <div className="text-xs text-white/60 tracking-wider">
-                    {it.frontmatter?.date || "—"}
-                  </div>
+                  <div className="text-xs text-white/60 tracking-wider">{it.frontmatter?.date || "—"}</div>
                   <div className="mt-1 text-base font-semibold text-white leading-snug">
                     {it.frontmatter?.title || "Untitled"}
                   </div>
-                  <div className="mt-2 text-sm text-white/70 line-clamp-2">
-                    {it.frontmatter?.excerpt || ""}
-                  </div>
-                  <div className="mt-3 text-xs text-[var(--gold)] font-medium">
-                    Open in carousel →
-                  </div>
+                  <div className="mt-2 text-sm text-white/70 line-clamp-2">{it.frontmatter?.excerpt || ""}</div>
+                  <div className="mt-3 text-xs text-[var(--gold)] font-medium">Open in carousel →</div>
                 </div>
               </button>
             ))}
