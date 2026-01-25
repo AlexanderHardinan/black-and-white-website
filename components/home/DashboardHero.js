@@ -278,72 +278,88 @@ function KpiStrip({ postsCount, tagsCount }) {
   );
 }
 
-/* ---------- collage layer (Pattern alignment) ---------- */
-function CollagePanel({
-  title,
-  subtitle,
-  image,
-  className = "",
-  tilt = "-rotate-[2deg]",
-  opacity = "opacity-70",
-}) {
-  return (
-    <div
-      className={[
-        "absolute pointer-events-none",
-        "rounded-3xl border border-white/10 bg-black/20 backdrop-blur",
-        "shadow-[0_40px_120px_rgba(0,0,0,0.55)]",
-        "overflow-hidden",
-        tilt,
-        opacity,
-        className,
-      ].join(" ")}
-      aria-hidden="true"
-    >
-      <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/10" />
-        <img
-          src={image}
-          alt=""
-          className="block w-full h-full object-cover object-center"
-        />
-        <div className="absolute left-0 top-0 w-full p-4">
-          <div className="text-[11px] tracking-widest uppercase text-white/65">
-            {subtitle}
-          </div>
-          <div className="mt-1 text-sm font-semibold text-white/90">
-            {title}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+/* ---------- LEFT MID STACK (fills the middle gap on desktop) ---------- */
+function LeftMidStack({ posts, allTags, onOpenFeaturedAt }) {
+  const cards = [
+    {
+      label: "Featured",
+      title: "Open the latest highlights",
+      desc: "Curated picks, ready to browse.",
+      action: () => onOpenFeaturedAt(0),
+    },
+    {
+      label: "Coverage",
+      title: `${Math.max(0, (allTags || []).length - 1)} Topics tracked`,
+      desc: "Tags, cities, cuisines, chefs.",
+    },
+    {
+      label: "Publishing",
+      title: `${(posts || []).length} Articles live`,
+      desc: "SSG-ready posts & clean metadata.",
+    },
+  ];
 
-function TestimonialTile({ name, role, quote, className = "" }) {
   return (
-    <div
-      className={[
-        "absolute pointer-events-none",
-        "rounded-2xl border border-white/10 bg-black/25 backdrop-blur",
-        "shadow-[0_30px_90px_rgba(0,0,0,0.55)]",
-        "p-4",
-        className,
-      ].join(" ")}
-      aria-hidden="true"
-    >
-      <div className="text-[10px] tracking-widest uppercase text-white/55">
-        Testimonial
-      </div>
-      <div className="mt-2 text-xs text-white/70 leading-relaxed">
-        “{quote}”
-      </div>
-      <div className="mt-3 flex items-center justify-between gap-3">
-        <div>
-          <div className="text-xs font-semibold text-white">{name}</div>
-          <div className="text-[11px] text-white/55">{role}</div>
+    <div className="hidden lg:block mt-10">
+      <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur p-5">
+        <div className="flex items-center justify-between gap-3">
+          <div className="text-xs text-white/60 tracking-widest uppercase">Overview</div>
+          <div className="text-xs text-white/60">Mid-stack (pattern)</div>
         </div>
-        <div className="text-xs font-semibold text-[var(--gold)]">★ 4.9</div>
+
+        <div className="mt-4 grid grid-cols-1 gap-3">
+          {cards.map((c) => (
+            <div
+              key={c.title}
+              className="rounded-2xl border border-white/10 bg-black/25 backdrop-blur p-4 hover:border-[var(--gold)]/40 transition"
+            >
+              <div className="text-[10px] text-white/55 tracking-widest uppercase">
+                {c.label}
+              </div>
+              <div className="mt-1 text-sm font-semibold text-white">{c.title}</div>
+              <div className="mt-1 text-xs text-white/65 leading-relaxed">{c.desc}</div>
+
+              {c.action ? (
+                <button
+                  type="button"
+                  onClick={c.action}
+                  className="mt-3 inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs border border-white/15 bg-black/30 hover:border-[var(--gold)]/50 transition"
+                >
+                  Open <span aria-hidden>→</span>
+                </button>
+              ) : null}
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-4 rounded-2xl overflow-hidden border border-white/10 bg-black/20">
+          <div className="relative h-[160px]">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/10" />
+            <img
+              src="/images/hero.png"
+              alt="Preview"
+              className="absolute inset-0 h-full w-full object-cover object-center"
+            />
+            <div className="absolute inset-0 p-4 flex flex-col justify-end">
+              <div className="text-[10px] tracking-widest uppercase text-white/65">
+                Visual density
+              </div>
+              <div className="mt-1 text-sm font-semibold text-white">
+                This block removes the middle void.
+              </div>
+              <div className="mt-1 text-xs text-white/70">
+                Matches the pattern’s “stacked content” composition.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <KpiStrip
+            postsCount={(posts || []).length}
+            tagsCount={(allTags || []).length - 1}
+          />
+        </div>
       </div>
     </div>
   );
@@ -386,7 +402,7 @@ export default function DashboardHero({ posts, allTags, topFeatured, onOpenFeatu
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
           <div className="inline-flex items-center gap-2 text-xs tracking-widest uppercase bg-white/10 border border-white/10 px-3 py-1 rounded-full">
-            Editorial Dashboard
+            Official Gazette
           </div>
 
           <h1 className="mt-5 text-4xl sm:text-5xl font-extrabold leading-tight tracking-[0.02em] text-white">
@@ -395,8 +411,8 @@ export default function DashboardHero({ posts, allTags, topFeatured, onOpenFeatu
           </h1>
 
           <p className="mt-4 text-base sm:text-lg text-white/80 max-w-xl">
-            A complete editorial control room—global map, trend graphs, and curated modules—
-            presented as a premium dashboard landing page.
+            Showcasing your craft and passion
+            worldwide
           </p>
 
           <div className="mt-6 flex flex-wrap gap-3">
@@ -422,73 +438,18 @@ export default function DashboardHero({ posts, allTags, topFeatured, onOpenFeatu
               Curated modules for restaurants, cities, and chefs
             </div>
           </div>
+
+          {/* ✅ This is what fixes the “middle gap” on desktop */}
+          <LeftMidStack posts={posts} allTags={allTags} onOpenFeaturedAt={onOpenFeaturedAt} />
         </motion.div>
 
-        {/* Right dashboard scene (now includes Pattern-style layered collage) */}
+        {/* Right dashboard card */}
         <motion.div
-          className="lg:col-span-7 relative overflow-visible"
+          className="lg:col-span-7 relative"
           initial={{ opacity: 0, y: 18, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          {/* ===== Pattern Collage Layers (fills the “gap” like the reference) ===== */}
-          <div className="hidden lg:block absolute inset-0 -z-10">
-            {/* Back-left big screen (extends into the left column gap) */}
-            <CollagePanel
-              subtitle="LUXURY COLLECTION"
-              title="Curated Homes. Direct to You."
-              image="/images/hero.png"
-              tilt="-rotate-[3deg]"
-              opacity="opacity-55"
-              className="-left-[340px] top-[40px] w-[320px] h-[420px]"
-            />
-
-            {/* Mid-left screen (slightly in front of the back-left) */}
-            <CollagePanel
-              subtitle="MODERN HOMES"
-              title="Timeless Elegance."
-              image="/images/hero.png"
-              tilt="-rotate-[1.5deg]"
-              opacity="opacity-60"
-              className="-left-[240px] top-[260px] w-[280px] h-[340px]"
-            />
-
-            {/* Back-right screen (behind main card) */}
-            <CollagePanel
-              subtitle="DESIGN CONSULTATION"
-              title="Crafted for the Modern Elite"
-              image="/images/hero.png"
-              tilt="rotate-[2deg]"
-              opacity="opacity-45"
-              className="right-[-180px] top-[10px] w-[300px] h-[250px]"
-            />
-
-            {/* Lower-right mini screen */}
-            <CollagePanel
-              subtitle="INSIGHTS"
-              title="Performance Snapshot"
-              image="/images/hero.png"
-              tilt="rotate-[1deg]"
-              opacity="opacity-35"
-              className="right-[-140px] top-[310px] w-[240px] h-[200px]"
-            />
-
-            {/* Far-right testimonial stack (two cards) */}
-            <TestimonialTile
-              name="Leonard K."
-              role="Editor, Singapore"
-              quote="Compact layout, premium layering, and clean navigation."
-              className="right-[-220px] top-[90px] w-[240px]"
-            />
-            <TestimonialTile
-              name="Emily R."
-              role="Contributor, London"
-              quote="The stacked panels make it feel like a designed product."
-              className="right-[-220px] top-[230px] w-[240px]"
-            />
-          </div>
-
-          {/* Existing floating cards (keep) */}
           <motion.div
             {...(floaty(0.15) || {})}
             className="hidden md:block absolute -left-6 top-8 w-[220px] rounded-2xl border border-white/10 bg-black/35 backdrop-blur p-4 shadow-2xl text-white"
@@ -525,8 +486,7 @@ export default function DashboardHero({ posts, allTags, topFeatured, onOpenFeatu
             </div>
           </motion.div>
 
-          {/* Main dashboard card */}
-          <div className="relative z-10 rounded-3xl border border-white/12 bg-white/5 backdrop-blur overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.55)] text-white">
+          <div className="relative rounded-3xl border border-white/12 bg-white/5 backdrop-blur overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.55)] text-white">
             <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <div className="flex gap-2">
@@ -565,7 +525,7 @@ export default function DashboardHero({ posts, allTags, topFeatured, onOpenFeatu
                   <span className="text-white/85">Curated.</span>
                 </h2>
                 <p className="mt-3 text-xs sm:text-sm text-white/70 max-w-2xl leading-relaxed">
-                  World map insights, trend graphs, and curated modules—presented as a clean dashboard.
+                  World map insights, trend graphs, and curated modules.
                 </p>
 
                 <div className="mt-4 flex items-center gap-3">
@@ -590,10 +550,7 @@ export default function DashboardHero({ posts, allTags, topFeatured, onOpenFeatu
             </div>
 
             <div className="px-5 sm:px-6 pt-5">
-              <KpiStrip
-                postsCount={(posts || []).length}
-                tagsCount={(allTags || []).length - 1}
-              />
+              <KpiStrip postsCount={(posts || []).length} tagsCount={(allTags || []).length - 1} />
             </div>
 
             <div className="p-5 sm:p-6">
