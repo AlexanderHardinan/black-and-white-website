@@ -278,6 +278,77 @@ function KpiStrip({ postsCount, tagsCount }) {
   );
 }
 
+/* ---------- collage layer (Pattern alignment) ---------- */
+function CollagePanel({
+  title,
+  subtitle,
+  image,
+  className = "",
+  tilt = "-rotate-[2deg]",
+  opacity = "opacity-70",
+}) {
+  return (
+    <div
+      className={[
+        "absolute pointer-events-none",
+        "rounded-3xl border border-white/10 bg-black/20 backdrop-blur",
+        "shadow-[0_40px_120px_rgba(0,0,0,0.55)]",
+        "overflow-hidden",
+        tilt,
+        opacity,
+        className,
+      ].join(" ")}
+      aria-hidden="true"
+    >
+      <div className="relative">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/10" />
+        <img
+          src={image}
+          alt=""
+          className="block w-full h-full object-cover object-center"
+        />
+        <div className="absolute left-0 top-0 w-full p-4">
+          <div className="text-[11px] tracking-widest uppercase text-white/65">
+            {subtitle}
+          </div>
+          <div className="mt-1 text-sm font-semibold text-white/90">
+            {title}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TestimonialTile({ name, role, quote, className = "" }) {
+  return (
+    <div
+      className={[
+        "absolute pointer-events-none",
+        "rounded-2xl border border-white/10 bg-black/25 backdrop-blur",
+        "shadow-[0_30px_90px_rgba(0,0,0,0.55)]",
+        "p-4",
+        className,
+      ].join(" ")}
+      aria-hidden="true"
+    >
+      <div className="text-[10px] tracking-widest uppercase text-white/55">
+        Testimonial
+      </div>
+      <div className="mt-2 text-xs text-white/70 leading-relaxed">
+        “{quote}”
+      </div>
+      <div className="mt-3 flex items-center justify-between gap-3">
+        <div>
+          <div className="text-xs font-semibold text-white">{name}</div>
+          <div className="text-[11px] text-white/55">{role}</div>
+        </div>
+        <div className="text-xs font-semibold text-[var(--gold)]">★ 4.9</div>
+      </div>
+    </div>
+  );
+}
+
 /* ---------- main section ---------- */
 export default function DashboardHero({ posts, allTags, topFeatured, onOpenFeaturedAt }) {
   const reduceMotion = useReducedMotion();
@@ -353,13 +424,71 @@ export default function DashboardHero({ posts, allTags, topFeatured, onOpenFeatu
           </div>
         </motion.div>
 
-        {/* Right dashboard card */}
+        {/* Right dashboard scene (now includes Pattern-style layered collage) */}
         <motion.div
-          className="lg:col-span-7 relative"
+          className="lg:col-span-7 relative overflow-visible"
           initial={{ opacity: 0, y: 18, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
+          {/* ===== Pattern Collage Layers (fills the “gap” like the reference) ===== */}
+          <div className="hidden lg:block absolute inset-0 -z-10">
+            {/* Back-left big screen (extends into the left column gap) */}
+            <CollagePanel
+              subtitle="LUXURY COLLECTION"
+              title="Curated Homes. Direct to You."
+              image="/images/hero.png"
+              tilt="-rotate-[3deg]"
+              opacity="opacity-55"
+              className="-left-[340px] top-[40px] w-[320px] h-[420px]"
+            />
+
+            {/* Mid-left screen (slightly in front of the back-left) */}
+            <CollagePanel
+              subtitle="MODERN HOMES"
+              title="Timeless Elegance."
+              image="/images/hero.png"
+              tilt="-rotate-[1.5deg]"
+              opacity="opacity-60"
+              className="-left-[240px] top-[260px] w-[280px] h-[340px]"
+            />
+
+            {/* Back-right screen (behind main card) */}
+            <CollagePanel
+              subtitle="DESIGN CONSULTATION"
+              title="Crafted for the Modern Elite"
+              image="/images/hero.png"
+              tilt="rotate-[2deg]"
+              opacity="opacity-45"
+              className="right-[-180px] top-[10px] w-[300px] h-[250px]"
+            />
+
+            {/* Lower-right mini screen */}
+            <CollagePanel
+              subtitle="INSIGHTS"
+              title="Performance Snapshot"
+              image="/images/hero.png"
+              tilt="rotate-[1deg]"
+              opacity="opacity-35"
+              className="right-[-140px] top-[310px] w-[240px] h-[200px]"
+            />
+
+            {/* Far-right testimonial stack (two cards) */}
+            <TestimonialTile
+              name="Leonard K."
+              role="Editor, Singapore"
+              quote="Compact layout, premium layering, and clean navigation."
+              className="right-[-220px] top-[90px] w-[240px]"
+            />
+            <TestimonialTile
+              name="Emily R."
+              role="Contributor, London"
+              quote="The stacked panels make it feel like a designed product."
+              className="right-[-220px] top-[230px] w-[240px]"
+            />
+          </div>
+
+          {/* Existing floating cards (keep) */}
           <motion.div
             {...(floaty(0.15) || {})}
             className="hidden md:block absolute -left-6 top-8 w-[220px] rounded-2xl border border-white/10 bg-black/35 backdrop-blur p-4 shadow-2xl text-white"
@@ -396,7 +525,8 @@ export default function DashboardHero({ posts, allTags, topFeatured, onOpenFeatu
             </div>
           </motion.div>
 
-          <div className="relative rounded-3xl border border-white/12 bg-white/5 backdrop-blur overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.55)] text-white">
+          {/* Main dashboard card */}
+          <div className="relative z-10 rounded-3xl border border-white/12 bg-white/5 backdrop-blur overflow-hidden shadow-[0_40px_120px_rgba(0,0,0,0.55)] text-white">
             <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <div className="flex gap-2">
