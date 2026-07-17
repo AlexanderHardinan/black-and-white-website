@@ -112,7 +112,7 @@ function MiniChartCard({ title, subtitle, values }) {
         </svg>
       </div>
 
-      <div className="mt-2 text-[11px] text-white/50">Editorial trend signal (demo)</div>
+      <div className="mt-2 text-[11px] text-white/50"></div>
     </motion.div>
   );
 }
@@ -284,7 +284,7 @@ function LeftMidStack({ posts, allTags, onOpenFeaturedAt }) {
     {
       label: "Featured",
       title: "Open the latest highlights",
-      desc: "Curated picks, ready to browse.",
+      desc: "",
       action: () => onOpenFeaturedAt(0),
     },
     {
@@ -295,7 +295,7 @@ function LeftMidStack({ posts, allTags, onOpenFeaturedAt }) {
     {
       label: "Publishing",
       title: `${(posts || []).length} Articles live`,
-      desc: "SSG-ready posts & clean metadata.",
+      desc: "",
     },
   ];
 
@@ -304,7 +304,7 @@ function LeftMidStack({ posts, allTags, onOpenFeaturedAt }) {
       <div className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur p-5">
         <div className="flex items-center justify-between gap-3">
           <div className="text-xs text-white/60 tracking-widest uppercase">Overview</div>
-          <div className="text-xs text-white/60">Mid-stack (pattern)</div>
+          <div className="text-xs text-white/60"></div>
         </div>
 
         <div className="mt-4 grid grid-cols-1 gap-3">
