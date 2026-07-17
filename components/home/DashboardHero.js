@@ -213,7 +213,7 @@ function WorldMapModule() {
         </div>
 
         <div className="mt-2 text-[11px] text-white/50">
-          Click a region to spotlight (demo visualization).
+        
         </div>
       </div>
 
@@ -246,7 +246,7 @@ function WorldMapModule() {
         </div>
 
         <div className="mt-3 text-[11px] text-white/50">
-          Replace scores with real content + analytics later.
+          
         </div>
       </motion.div>
     </div>
@@ -342,13 +342,13 @@ function LeftMidStack({ posts, allTags, onOpenFeaturedAt }) {
             />
             <div className="absolute inset-0 p-4 flex flex-col justify-end">
               <div className="text-[10px] tracking-widest uppercase text-white/65">
-                Visual density
+                
               </div>
               <div className="mt-1 text-sm font-semibold text-white">
-                This block removes the middle void.
+                
               </div>
               <div className="mt-1 text-xs text-white/70">
-                Matches the pattern’s “stacked content” composition.
+                
               </div>
             </div>
           </div>
@@ -525,7 +525,7 @@ export default function DashboardHero({ posts, allTags, topFeatured, onOpenFeatu
                   <span className="text-white/85">Curated.</span>
                 </h2>
                 <p className="mt-3 text-xs sm:text-sm text-white/70 max-w-2xl leading-relaxed">
-                  World map insights, trend graphs, and curated modules.
+                  
                 </p>
 
                 <div className="mt-4 flex items-center gap-3">
@@ -544,7 +544,7 @@ export default function DashboardHero({ posts, allTags, topFeatured, onOpenFeatu
                       />
                     ))}
                   </div>
-                  <span className="hidden sm:block text-xs text-white/60">25+ Editors</span>
+                  <span className="hidden sm:block text-xs text-white/60"></span>
                 </div>
               </div>
             </div>
