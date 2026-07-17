@@ -42,18 +42,59 @@ function areaPath(values, w, h, pad) {
 }
 
 /* ---------- mini chart ---------- */
-function MiniChartCard({ title, subtitle, values }) {
+function MiniChartCard({ title, subtitle, values, live = false }) {
+  const reduceMotion = useReducedMotion();
+
   const w = 520;
   const h = 150;
   const pad = 14;
 
-  const dLine = linePath(values, w, h, pad);
-  const dArea = areaPath(values, w, h, pad);
+  const [liveValues, setLiveValues] = useState(values);
+  const chartValues = live ? liveValues : values;
 
-  const last = values[values.length - 1];
-  const prev = values[values.length - 2] ?? last;
+  useEffect(() => {
+    setLiveValues(values);
+  }, [values]);
+
+  useEffect(() => {
+    if (!live || reduceMotion || !Array.isArray(values) || values.length < 2) {
+      return undefined;
+    }
+
+    const timer = window.setInterval(() => {
+      setLiveValues((currentValues) => {
+        const current =
+          Array.isArray(currentValues) && currentValues.length === values.length
+            ? currentValues
+            : values;
+        const lastValue = current[current.length - 1] ?? 20;
+        const previousValue = current[current.length - 2] ?? lastValue;
+        const direction = lastValue >= previousValue ? 1 : -1;
+        const wave = Math.sin(Date.now() / 650) * 4;
+        const drift = direction * 1.6;
+        const pulse = Math.round((Math.random() - 0.35) * 7);
+        const nextValue = clamp(Math.round(lastValue + wave + drift + pulse), 6, 96);
+
+        return [...current.slice(1), nextValue];
+      });
+    }, 850);
+
+    return () => window.clearInterval(timer);
+  }, [live, reduceMotion, values]);
+
+  const dLine = linePath(chartValues, w, h, pad);
+  const dArea = areaPath(chartValues, w, h, pad);
+
+  const last = chartValues[chartValues.length - 1];
+  const prev = chartValues[chartValues.length - 2] ?? last;
   const pct = prev === 0 ? 0 : ((last - prev) / prev) * 100;
   const pctText = `${pct >= 0 ? "+" : ""}${clamp(pct, -99, 999).toFixed(0)}%`;
+
+  const min = Math.min(...chartValues);
+  const max = Math.max(...chartValues);
+  const span = Math.max(1, max - min);
+  const lastX = pad + (chartValues.length - 1) * ((w - pad * 2) / (chartValues.length - 1));
+  const lastY = pad + (1 - (last - min) / span) * (h - pad * 2);
 
   const gradId = `areaGold-${safeId(title)}`;
 
@@ -68,7 +109,20 @@ function MiniChartCard({ title, subtitle, values }) {
           <div className="text-sm font-semibold text-white">{title}</div>
           <div className="text-xs text-white/60 mt-1">{subtitle}</div>
         </div>
-        <div className="text-xs font-medium text-[var(--gold)]">{pctText}</div>
+
+        <div className="flex flex-col items-end gap-1">
+          <div className="text-xs font-medium text-[var(--gold)]">{pctText}</div>
+          {live ? (
+            <div className="inline-flex items-center gap-1.5 rounded-full border border-[var(--gold)]/25 bg-[var(--gold)]/10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.18em] text-[var(--gold)]">
+              <motion.span
+                className="h-1.5 w-1.5 rounded-full bg-[var(--gold)]"
+                animate={reduceMotion ? undefined : { opacity: [0.35, 1, 0.35], scale: [0.85, 1.25, 0.85] }}
+                transition={reduceMotion ? undefined : { duration: 1.1, repeat: Infinity, ease: "easeInOut" }}
+              />
+              Live
+            </div>
+          ) : null}
+        </div>
       </div>
 
       <div className="mt-3 w-full overflow-hidden rounded-xl border border-white/10 bg-black/20">
@@ -76,7 +130,7 @@ function MiniChartCard({ title, subtitle, values }) {
           viewBox={`0 0 ${w} ${h}`}
           className="w-full h-[120px] sm:h-[140px]"
           role="img"
-          aria-label={`${title} chart`}
+          aria-label={`${title} live chart`}
         >
           <defs>
             <linearGradient id={gradId} x1="0" x2="0" y1="0" y2="1">
@@ -100,19 +154,49 @@ function MiniChartCard({ title, subtitle, values }) {
             );
           })}
 
-          <path d={dArea} fill={`url(#${gradId})`} />
-          <path
-            d={dLine}
+          <motion.path
+            initial={false}
+            animate={{ d: dArea }}
+            transition={{ duration: reduceMotion ? 0 : 0.58, ease: "easeInOut" }}
+            fill={`url(#${gradId})`}
+          />
+          <motion.path
+            initial={false}
+            animate={{ d: dLine }}
+            transition={{ duration: reduceMotion ? 0 : 0.58, ease: "easeInOut" }}
             fill="none"
             stroke="var(--gold)"
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
+
+          {live ? (
+            <>
+              <motion.circle
+                cx={lastX}
+                cy={lastY}
+                r="4"
+                fill="var(--gold)"
+                animate={reduceMotion ? undefined : { r: [4, 7, 4], opacity: [0.95, 0.45, 0.95] }}
+                transition={reduceMotion ? undefined : { duration: 1.15, repeat: Infinity, ease: "easeInOut" }}
+              />
+              <motion.circle
+                cx={lastX}
+                cy={lastY}
+                r="2.4"
+                fill="white"
+                animate={reduceMotion ? undefined : { opacity: [0.65, 1, 0.65] }}
+                transition={reduceMotion ? undefined : { duration: 1.15, repeat: Infinity, ease: "easeInOut" }}
+              />
+            </>
+          ) : null}
         </svg>
       </div>
 
-      <div className="mt-2 text-[11px] text-white/50"></div>
+      <div className="mt-2 text-[11px] text-white/50">
+        {live ? "Live movement simulation updating continuously." : ""}
+      </div>
     </motion.div>
   );
 }
@@ -390,8 +474,14 @@ export default function DashboardHero({ posts, allTags, topFeatured, onOpenFeatu
           },
         };
 
-  const storyVelocity = [18, 22, 19, 26, 29, 33, 30, 38, 42, 47, 45, 53];
-  const cityMomentum = [9, 11, 12, 10, 14, 16, 18, 17, 20, 22, 24, 26];
+  const storyVelocity = useMemo(
+    () => [18, 22, 19, 26, 29, 33, 30, 38, 42, 47, 45, 53],
+    []
+  );
+  const cityMomentum = useMemo(
+    () => [9, 11, 12, 10, 14, 16, 18, 17, 20, 22, 24, 26],
+    []
+  );
 
   useEffect(() => {
     return () => {
@@ -792,11 +882,13 @@ export default function DashboardHero({ posts, allTags, topFeatured, onOpenFeatu
                     title="Story Velocity"
                     subtitle="Publishing rhythm & attention curve"
                     values={storyVelocity}
+                    live
                   />
                   <MiniChartCard
                     title="City Momentum"
                     subtitle="Discovery interest by location"
                     values={cityMomentum}
+                    live
                   />
                 </div>
               </div>
