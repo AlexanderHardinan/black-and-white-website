@@ -43,8 +43,7 @@ export default function DashboardPage() {
             </h1>
 
             <p className="text-sm sm:text-base text-white/70 max-w-3xl leading-relaxed">
-              Analytics and editorial control room for featured stories, trend signals, and
-              global discovery insights—built for modern publishing workflows.
+              
             </p>
           </div>
         </motion.div>
