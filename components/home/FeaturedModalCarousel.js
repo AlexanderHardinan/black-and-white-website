@@ -14,14 +14,151 @@ export default function FeaturedModalCarousel({ open, onClose, items, startIndex
   const [selected, setSelected] = useState(startIndex);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" }, []);
 
+  const [bookPop, setBookPop] = useState(null);
+
   const dialogRef = useRef(null);
   const prevBodyOverflowRef = useRef("");
+  const bookTimerRef = useRef(null);
 
   const canRender = Array.isArray(items) && items.length > 0;
 
   const close = useCallback(() => {
     onClose?.();
   }, [onClose]);
+
+  useEffect(() => {
+    return () => {
+      if (bookTimerRef.current) {
+        window.clearTimeout(bookTimerRef.current);
+      }
+    };
+  }, []);
+
+  const triggerOpeningBook = useCallback((x, y) => {
+    const id = Date.now();
+
+    if (bookTimerRef.current) {
+      window.clearTimeout(bookTimerRef.current);
+    }
+
+    setBookPop({
+      id,
+      x,
+      y,
+    });
+
+    bookTimerRef.current = window.setTimeout(() => {
+      setBookPop((current) => (current?.id === id ? null : current));
+    }, 920);
+  }, []);
+
+  const handleModalClickableClick = useCallback(
+    (event) => {
+      const target = event.target instanceof Element ? event.target : null;
+      const clickable = target?.closest("button, a[href]");
+
+      if (!clickable || !event.currentTarget.contains(clickable)) {
+        return;
+      }
+
+      if (clickable instanceof HTMLButtonElement && clickable.disabled) {
+        return;
+      }
+
+      if (clickable.getAttribute("aria-disabled") === "true") {
+        return;
+      }
+
+      const rect = clickable.getBoundingClientRect();
+
+      triggerOpeningBook(
+        event.clientX || rect.left + rect.width / 2,
+        event.clientY || rect.top + rect.height / 2
+      );
+    },
+    [triggerOpeningBook]
+  );
+
+  function renderOpeningBookPop() {
+    return (
+      <AnimatePresence>
+        {bookPop ? (
+          <motion.div
+            key={bookPop.id}
+            className="pointer-events-none fixed z-[2147483647]"
+            style={{
+              left: bookPop.x,
+              top: bookPop.y,
+              transform: "translate(-50%, -50%)",
+              perspective: 700,
+            }}
+            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.35, y: 12 }}
+            animate={reduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
+            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.65, y: -18 }}
+            transition={reduceMotion ? { duration: 0.12 } : { duration: 0.22, ease: "easeOut" }}
+            aria-hidden="true"
+          >
+            <motion.div
+              className="relative h-16 w-20"
+              initial={reduceMotion ? { opacity: 1 } : { rotate: -4 }}
+              animate={reduceMotion ? { opacity: 1 } : { rotate: 0 }}
+              exit={reduceMotion ? { opacity: 0 } : { rotate: 4 }}
+            >
+              <motion.span
+                className="absolute left-1/2 top-1/2 h-12 w-8 origin-right rounded-l-md border border-white/40 bg-gradient-to-br from-[var(--gold)] to-amber-700 shadow-2xl"
+                style={{ transform: "translate(-100%, -50%)" }}
+                initial={reduceMotion ? { opacity: 0 } : { rotateY: -88 }}
+                animate={reduceMotion ? { opacity: 1 } : { rotateY: 0 }}
+                exit={reduceMotion ? { opacity: 0 } : { rotateY: -60 }}
+                transition={reduceMotion ? { duration: 0.12 } : { duration: 0.42, ease: "easeOut" }}
+              />
+
+              <motion.span
+                className="absolute left-1/2 top-1/2 h-12 w-8 origin-left rounded-r-md border border-white/40 bg-gradient-to-br from-amber-300 to-[var(--gold)] shadow-2xl"
+                style={{ transform: "translate(0, -50%)" }}
+                initial={reduceMotion ? { opacity: 0 } : { rotateY: 88 }}
+                animate={reduceMotion ? { opacity: 1 } : { rotateY: 0 }}
+                exit={reduceMotion ? { opacity: 0 } : { rotateY: 60 }}
+                transition={reduceMotion ? { duration: 0.12 } : { duration: 0.42, ease: "easeOut" }}
+              />
+
+              {[0, 1, 2, 3].map((page) => (
+                <motion.span
+                  key={page}
+                  className="absolute left-1/2 top-1/2 h-10 w-[2px] rounded-full bg-white/80"
+                  style={{ transformOrigin: "bottom center" }}
+                  initial={{ opacity: 0, rotate: 0, x: 0, y: 0 }}
+                  animate={
+                    reduceMotion
+                      ? { opacity: [0, 1, 0] }
+                      : {
+                          opacity: [0, 1, 0],
+                          rotate: [-22 + page * 14, page * 9, 22 + page * 10],
+                          x: [-5 + page * 3, page * 2],
+                          y: [-8 - page * 3, -24 - page * 7],
+                        }
+                  }
+                  transition={{
+                    duration: reduceMotion ? 0.32 : 0.68,
+                    delay: page * 0.05,
+                    ease: "easeOut",
+                  }}
+                />
+              ))}
+
+              <motion.span
+                className="absolute left-1/2 top-1/2 h-2 w-2 rounded-full bg-white shadow-[0_0_24px_rgba(255,255,255,0.9)]"
+                style={{ transform: "translate(-50%, -50%)" }}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{ scale: [0, 1.7, 0], opacity: [0, 1, 0] }}
+                transition={{ duration: reduceMotion ? 0.32 : 0.72, ease: "easeOut" }}
+              />
+            </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    );
+  }
 
   // Lock background scroll when open
   useEffect(() => {
@@ -110,9 +247,10 @@ export default function FeaturedModalCarousel({ open, onClose, items, startIndex
   }, [open, items?.length]);
 
   return (
-    <AnimatePresence>
-      {open && (
-        <>
+    <>
+      <AnimatePresence>
+        {open && (
+          <>
           <motion.div
             className="fixed inset-0 z-[9998] bg-black/70 backdrop-blur-sm"
             initial={{ opacity: 0 }}
@@ -133,6 +271,7 @@ export default function FeaturedModalCarousel({ open, onClose, items, startIndex
             animate={reduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.98, y: 10 }}
             transition={reduceMotion ? { duration: 0.12 } : { duration: 0.18, ease: "easeOut" }}
+            onClickCapture={handleModalClickableClick}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="w-full max-w-5xl rounded-3xl border border-white/12 bg-black/60 backdrop-blur shadow-[0_40px_120px_rgba(0,0,0,0.65)] overflow-hidden">
@@ -263,8 +402,11 @@ export default function FeaturedModalCarousel({ open, onClose, items, startIndex
               </div>
             </div>
           </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+          </>
+        )}
+      </AnimatePresence>
+
+      {renderOpeningBookPop()}
+    </>
   );
 }
