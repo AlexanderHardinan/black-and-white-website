@@ -14,11 +14,11 @@ export default function FeaturedModalCarousel({ open, onClose, items, startIndex
   const [selected, setSelected] = useState(startIndex);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" }, []);
 
-  const [bookPop, setBookPop] = useState(null);
+  const [bookFlip, setBookFlip] = useState(null);
 
   const dialogRef = useRef(null);
   const prevBodyOverflowRef = useRef("");
-  const bookTimerRef = useRef(null);
+  const bookFlipTimerRef = useRef(null);
 
   const canRender = Array.isArray(items) && items.length > 0;
 
@@ -28,28 +28,28 @@ export default function FeaturedModalCarousel({ open, onClose, items, startIndex
 
   useEffect(() => {
     return () => {
-      if (bookTimerRef.current) {
-        window.clearTimeout(bookTimerRef.current);
+      if (bookFlipTimerRef.current) {
+        window.clearTimeout(bookFlipTimerRef.current);
       }
     };
   }, []);
 
-  const triggerOpeningBook = useCallback((x, y) => {
+  const triggerProfessionalBookFlip = useCallback((x, y) => {
     const id = Date.now();
 
-    if (bookTimerRef.current) {
-      window.clearTimeout(bookTimerRef.current);
+    if (bookFlipTimerRef.current) {
+      window.clearTimeout(bookFlipTimerRef.current);
     }
 
-    setBookPop({
+    setBookFlip({
       id,
       x,
       y,
     });
 
-    bookTimerRef.current = window.setTimeout(() => {
-      setBookPop((current) => (current?.id === id ? null : current));
-    }, 920);
+    bookFlipTimerRef.current = window.setTimeout(() => {
+      setBookFlip((current) => (current?.id === id ? null : current));
+    }, 1400);
   }, []);
 
   const handleModalClickableClick = useCallback(
@@ -71,90 +71,173 @@ export default function FeaturedModalCarousel({ open, onClose, items, startIndex
 
       const rect = clickable.getBoundingClientRect();
 
-      triggerOpeningBook(
+      triggerProfessionalBookFlip(
         event.clientX || rect.left + rect.width / 2,
         event.clientY || rect.top + rect.height / 2
       );
     },
-    [triggerOpeningBook]
+    [triggerProfessionalBookFlip]
   );
 
-  function renderOpeningBookPop() {
+  function renderProfessionalBookFlip() {
     return (
       <AnimatePresence>
-        {bookPop ? (
-          <motion.div
-            key={bookPop.id}
+        {bookFlip ? (
+          <div
+            key={bookFlip.id}
             className="pointer-events-none fixed z-[2147483647]"
             style={{
-              left: bookPop.x,
-              top: bookPop.y,
+              left: bookFlip.x,
+              top: bookFlip.y,
               transform: "translate(-50%, -50%)",
-              perspective: 700,
+              perspective: 1200,
             }}
-            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.35, y: 12 }}
-            animate={reduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
-            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.65, y: -18 }}
-            transition={reduceMotion ? { duration: 0.12 } : { duration: 0.22, ease: "easeOut" }}
             aria-hidden="true"
           >
             <motion.div
-              className="relative h-16 w-20"
-              initial={reduceMotion ? { opacity: 1 } : { rotate: -4 }}
-              animate={reduceMotion ? { opacity: 1 } : { rotate: 0 }}
-              exit={reduceMotion ? { opacity: 0 } : { rotate: 4 }}
+              className="relative h-28 w-40"
+              style={{
+                transformStyle: "preserve-3d",
+              }}
+              initial={
+                reduceMotion
+                  ? { opacity: 0 }
+                  : { opacity: 0, scale: 0.55, rotateX: 16, y: 14 }
+              }
+              animate={
+                reduceMotion
+                  ? { opacity: 1 }
+                  : { opacity: 1, scale: 1, rotateX: 0, y: 0 }
+              }
+              exit={
+                reduceMotion
+                  ? { opacity: 0 }
+                  : { opacity: 0, scale: 0.82, rotateX: -8, y: -12 }
+              }
+              transition={
+                reduceMotion
+                  ? { duration: 0.12 }
+                  : { duration: 0.28, ease: [0.16, 1, 0.3, 1] }
+              }
             >
-              <motion.span
-                className="absolute left-1/2 top-1/2 h-12 w-8 origin-right rounded-l-md border border-white/40 bg-gradient-to-br from-[var(--gold)] to-amber-700 shadow-2xl"
-                style={{ transform: "translate(-100%, -50%)" }}
-                initial={reduceMotion ? { opacity: 0 } : { rotateY: -88 }}
-                animate={reduceMotion ? { opacity: 1 } : { rotateY: 0 }}
-                exit={reduceMotion ? { opacity: 0 } : { rotateY: -60 }}
-                transition={reduceMotion ? { duration: 0.12 } : { duration: 0.42, ease: "easeOut" }}
+              <motion.div
+                className="absolute left-1/2 top-[88%] h-5 w-32 rounded-full bg-black/40 blur-xl"
+                style={{ transform: "translateX(-50%)" }}
+                initial={{ opacity: 0, scaleX: 0.7 }}
+                animate={{ opacity: 0.72, scaleX: 1 }}
+                exit={{ opacity: 0, scaleX: 0.5 }}
+                transition={{ duration: 0.32, ease: "easeOut" }}
               />
 
-              <motion.span
-                className="absolute left-1/2 top-1/2 h-12 w-8 origin-left rounded-r-md border border-white/40 bg-gradient-to-br from-amber-300 to-[var(--gold)] shadow-2xl"
-                style={{ transform: "translate(0, -50%)" }}
-                initial={reduceMotion ? { opacity: 0 } : { rotateY: 88 }}
-                animate={reduceMotion ? { opacity: 1 } : { rotateY: 0 }}
-                exit={reduceMotion ? { opacity: 0 } : { rotateY: 60 }}
-                transition={reduceMotion ? { duration: 0.12 } : { duration: 0.42, ease: "easeOut" }}
-              />
+              <motion.div
+                className="absolute left-1/2 top-1/2 h-[86px] w-[118px]"
+                style={{
+                  transform: "translate(-50%, -50%)",
+                  transformStyle: "preserve-3d",
+                }}
+              >
+                <motion.div
+                  className="absolute left-0 top-0 h-full w-1/2 rounded-l-xl border border-white/25 bg-gradient-to-br from-[#3b2f1d] via-[#9a6b1f] to-[#facc15] shadow-2xl"
+                  style={{
+                    transformOrigin: "right center",
+                    boxShadow:
+                      "inset -10px 0 20px rgba(0,0,0,0.22), 0 18px 38px rgba(0,0,0,0.34)",
+                  }}
+                  initial={reduceMotion ? { opacity: 0 } : { rotateY: 68 }}
+                  animate={reduceMotion ? { opacity: 1 } : { rotateY: 0 }}
+                  exit={reduceMotion ? { opacity: 0 } : { rotateY: 48 }}
+                  transition={{ duration: reduceMotion ? 0.12 : 0.48, ease: "easeOut" }}
+                />
 
-              {[0, 1, 2, 3].map((page) => (
-                <motion.span
-                  key={page}
-                  className="absolute left-1/2 top-1/2 h-10 w-[2px] rounded-full bg-white/80"
-                  style={{ transformOrigin: "bottom center" }}
-                  initial={{ opacity: 0, rotate: 0, x: 0, y: 0 }}
-                  animate={
-                    reduceMotion
-                      ? { opacity: [0, 1, 0] }
-                      : {
-                          opacity: [0, 1, 0],
-                          rotate: [-22 + page * 14, page * 9, 22 + page * 10],
-                          x: [-5 + page * 3, page * 2],
-                          y: [-8 - page * 3, -24 - page * 7],
-                        }
-                  }
-                  transition={{
-                    duration: reduceMotion ? 0.32 : 0.68,
-                    delay: page * 0.05,
-                    ease: "easeOut",
+                <motion.div
+                  className="absolute right-0 top-0 h-full w-1/2 rounded-r-xl border border-white/25 bg-gradient-to-br from-[#f8dfa0] via-[#facc15] to-[#b7791f] shadow-2xl"
+                  style={{
+                    transformOrigin: "left center",
+                    boxShadow:
+                      "inset 10px 0 20px rgba(255,255,255,0.18), 0 18px 38px rgba(0,0,0,0.34)",
+                  }}
+                  initial={reduceMotion ? { opacity: 0 } : { rotateY: -68 }}
+                  animate={reduceMotion ? { opacity: 1 } : { rotateY: 0 }}
+                  exit={reduceMotion ? { opacity: 0 } : { rotateY: -48 }}
+                  transition={{ duration: reduceMotion ? 0.12 : 0.48, ease: "easeOut" }}
+                />
+
+                <span
+                  className="absolute left-1/2 top-0 h-full w-[5px] rounded-full bg-gradient-to-b from-white/40 via-[#7c4a03] to-black/25"
+                  style={{
+                    transform: "translateX(-50%) translateZ(8px)",
+                    boxShadow: "0 0 16px rgba(250,204,21,0.35)",
                   }}
                 />
-              ))}
 
-              <motion.span
-                className="absolute left-1/2 top-1/2 h-2 w-2 rounded-full bg-white shadow-[0_0_24px_rgba(255,255,255,0.9)]"
-                style={{ transform: "translate(-50%, -50%)" }}
-                initial={{ scale: 0, opacity: 0 }}
-                animate={{ scale: [0, 1.7, 0], opacity: [0, 1, 0] }}
-                transition={{ duration: reduceMotion ? 0.32 : 0.72, ease: "easeOut" }}
-              />
+                {Array.from({ length: 7 }).map((_, page) => (
+                  <motion.span
+                    key={`flip-page-${page}`}
+                    className="absolute left-1/2 top-[6px] h-[74px] w-[52px] rounded-r-lg border border-amber-100/80 bg-gradient-to-br from-white via-amber-50 to-amber-100"
+                    style={{
+                      transformOrigin: "left center",
+                      transformStyle: "preserve-3d",
+                      boxShadow:
+                        "inset 8px 0 14px rgba(120,53,15,0.12), 0 8px 18px rgba(0,0,0,0.16)",
+                    }}
+                    initial={
+                      reduceMotion
+                        ? { opacity: 0 }
+                        : {
+                            rotateY: 0,
+                            x: 0,
+                            z: page * 0.8,
+                            opacity: 0,
+                          }
+                    }
+                    animate={
+                      reduceMotion
+                        ? { opacity: [0, 1, 0] }
+                        : {
+                            rotateY: [0, -26, -118, -172],
+                            x: [0, -1, -4, -8],
+                            z: [page * 0.8, 12 + page, 16 + page, page],
+                            opacity: [0, 1, 1, 0.18],
+                          }
+                    }
+                    transition={{
+                      duration: reduceMotion ? 0.42 : 0.9,
+                      delay: reduceMotion ? page * 0.02 : 0.14 + page * 0.075,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                  >
+                    <span className="absolute left-3 right-3 top-4 h-px bg-amber-800/20" />
+                    <span className="absolute left-3 right-4 top-7 h-px bg-amber-800/16" />
+                    <span className="absolute left-3 right-5 top-10 h-px bg-amber-800/14" />
+                  </motion.span>
+                ))}
+
+                <motion.span
+                  className="absolute left-1/2 top-1/2 h-[92px] w-[126px] rounded-2xl border border-[var(--gold)]/35"
+                  style={{
+                    transform: "translate(-50%, -50%)",
+                    boxShadow:
+                      "0 0 30px rgba(250,204,21,0.28), inset 0 0 28px rgba(250,204,21,0.10)",
+                  }}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: [0, 1, 0], scale: [0.8, 1.08, 1.18] }}
+                  transition={{ duration: reduceMotion ? 0.42 : 1.0, ease: "easeOut" }}
+                />
+
+                <motion.span
+                  className="absolute left-1/2 top-1/2 h-2 w-2 rounded-full bg-white"
+                  style={{
+                    transform: "translate(-50%, -50%)",
+                    boxShadow:
+                      "0 0 24px rgba(255,255,255,0.95), 0 0 38px rgba(250,204,21,0.75)",
+                  }}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: [0, 1, 0], scale: [0, 2.1, 0] }}
+                  transition={{ duration: reduceMotion ? 0.36 : 0.9, ease: "easeOut" }}
+                />
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </div>
         ) : null}
       </AnimatePresence>
     );
@@ -406,7 +489,7 @@ export default function FeaturedModalCarousel({ open, onClose, items, startIndex
         )}
       </AnimatePresence>
 
-      {renderOpeningBookPop()}
+      {renderProfessionalBookFlip()}
     </>
   );
 }
