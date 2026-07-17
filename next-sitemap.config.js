@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://black-and-white-website.vercel.app',
+  siteUrl: 'https://tcwgazette.com',
   generateRobotsTxt: true,
   sitemapSize: 5000,
   changefreq: 'weekly',
