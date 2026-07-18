@@ -10,11 +10,16 @@ import Header from "../components/Header";
 
 const ORIGIN = "https://tcwgazette.com";
 const SITE_NAME = "The Culinary World Gazette";
+const SITE_SHORT_NAME = "TCW Gazette";
+
 const DEFAULT_TITLE =
   "The Culinary World Gazette | Global Culinary Editorial Publication";
+
 const DEFAULT_DESC =
   "The Culinary World Gazette is a global culinary editorial publication featuring chefs, restaurants, hospitality leaders, culinary journeys, industry insights, and extraordinary gastronomic stories from around the world.";
+
 const OG_IMAGE = `${ORIGIN}/images/logo.png`;
+const FAVICON_48 = `${ORIGIN}/icons/icon-48.png`;
 
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -64,6 +69,7 @@ export default function MyApp({ Component, pageProps }) {
         "@type": "NewsMediaOrganization",
         "@id": `${ORIGIN}/#organization`,
         name: SITE_NAME,
+        alternateName: SITE_SHORT_NAME,
         url: ORIGIN,
         description: DEFAULT_DESC,
         logo: {
@@ -87,6 +93,7 @@ export default function MyApp({ Component, pageProps }) {
         "@id": `${ORIGIN}/#website`,
         url: ORIGIN,
         name: SITE_NAME,
+        alternateName: SITE_SHORT_NAME,
         description: DEFAULT_DESC,
         publisher: {
           "@id": `${ORIGIN}/#organization`,
@@ -107,10 +114,12 @@ export default function MyApp({ Component, pageProps }) {
 
         {/* Basic SEO */}
         <meta name="description" content={DEFAULT_DESC} />
+
         <meta
           name="robots"
           content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
         />
+
         <meta
           name="googlebot"
           content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
@@ -121,15 +130,47 @@ export default function MyApp({ Component, pageProps }) {
         <meta name="application-name" content={SITE_NAME} />
         <meta name="apple-mobile-web-app-title" content={SITE_NAME} />
         <meta name="apple-mobile-web-app-capable" content="yes" />
+
         <meta
           name="apple-mobile-web-app-status-bar-style"
           content="black-translucent"
         />
+
         <link rel="manifest" href="/manifest.webmanifest" />
 
-        {/* Icons */}
-        <link rel="icon" href="/images/logo.png" />
-        <link rel="apple-touch-icon" href="/images/logo.png" />
+        {/* Google Search and browser favicons */}
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/icons/icon-16.png"
+        />
+
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/icons/icon-32.png"
+        />
+
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="48x48"
+          href="/icons/icon-48.png"
+        />
+
+        <link
+          rel="shortcut icon"
+          type="image/png"
+          href="/icons/icon-48.png"
+        />
+
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/icons/icon-180.png"
+        />
 
         {/* Open Graph */}
         <meta property="og:site_name" content={SITE_NAME} />
@@ -140,6 +181,7 @@ export default function MyApp({ Component, pageProps }) {
         <meta property="og:url" content={canonical} />
         <meta property="og:image" content={OG_IMAGE} />
         <meta property="og:image:secure_url" content={OG_IMAGE} />
+
         <meta
           property="og:image:alt"
           content={`${SITE_NAME} official publication logo`}
@@ -150,6 +192,7 @@ export default function MyApp({ Component, pageProps }) {
         <meta name="twitter:title" content={DEFAULT_TITLE} />
         <meta name="twitter:description" content={DEFAULT_DESC} />
         <meta name="twitter:image" content={OG_IMAGE} />
+
         <meta
           name="twitter:image:alt"
           content={`${SITE_NAME} official publication logo`}
