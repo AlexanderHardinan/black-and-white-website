@@ -1,0 +1,199 @@
+{
+  "generalSection": {
+    "type": "label",
+    "value": "CHEF ALEX DESKTOP"
+  },
+
+  "quickLaunchEnabled": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Enable Quick Launch"
+  },
+
+  "clockSection": {
+    "type": "label",
+    "value": "CLOCK & DATE"
+  },
+
+  "clock24Hour": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Use 24-Hour Clock"
+  },
+
+  "clockSeconds": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Show Seconds"
+  },
+
+  "worldClockSection": {
+    "type": "label",
+    "value": "WORLD CLOCK"
+  },
+
+  "worldClockEnabled": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Enable World Clock"
+  },
+
+  "worldClockRoutesEnabled": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Show Global Connection Routes"
+  },
+
+  "worldClockScanlineEnabled": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Enable Map Scanning Effect"
+  },
+
+  "worldClockCityCardsEnabled": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Show City Clock Cards"
+  },
+
+  "worldClockMapGridEnabled": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Show Geographic Grid"
+  },
+
+  "weatherSection": {
+    "type": "label",
+    "value": "WEATHER"
+  },
+
+  "weatherEnabled": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Enable Weather"
+  },
+
+  "weatherLocation": {
+    "type": "textbox",
+    "value": "Skopje, North Macedonia",
+    "text": "Weather Location"
+  },
+
+  "weatherRefreshMinutes": {
+    "max": 120,
+    "min": 5,
+    "step": 5,
+    "text": "Weather Refresh Interval (Minutes)",
+    "type": "slider",
+    "value": 15
+  },
+
+  "particlesSection": {
+    "type": "label",
+    "value": "PARTICLES"
+  },
+
+  "particlesEnabled": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Enable Particles"
+  },
+
+  "particleCount": {
+    "max": 150,
+    "min": 10,
+    "step": 5,
+    "text": "Particle Amount",
+    "type": "slider",
+    "value": 75
+  },
+
+  "connectionDistance": {
+    "max": 200,
+    "min": 50,
+    "step": 5,
+    "text": "Particle Connection Distance",
+    "type": "slider",
+    "value": 125
+  },
+
+  "particleInteractionRadius": {
+    "max": 300,
+    "min": 50,
+    "step": 10,
+    "text": "Mouse Interaction Radius",
+    "type": "slider",
+    "value": 150
+  },
+
+  "interactionSection": {
+    "type": "label",
+    "value": "INTERACTION"
+  },
+
+  "mouseEffectsEnabled": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Enable Mouse Effects"
+  },
+
+  "cardTiltStrength": {
+    "max": 10,
+    "min": 0,
+    "step": 1,
+    "text": "Widget 3D Tilt",
+    "type": "slider",
+    "value": 5
+  },
+
+  "buttonTiltStrength": {
+    "max": 8,
+    "min": 0,
+    "step": 1,
+    "text": "Quick Launch 3D Tilt",
+    "type": "slider",
+    "value": 3
+  },
+
+  "mouseGlowIntensity": {
+    "max": 100,
+    "min": 0,
+    "step": 5,
+    "text": "Mouse Glow Intensity",
+    "type": "slider",
+    "value": 100
+  },
+
+  "performanceSection": {
+    "type": "label",
+    "value": "PERFORMANCE"
+  },
+
+  "lowPowerMode": {
+    "type": "checkbox",
+    "value": false,
+    "text": "Force Low Power Mode"
+  },
+
+  "systemSection": {
+    "type": "label",
+    "value": "SYSTEM"
+  },
+
+  "systemMonitorEnabled": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Enable System Monitor"
+  },
+
+  "audioSection": {
+    "type": "label",
+    "value": "AUDIO"
+  },
+
+  "audioVisualizerEnabled": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Enable Audio Visualizer"
+  }
+}

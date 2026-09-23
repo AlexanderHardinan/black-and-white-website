@@ -7,7 +7,7 @@ User-agent: *
 Disallow: /api/
 
 # Host
-Host: https://black-and-white-website.vercel.app
+Host: https://tcwgazette.com
 
 # Sitemaps
-Sitemap: https://black-and-white-website.vercel.app/sitemap.xml
+Sitemap: https://tcwgazette.com/sitemap.xml

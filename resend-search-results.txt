@@ -1,0 +1,26 @@
+
+Path                                                                  LineNumber Line                                                                             
+----                                                                  ---------- ----                                                                             
+C:\Users\black\Projects\gsupport\src\app\(auth)\welcome\page.tsx              40   const [resendLoading, setResendLoading] = useState(false);                     
+C:\Users\black\Projects\gsupport\src\app\(auth)\welcome\page.tsx             142   async function resendConfirmation() {                                          
+C:\Users\black\Projects\gsupport\src\app\(auth)\welcome\page.tsx             146         message: "Open this page from Sign Up so we can resend to your email.",  
+C:\Users\black\Projects\gsupport\src\app\(auth)\welcome\page.tsx             152     if (resendLoading) return;                                                   
+C:\Users\black\Projects\gsupport\src\app\(auth)\welcome\page.tsx             153     setResendLoading(true);                                                      
+C:\Users\black\Projects\gsupport\src\app\(auth)\welcome\page.tsx             155       const { error } = await supabase.auth.resend({                             
+C:\Users\black\Projects\gsupport\src\app\(auth)\welcome\page.tsx             161         const fallback = await supabase.auth.resend({                            
+C:\Users\black\Projects\gsupport\src\app\(auth)\welcome\page.tsx             168             title: "Resend failed",                                              
+C:\Users\black\Projects\gsupport\src\app\(auth)\welcome\page.tsx             180       setResendLoading(false);                                                   
+C:\Users\black\Projects\gsupport\src\app\(auth)\welcome\page.tsx             321                 <div className="text-sm font-semibold">Resend email</div>        
+C:\Users\black\Projects\gsupport\src\app\(auth)\welcome\page.tsx             323                   Didn’t get it? Resend the 8-digit code.                        
+C:\Users\black\Projects\gsupport\src\app\(auth)\welcome\page.tsx             331                 onClick={resendConfirmation}                                     
+C:\Users\black\Projects\gsupport\src\app\(auth)\welcome\page.tsx             332                 disabled={resendLoading}                                         
+C:\Users\black\Projects\gsupport\src\app\(auth)\welcome\page.tsx             335                 {resendLoading ? "Resending..." : "Resend email code"}           
+C:\Users\black\Projects\gsupport\src\app\(auth)\welcome\page.tsx             369                 Tip: open this page from Sign Up to enable resend + verification.
+C:\Users\black\Projects\gsupport\src\app\api\creator-support\route.ts          3 import { Resend } from "resend";                                                 
+C:\Users\black\Projects\gsupport\src\app\api\creator-support\route.ts         24     const apiKey = process.env.RESEND_API_KEY;                                   
+C:\Users\black\Projects\gsupport\src\app\api\creator-support\route.ts         27         { ok: false, error: "Missing RESEND_API_KEY" },                          
+C:\Users\black\Projects\gsupport\src\app\api\creator-support\route.ts         62     const resend = new Resend(apiKey);                                           
+C:\Users\black\Projects\gsupport\src\app\api\creator-support\route.ts         90     const { error } = await resend.emails.send({                                 
+
+
+
